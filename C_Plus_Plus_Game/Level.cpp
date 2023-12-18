@@ -3,6 +3,21 @@
 #include "util.h"
 #include "Player.h"
 
+//new
+void Level::CheckCollisions()
+{ // need to take apropriate actions
+	for (auto& box : m_blocks)
+	{
+		if (m_state->getPlayer()->intersect(box))
+		{
+			printf("*");
+
+		}
+	}
+}
+
+
+
 void Level::init()
 {
 	m_brush_background.outline_opacity = 0.0f;
@@ -13,6 +28,10 @@ void Level::init()
 
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->init();
+
+	//new
+	//add random boxes to vectors
+
 }
 
 void Level::draw()
@@ -28,6 +47,8 @@ void Level::draw()
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background);
 
+
+	//order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) // draws player
 	{
 		m_state->getPlayer()->draw();
@@ -51,6 +72,8 @@ void Level::update(float dt)
 	{
 		m_state->getPlayer()->update(dt);
 	}
+
+	CheckCollisions();
 	
 	GameObject::update(dt);
 }

@@ -1,6 +1,8 @@
 #include "GameState.h"
 #include "Level.h"
 #include "Player.h"
+#include <thread>
+#include <chrono>
 
 GameState::GameState()
 {
@@ -29,10 +31,15 @@ void GameState::update(float dt)
 {
 	if (dt > 500) return;	// it been too long since last frame
 
+	//fixes screenshaking, basically reducing frames
+	float sleep_time = std::max(0.0f, 17.0f - dt);
+	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));
 
 	if (!m_current_level) return;
 
 	m_current_level->update(dt);
+
+	m_debugging = graphics::getKeyState(graphics::SCANCODE_0);
 }
 
 GameState* GameState::getInstance()
