@@ -2,23 +2,16 @@
 # Game Title Readme
 
 ## Table of Contents
-- [Features](#features)
 - [Character Abilities](#character-abilities)
 - [AI](#ai)
 - [UI](#ui)
 - [Levels](#levels)
 - [Managers](#managers)
-- [Scenes](#scenes)
-- [Events](#events)
+- [Event Types](#event-types)
 - [Achievements](#achievements)
-- [Save/Load System](#save-load-system)
+- [Save Load System](#save-load-system)
+- [Camera System](#camera-system)
 
-## Features
-| Feature                  | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Stamina                  | Player will have to wait for abilities, ex climbin       |  <ul><li>- [ ] </li></ul>  |
-| Feature 2                | Brief description of the second feature                  |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
 
 ## Character Abilities
 | Ability                  | Description                                              | Done |
@@ -26,6 +19,7 @@
 | Dashing                  | The player will get sudden un-stoppable movement         |  <ul><li>- [ ] </li></ul> |
 | Climbing                 | Player can ascend or descend walls                       |  <ul><li>- [ ] </li></ul> |
 | Attacking {Maybe}        | The player can melle attack to kill enemies              |  <ul><li>- [ ] </li></ul> |
+| Stamina                  | Player will have to wait for abilities, ex climbin       |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
 ## AI
@@ -38,8 +32,9 @@
 ## UI
 | UI Element               | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
+| Start menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
+| Pause menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
 | Abilities cooldown       | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
-| Camera                   | Watches backgroung -> player if moved far enough         |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
 ## Levels
@@ -53,21 +48,16 @@
 | Manager                  | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
 | Particles                | Manages different particle effect, best on threads       |  <ul><li>- [ ] </li></ul>  |
-| Manager 2                | Brief description of the second manager                  |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+| Audio Manager            | Brief description of the second manager                  |  <ul><li>- [ ] </li></ul>  |
+| Game Manager             | Handles scene transitions, hp, points, etc               | <ul><li>- [ ] </li></ul>   |
+| Event Manager            | Handles events between Gameobjects. Optimal design for decoupling.| <ul><li>- [ ] </li></ul>   |
+        
 
-## Scenes
-| Scene                    | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Transitions              | Going from one scene to the next one                     |  <ul><li>- [ ] </li></ul>  |
-| Scene 2                  | Brief description of the second scene                    |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
-
-## Events
+## Event Types
 | Event                    | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
 | Collisions               | Either for walls, enemies or pick-ups                    |  <ul><li>- [ ] </li></ul>  |
-| Event 2                  | Brief description of the second event                    |  <ul><li>- [ ] </li></ul>  |
+|                          | Brief description of the second event                    |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
 ## Achievements
@@ -77,11 +67,13 @@
 | Deathless                | Beast the game without dying                             |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
-## Save/Load System
+## Save Load System
 | System                   | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Save/Load System 1       | Brief description of the first save/load system           |  <ul><li>- [ ] </li></ul>  |
-| Save/Load System 2       | Brief description of the second save/load system          |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+| Save/Load System         | Handles save and load                                    |  <ul><li>- [ ] </li></ul>  |
 
+## Camera System
+| System                   | Description                                              | Done |
+|--------------------------|----------------------------------------------------------|------|
+| Camera                   | Watches backgroung -> player if moved far enough         |  <ul><li>- [ ] </li></ul>  |
 
