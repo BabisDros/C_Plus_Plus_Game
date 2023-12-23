@@ -9,7 +9,7 @@ class Player : public GameObject, public Box
 	graphics::Brush m_brush_player;
 
 	const float m_gravity = 10.f;
-	const float m_accel_vertical = 30.f;
+	const float m_accel_vertical = 300.f;
 	const float m_accel_horizontal = 40.f;
 	const float m_max_velocity = 10.0f;
 

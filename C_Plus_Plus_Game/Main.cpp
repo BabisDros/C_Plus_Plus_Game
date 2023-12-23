@@ -22,7 +22,7 @@ void update(float dt)
 
 int main(int argc, char** argv)
 {
-	graphics::createWindow(400, 400, "Test Stage1");
+	graphics::createWindow(1200, 600, "Test Stage1");
 
 	init();
 

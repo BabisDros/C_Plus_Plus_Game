@@ -3,6 +3,7 @@
 #include "Player.h"
 #include <thread>
 #include <chrono>
+#include <iostream>
 
 GameState::GameState()
 {
@@ -29,9 +30,9 @@ void GameState::draw()
 
 void GameState::update(float dt)
 {
-	if (dt > 500) return;	// it been too long since last frame
+	if (dt > 200) return;	// it been too long since last frame
 
-	//fixes screenshaking, basically reducing frames
+	//fixes screenshaking, basically reducing frames, also fixes accelaration issues
 	float sleep_time = std::max(0.0f, 17.0f - dt);
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));
 
@@ -39,7 +40,33 @@ void GameState::update(float dt)
 
 	m_current_level->update(dt);
 
-	m_debugging = graphics::getKeyState(graphics::SCANCODE_0);
+	if (graphics::getKeyState(graphics::SCANCODE_0))	// changes only on next key press
+	{
+		if (!m_debugging_held)
+		{
+			m_debugging = !m_debugging;
+			m_debugging_held = true;
+		}
+	}
+	else
+	{
+		m_debugging_held = false;
+	}
+	int currentTime = graphics::getGlobalTime() / 1000;
+	if (currentTime > time)
+	{
+		std::cout << fps << "\n";
+		fps = 0;
+		while (currentTime > time)
+		{
+			time++;
+		}
+	}
+	else
+	{
+		fps++;
+		//std::cout << "DT: " << graphics::getDeltaTime << "\n";
+	}
 }
 
 GameState* GameState::getInstance()
@@ -71,6 +98,11 @@ std::string GameState::getAssetDir()
 std::string GameState::getFullAssetPath(const std::string& asset)
 {
 	return m_asset_path + asset;
+}
+
+std::string GameState::getFullDataPath(const std::string& data)
+{
+	return m_data_path + data;
 }
 
 

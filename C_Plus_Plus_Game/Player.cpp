@@ -5,8 +5,8 @@
 
 void Player::init()
 {
-	m_pos_x = 3.0f;
-	m_pos_y = 3.0f;
+	m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
+	m_pos_y = m_state->getCanvasHeight() / 2.0f;
 
 	// Used if we want to have player be on the center always
 	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
@@ -63,7 +63,11 @@ void Player::update(float dt)
 		*/
 
 	movePlayer(dt);
-
+	if (m_pos_y > m_state->getCanvasHeight() + 2) // is in void
+	{
+		m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
+		m_pos_y = m_state->getCanvasHeight() / 2.0f;
+	}
 
 	// Used if we want to have player be on the center always
 	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
@@ -84,37 +88,59 @@ void Player::movePlayer(float dt)
 		move += 1.0f;
 	}
 
-	m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
-	m_vx = std::max(-m_max_velocity, m_vx);
-	//m_vx -= 0.2f * m_vx / (0.1f + fabs(m_vx)); //slow down
 
-	if (!graphics::getKeyState(graphics::SCANCODE_A) && !graphics::getKeyState(graphics::SCANCODE_D)) //insta stop, doesn't happen when both are held
+
+	if (!graphics::getKeyState(graphics::SCANCODE_A) && !graphics::getKeyState(graphics::SCANCODE_D) ||
+		graphics::getKeyState(graphics::SCANCODE_D) && graphics::getKeyState(graphics::SCANCODE_A)) //insta stop
 	{
 		m_vx = 0;
+	}
+	else
+	{
+		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
+		m_vx = std::max(-m_max_velocity, m_vx);
+		//m_vx -= 0.2f * m_vx / (0.1f + fabs(m_vx)); //slow down
 	}
 
 	m_pos_x += delta_time * m_vx;
 	/* need to to up and down*/
 	move = 0;
+/*	Changed to jump below
 	if (graphics::getKeyState(graphics::SCANCODE_W))
 	{
 		move -= 1.0f;
 	}
+	Not useful
 	if (graphics::getKeyState(graphics::SCANCODE_S))
 	{
 		move += 1.0f;
 	}
+*/
 
-
+	// Sometimes jump on air (run to wall on right and try to jump)
+	if (m_vy == 0.0f)
+	{ 
+		m_vy -= (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;// not delta_time!! Burst 
+	}
 	m_vy = std::min(m_max_velocity, m_vy + delta_time * move * m_accel_vertical);
 	m_vy = std::max(-m_max_velocity, m_vy);
+	
+	//m_vy -= 0.2f * m_vy / (0.1f + fabs(m_vy)); //slow down
+	m_vy += delta_time * m_gravity;
 	m_pos_y += delta_time * m_vy;
-	m_vy -= 0.2f * m_vy / (0.1f + fabs(m_vy)); //slow down
 }
 
 void Player::debugDraw()
 {
 	// needs implementation
-	m_brush_player.outline_opacity = 0.3f;
-	SETCOLOR(m_brush_player.fill_color, 0.1f, 0.f, 0.1f);
+//	m_brush_player.outline_opacity = 0.3f;
+//	SETCOLOR(m_brush_player.fill_color, 0.1f, 0.f, 0.1f);
+
+	graphics::Brush debug_brush;
+	SETCOLOR(debug_brush.fill_color, 1, 0.3f, 0);
+	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);
+	debug_brush.fill_opacity = 0.1f;
+	debug_brush.outline_opacity = 1.0f;
+	graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, m_width, m_height, debug_brush);
+
 }

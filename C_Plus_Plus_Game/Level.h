@@ -26,8 +26,9 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	Level(const std::string& name = "Level0");
+	Level(const std::string& name = "Level 0");
 	~Level();
 	//new
-	void CheckCollisions();
+	void checkCollisions();
+	void drawBlock(int i);
 };
