@@ -32,9 +32,9 @@ void GameState::update(float dt)
 {
 	if (dt > 200) return;	// it been too long since last frame
 
-	//fixes screenshaking, basically reducing frames, also fixes accelaration issues
+	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
-	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));
+	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/
 
 	if (!m_current_level) return;
 
@@ -52,21 +52,7 @@ void GameState::update(float dt)
 	{
 		m_debugging_held = false;
 	}
-	int currentTime = graphics::getGlobalTime() / 1000;
-	if (currentTime > time)
-	{
-		std::cout << fps << "\n";
-		fps = 0;
-		while (currentTime > time)
-		{
-			time++;
-		}
-	}
-	else
-	{
-		fps++;
-		//std::cout << "DT: " << graphics::getDeltaTime << "\n";
-	}
+	showFPS();
 }
 
 GameState* GameState::getInstance()
@@ -87,6 +73,24 @@ GameState::~GameState()
 	if (m_current_level)
 	{
 		delete m_current_level;
+	}
+}
+
+void GameState::showFPS()
+{
+	int currentTime = graphics::getGlobalTime() / 1000;
+	if (currentTime > time)
+	{
+		std::cout << fps << "\n";
+		fps = 0;
+		while (currentTime > time)
+		{
+			time++;
+		}
+	}
+	else
+	{
+		fps++;
 	}
 }
 

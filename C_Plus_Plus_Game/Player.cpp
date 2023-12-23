@@ -88,12 +88,10 @@ void Player::movePlayer(float dt)
 		move += 1.0f;
 	}
 
-
-
 	if (!graphics::getKeyState(graphics::SCANCODE_A) && !graphics::getKeyState(graphics::SCANCODE_D) ||
 		graphics::getKeyState(graphics::SCANCODE_D) && graphics::getKeyState(graphics::SCANCODE_A)) //insta stop
 	{
-		m_vx = 0;
+		m_vx = 0.f;
 	}
 	else
 	{
@@ -103,21 +101,9 @@ void Player::movePlayer(float dt)
 	}
 
 	m_pos_x += delta_time * m_vx;
-	/* need to to up and down*/
-	move = 0;
-/*	Changed to jump below
-	if (graphics::getKeyState(graphics::SCANCODE_W))
-	{
-		move -= 1.0f;
-	}
-	Not useful
-	if (graphics::getKeyState(graphics::SCANCODE_S))
-	{
-		move += 1.0f;
-	}
-*/
 
-	// Sometimes jump on air (run to wall on right and try to jump)
+	move = 0.f;
+
 	if (m_vy == 0.0f)
 	{ 
 		m_vy -= (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;// not delta_time!! Burst 
@@ -132,10 +118,6 @@ void Player::movePlayer(float dt)
 
 void Player::debugDraw()
 {
-	// needs implementation
-//	m_brush_player.outline_opacity = 0.3f;
-//	SETCOLOR(m_brush_player.fill_color, 0.1f, 0.f, 0.1f);
-
 	graphics::Brush debug_brush;
 	SETCOLOR(debug_brush.fill_color, 1, 0.3f, 0);
 	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);

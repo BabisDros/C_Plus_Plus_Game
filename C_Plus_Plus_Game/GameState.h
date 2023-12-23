@@ -32,9 +32,9 @@ public:
 	~GameState();
 
 	float getCanvasWidth() { return m_canvas_width; }
-
 	float getCanvasHeight() { return m_canvas_height; }
 
+	void showFPS();
 
 	std::string getAssetDir();
 	std::string getFullAssetPath(const std::string& asset);
