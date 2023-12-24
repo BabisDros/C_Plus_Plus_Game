@@ -21,8 +21,13 @@ public:
 	float m_global_offset_y = 0.0f;
 	bool m_debugging = false;
 	bool m_debugging_held = false;
-	int fps = 0;
-	int time = 0; // used for fps counting purposes
+
+	bool m_paused = false;
+	bool m_paused_held = false;
+	bool m_camera_follow_player = true;
+
+	int m_fps = 0;
+	int m_time = 0; // used for fps counting purposes
 
 	void init();
 	void draw();
@@ -35,6 +40,8 @@ public:
 	float getCanvasHeight() { return m_canvas_height; }
 
 	void showFPS();
+
+	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
 	std::string getAssetDir();
 	std::string getFullAssetPath(const std::string& asset);

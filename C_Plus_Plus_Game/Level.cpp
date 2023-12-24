@@ -26,7 +26,7 @@ void Level::init()
 	if (myfile.is_open())
 	{
 		float x, y = 0;
-		std::cout << "Level layout";
+		std::cout << "Level layout\n";
 		while (myfile)
 		{
 			std::getline(myfile, line);
@@ -81,15 +81,19 @@ void Level::draw()
 {
 	float w = m_state->getCanvasWidth() ; 
 	float h = m_state->getCanvasHeight();
-
-	/* background is static */
-	//graphics::drawRect(w * 0.5f, h * 0.5f, w, h, m_brush_background); 
-
-	/* background is moving */
+	//========================================================================================
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
-	graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); // make w * 2.0f and h * into var for direct access from/to init()
-
+	/* background is moving */
+	if (m_state->m_camera_follow_player)
+	{
+		//graphics::drawRect(m_state->getPlayer()->m_pos_x, offset_y, w * 2.0f, h, m_brush_background);
+		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); // make w * 2.0f and h * into var for direct access from/to init()
+	}
+	else /* background is static */
+	{
+		graphics::drawRect(w * 0.5f, h * 0.5f, w, h, m_brush_background);
+	}
 
 	//order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) // draws player
@@ -107,11 +111,13 @@ void Level::draw()
 	{
 		drawBlock(i);
 	}
+
+	if (m_state->m_paused) pausedDraw();
 }
 
 void Level::update(float dt)
 {
-	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 1000.0f));
+	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 1000.0f));	// breaks when paused, needs personal timer, cause global
 
 	SETCOLOR(m_brush_background.fill_color, p, p, 1.0f);	// change light
 
@@ -123,6 +129,7 @@ void Level::update(float dt)
 	checkCollisions();
 	
 	GameObject::update(dt);
+
 }
 
 Level::Level(const std::string& name) : GameObject(name)
@@ -148,13 +155,24 @@ void Level::drawBlock(int i)
 
 }
 
+void Level::pausedDraw()
+{
+	graphics::Brush paused_brush;
+	paused_brush.fill_opacity = 0.75f;
+	paused_brush.outline_opacity = 0.f;
+	SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
+
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), 
+		m_state->getCanvasHeight(), paused_brush);
+}
+
 void Level::checkCollisions()
 {
 	for (auto& box : m_blocks)
 	{
 		if (m_state->getPlayer()->intersect(box))
 		{
-			printf("*");
+		//	printf("*");
 
 		}
 	}

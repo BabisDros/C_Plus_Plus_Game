@@ -37,21 +37,15 @@ void GameState::update(float dt)
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/
 
 	if (!m_current_level) return;
-
+	
+	if (!m_paused) m_current_level->update(dt);
+	else m_current_level->pausedDraw();	// Make paused window
+/*
 	m_current_level->update(dt);
-
-	if (graphics::getKeyState(graphics::SCANCODE_0))	// changes only on next key press
-	{
-		if (!m_debugging_held)
-		{
-			m_debugging = !m_debugging;
-			m_debugging_held = true;
-		}
-	}
-	else
-	{
-		m_debugging_held = false;
-	}
+	if (m_paused) m_current_level->pausedDraw();
+*/
+	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
+	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
 }
 
@@ -79,18 +73,40 @@ GameState::~GameState()
 void GameState::showFPS()
 {
 	int currentTime = graphics::getGlobalTime() / 1000;
-	if (currentTime > time)
+	if (currentTime > m_time)
 	{
-		std::cout << fps << "\n";
-		fps = 0;
-		while (currentTime > time)
+		std::cout << m_fps << "\n";
+		m_fps = 0;
+		while (currentTime > m_time)
 		{
-			time++;
+			m_time++;
 		}
 	}
 	else
 	{
-		fps++;
+		m_fps++;
+	}
+}
+
+
+/** Genereic method to switch between modes on every button press
+	\param m_option = var that enables/disables mode
+	\param m_option_held = var to check if it is held
+	\param m_button = binded key press {graphics::getKeyState(graphics:: }
+*/
+void GameState::enable(bool& m_option, bool& m_option_held, bool m_button)
+{
+	if (m_button)	// changes only on next key press
+	{
+		if (!m_option_held)
+		{
+			m_option = !m_option;
+			m_option_held = true;
+		}
+	}
+	else
+	{
+		m_option_held = false;
 	}
 }
 

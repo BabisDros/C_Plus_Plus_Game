@@ -31,4 +31,5 @@ public:
 	//new
 	void checkCollisions();
 	void drawBlock(int i);
+	void pausedDraw();
 };

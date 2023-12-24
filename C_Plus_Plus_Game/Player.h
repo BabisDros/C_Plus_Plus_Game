@@ -13,8 +13,11 @@ class Player : public GameObject, public Box
 	const float m_accel_horizontal = 40.f;
 	const float m_max_velocity = 10.0f;
 
-	void movePlayer(float dt);
+	bool m_mirrored = false;
 
+
+	void movePlayer(float dt);
+	
 public:
 	Player(std::string name) : GameObject(name) {}
 
@@ -25,6 +28,9 @@ public:
 //current velocities
 	float m_vx = 0.f; 
 	float m_vy = 0.f;
+
+	float m_camera_offset_x = 0.f;
+	float m_camera_offset_y = 0.f;
 
 protected:
 	void debugDraw();

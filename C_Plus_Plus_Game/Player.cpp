@@ -2,6 +2,7 @@
 #include <sgg/graphics.h>
 #include "GameState.h"
 #include "util.h"
+#include <iostream>
 
 void Player::init()
 {
@@ -20,15 +21,23 @@ void Player::init()
 
 void Player::draw()
 {
-	//graphics::setScale(-1.0f, 1.0f); mirrors image
-
-	/* background is static */
-	//graphics::drawRect(m_pos_x, m_pos_y, 1.0f, 1.0f, m_brush_player);
+	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 
 	/* background is moving */
-	graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, 1.0f, 1.0f, m_brush_player);
+	if (m_state->m_camera_follow_player)
+	{
+		// Below previous state
+		//graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, 1.0f, 1.0f, m_brush_player);
+		//======================================================
+		graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, 1.0f, 1.0f, m_brush_player);
 
-	//graphics::resetPose(); reset mirror for next call
+	}
+	else /* background is static */
+	{
+		graphics::drawRect(m_pos_x, m_pos_y, 1.0f, 1.0f, m_brush_player);
+	}
+
+	graphics::resetPose(); //reset mirror for next call
 
 	//new for debug, need to be implemented
 	if (m_state->m_debugging)
@@ -39,39 +48,19 @@ void Player::draw()
 
 void Player::update(float dt)
 {
-	/* old movement
-		float delta_time = dt / 1000.0f;
-
-
-		const float velocity = 10.0f;
-			if (graphics::getKeyState(graphics::SCANCODE_A))	//movement
-		{
-			m_pos_x -= velocity * delta_time;
-		}
-		if (graphics::getKeyState(graphics::SCANCODE_D))
-		{
-			m_pos_x += velocity * delta_time;
-		}
-		if (graphics::getKeyState(graphics::SCANCODE_W))
-		{
-			m_pos_y -= velocity * delta_time;
-		}
-		if (graphics::getKeyState(graphics::SCANCODE_S))
-		{
-			m_pos_y += velocity * delta_time;
-		}
-		*/
-
 	movePlayer(dt);
 	if (m_pos_y > m_state->getCanvasHeight() + 2) // is in void
 	{
 		m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
 		m_pos_y = m_state->getCanvasHeight() / 2.0f;
 	}
+	// Used if background is moving
+	if (m_state->m_camera_follow_player)
+	{ 
+		m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
+		m_state->m_global_offset_y = m_state->getCanvasHeight() / 2.0f - m_pos_y;
+	}
 
-	// Used if we want to have player be on the center always
-	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
-	m_state->m_global_offset_y = m_state->getCanvasHeight() / 2.0f - m_pos_y;
 
 }
 
@@ -82,10 +71,12 @@ void Player::movePlayer(float dt)
 	if (graphics::getKeyState(graphics::SCANCODE_A))	//movement
 	{
 		move -= 1.0f;
+		m_mirrored = true;
 	}
 	if (graphics::getKeyState(graphics::SCANCODE_D))
 	{
 		move += 1.0f;
+		m_mirrored = false;
 	}
 
 	if (!graphics::getKeyState(graphics::SCANCODE_A) && !graphics::getKeyState(graphics::SCANCODE_D) ||
@@ -123,6 +114,12 @@ void Player::debugDraw()
 	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);
 	debug_brush.fill_opacity = 0.1f;
 	debug_brush.outline_opacity = 1.0f;
-	graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, m_width, m_height, debug_brush);
-
+	if (m_state->m_camera_follow_player)
+	{ 
+		graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, m_width, m_height, debug_brush);
+	}
+	else
+	{ 
+		graphics::drawRect(m_pos_x, m_pos_y, m_width, m_height, debug_brush);
+	}
 }
