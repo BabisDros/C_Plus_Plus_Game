@@ -7,7 +7,7 @@
 void Player::init()
 {
 	m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
-	m_pos_y = m_state->getCanvasHeight() / 2.0f;
+	m_pos_y = m_state->getCanvasHeight() / 2.0f;	//!! make initial var accesible
 
 	// Used if we want to have player be on the center always
 	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
@@ -29,12 +29,12 @@ void Player::draw()
 		// Below previous state
 		//graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, 1.0f, 1.0f, m_brush_player);
 		//======================================================
-		graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, 1.0f, 1.0f, m_brush_player);
+		graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_state->getCanvasHeight() * m_camera_multiplier_y, 1.0f, 1.0f, m_brush_player);	//!! 0.25 has to be var 
 
 	}
 	else /* background is static */
 	{
-		graphics::drawRect(m_pos_x, m_pos_y, 1.0f, 1.0f, m_brush_player);
+		graphics::drawRect(m_pos_x + m_camera_offset_x, m_pos_y + m_camera_offset_y, 1.0f, 1.0f, m_brush_player);
 	}
 
 	graphics::resetPose(); //reset mirror for next call
@@ -53,15 +53,37 @@ void Player::update(float dt)
 	{
 		m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
 		m_pos_y = m_state->getCanvasHeight() / 2.0f;
+		m_camera_offset_x = 0;
 	}
 	// Used if background is moving
 	if (m_state->m_camera_follow_player)
 	{ 
-		m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
+		m_state->m_global_offset_x = m_state->getCanvasWidth() * 0.25f - m_pos_x;
 		m_state->m_global_offset_y = m_state->getCanvasHeight() / 2.0f - m_pos_y;
 	}
 
 
+	
+	cameraOffsetX(0.25f, 0.75f);
+	cameraOffsetY(0.25f, 0.75f);
+
+	//cameraOffsetX(0.75f);
+	/*
+	if (m_pos_x + m_camera_offset_x <= m_state->getCanvasWidth() * 0.25) //||	// based on starting position
+		//m_pos_x - m_camera_offset_x > m_state->getCanvasWidth() * 0.75)// probably needs here y if
+	{
+		m_state->m_camera_follow_player = true;
+		m_state->m_global_offset_x = m_state->getCanvasWidth() * 0.25 - m_pos_x;
+		m_camera_offset_x = m_state->getCanvasWidth() * 0.25 - m_pos_x;	
+		m_camera_offset_y = m_state->getCanvasHeight() * 0.5 - m_pos_y;	//!! based on starting position
+		//m_camera_offset_y = m_pos_y;
+		//printf("*");
+	}
+	else
+	{
+		m_state->m_camera_follow_player = false;
+	}
+*/
 }
 
 void Player::movePlayer(float dt)
@@ -116,10 +138,73 @@ void Player::debugDraw()
 	debug_brush.outline_opacity = 1.0f;
 	if (m_state->m_camera_follow_player)
 	{ 
-		graphics::drawRect(m_state->getCanvasWidth() * 0.5f, m_state->getCanvasHeight() * 0.5f, m_width, m_height, debug_brush);
+		graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_state->getCanvasHeight() * m_camera_multiplier_y, m_width, m_height, debug_brush);	//!! 0.25 has to be var
 	}
 	else
 	{ 
-		graphics::drawRect(m_pos_x, m_pos_y, m_width, m_height, debug_brush);
+		graphics::drawRect(m_pos_x + m_camera_offset_x, m_pos_y + m_camera_offset_y, m_width, m_height, debug_brush);
+	}
+}
+
+
+void Player::cameraOffsetX(float multiplier1, float multiplier2)	//!! Need to differentiate between camera move on X and Y axis
+{
+	if (!m_collision_x)	// Did not get pushed back from wall, might not be helpful
+	{
+		if (m_pos_x + m_camera_offset_x <= m_state->getCanvasWidth() * multiplier1) //!! based on starting position
+		{
+			m_state->m_camera_follow_player = true;
+			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;
+			m_camera_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;
+			//m_camera_offset_y = m_state->getCanvasHeight() * 0.5 - m_pos_y;	//!! based on starting position
+			m_camera_multiplier_x = multiplier1;
+		}
+		else if (m_pos_x + m_camera_offset_x >= m_state->getCanvasWidth() * multiplier2) //!! based on starting position
+		{
+			m_state->m_camera_follow_player = true;
+			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
+			m_camera_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
+			//m_camera_offset_y = m_state->getCanvasHeight() * 0.5 - m_pos_y;	//!! based on starting position
+			m_camera_multiplier_x = multiplier2;
+		}
+		else
+		{
+			m_state->m_camera_follow_player = false;
+		}
+	}
+	else
+	{
+		m_state->m_camera_follow_player = false;
+	}
+}
+
+void Player::cameraOffsetY(float multiplier1, float multiplier2)
+{
+	if (!m_collision_y)
+	{ 
+		if (m_pos_y + m_camera_offset_y <= m_state->getCanvasHeight() * multiplier1) //!! based on starting position
+		{
+			m_state->m_camera_follow_player = true;
+			m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier1 - m_pos_y;
+			m_camera_offset_y = m_state->getCanvasHeight() * multiplier1 - m_pos_y;
+			//m_camera_offset_x = m_state->getCanvasHeight() * 0.5 - m_pos_x;	//!! based on starting position
+			m_camera_multiplier_y = multiplier1;
+		}
+		else if (m_pos_y + m_camera_offset_y >= m_state->getCanvasHeight() * multiplier2) //!! based on starting position
+		{
+			m_state->m_camera_follow_player = true;
+			m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y;
+			m_camera_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y;
+			//m_camera_offset_x = m_state->getCanvasHeight() * 0.5 - m_pos_x;	//!! based on starting position
+			m_camera_multiplier_y = multiplier2;
+		}
+		else
+		{
+			m_state->m_camera_follow_player = false;
+		}
+	}
+	else
+	{
+		m_state->m_camera_follow_player = false;
 	}
 }

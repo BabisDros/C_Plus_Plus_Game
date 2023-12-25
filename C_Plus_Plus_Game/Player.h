@@ -32,7 +32,15 @@ public:
 	float m_camera_offset_x = 0.f;
 	float m_camera_offset_y = 0.f;
 
+	float m_camera_multiplier_x = 0.f;
+	float m_camera_multiplier_y = 0.f;
+
+	bool m_collision_x = false;
+	bool m_collision_y = false;
+
 protected:
 	void debugDraw();
+	void cameraOffsetX(float multiplier1, float multiplier2);
+	void cameraOffsetY(float multiplier1, float multiplier2);
 
 };

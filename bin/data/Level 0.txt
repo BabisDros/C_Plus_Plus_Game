@@ -1,7 +1,9 @@
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-                        A
-                        A
-                        A
-                        A
-                        A
-                        A
+AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA
+                      A A
+                     A  A
+                    A   A
+                   A    A
+                  A     A
+                 A      A
+               A
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

@@ -27,11 +27,11 @@ void Level::init()
 	{
 		float x, y = 0;
 		std::cout << "Level layout\n";
+		std::getline(myfile, line);
 		while (myfile)
 		{
-			std::getline(myfile, line);
 			std::cout << line;
-			x = -m_state->getCanvasWidth() * 0.5f; // this need to be var, check draw
+			x = -m_state->getCanvasWidth() * 0.5f; //!! this need to be var, check draw
 			for (char ch : line)
 			{
 				if (ch != ' ')
@@ -42,6 +42,7 @@ void Level::init()
 			}
 			y++;
 			std::cout << "\n";
+			std::getline(myfile, line);
 		}
 	}
 
@@ -79,7 +80,7 @@ void Level::init()
 
 void Level::draw()
 {
-	float w = m_state->getCanvasWidth() ; 
+	float w = m_state->getCanvasWidth(); 
 	float h = m_state->getCanvasHeight();
 	//========================================================================================
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
@@ -88,11 +89,13 @@ void Level::draw()
 	if (m_state->m_camera_follow_player)
 	{
 		//graphics::drawRect(m_state->getPlayer()->m_pos_x, offset_y, w * 2.0f, h, m_brush_background);
-		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); // make w * 2.0f and h * into var for direct access from/to init()
+		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); //!! make w * 2.0f and h * into var for direct access from/to init()
 	}
 	else /* background is static */
 	{
-		graphics::drawRect(w * 0.5f, h * 0.5f, w, h, m_brush_background);
+		//graphics::drawRect(w * 0.5f, h * 0.5f, w * 2.0f, h, m_brush_background);
+		graphics::drawRect(w * 0.5f + m_state->getPlayer()->m_camera_offset_x, h * 0.5f + m_state->getPlayer()->m_camera_offset_y, w * 2.0f, h, m_brush_background);
+		//!! 0.5 is based on starting position
 	}
 
 	//order of draw() matters, if overllaping last goes on top
@@ -147,7 +150,11 @@ void Level::drawBlock(int i)
 	float y = box.m_pos_y + m_state->m_global_offset_y;
 
 	m_block_brush.texture = m_state->getFullAssetPath("crate.png");
-
+	if (!m_state->m_camera_follow_player)
+	{
+		x = box.m_pos_x + m_state->getPlayer()->m_camera_offset_x;	// Check for Y axis
+		y = box.m_pos_y + m_state->getPlayer()->m_camera_offset_y;
+	}
 	graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush);
 
 	if (m_state->m_debugging)
@@ -176,6 +183,7 @@ void Level::checkCollisions()
 
 		}
 	}
+	m_state->getPlayer()->m_collision_x = false;
 	for (auto& block : m_blocks)
 	{
 		if (!m_state->getPlayer()->intersectTypeY(block))
@@ -186,11 +194,12 @@ void Level::checkCollisions()
 				m_state->getPlayer()->m_pos_x += offset;
 
 				m_state->getPlayer()->m_vx = 0.0f;
+				m_state->getPlayer()->m_collision_x = true;
 				break;
 			}
 		}
 	}
-
+	m_state->getPlayer()->m_collision_y = false;
 	for (auto& block : m_blocks)
 	{
 		if (m_state->getPlayer()->intersectTypeY(block))
@@ -205,6 +214,7 @@ void Level::checkCollisions()
 				//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
 
 				m_state->getPlayer()->m_vy = 0.0f;
+				m_state->getPlayer()->m_collision_y = true;
 				break;
 			}
 		}
