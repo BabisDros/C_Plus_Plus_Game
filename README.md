@@ -70,10 +70,10 @@
 ## Save Load System
 | System                   | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Save/Load System         | Handles save and load                                    |  <ul><li>- [x] </li></ul>  |
+| Save/Load System         | Handles save and load                                    |  <ul><li>- [ ] </li></ul>  |
 
 ## Camera System
 | System                   | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Camera                   | Watches backgroung -> player if moved far enough         |  <ul><li>- [ ] </li></ul>  |
+| Camera                   | Watches backgroung -> player if moved far enough         |  <ul><li>- [x] </li></ul>  |
 
