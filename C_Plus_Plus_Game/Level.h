@@ -11,11 +11,11 @@ class Level : public GameObject
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
 
-	// everything included in the level
+	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	std::list<GameObject*> m_dynamic_objects;
 
-	//new, simple terrains
+	//? simple terrains
 	std::vector<Box> m_blocks;
 	std::vector<std::string> m_block_names;
 	const float m_block_size = 1.0f;
@@ -28,7 +28,7 @@ public:
 	void update(float dt) override;
 	Level(const std::string& name = "Level 0");
 	~Level();
-	//new
+
 	void checkCollisions();
 	void drawBlock(int i);
 	void pausedDraw();

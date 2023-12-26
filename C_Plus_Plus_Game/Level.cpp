@@ -9,7 +9,7 @@
 void Level::init()
 {
 	m_brush_background.outline_opacity = 0.0f;
-	m_brush_background.texture = m_state->getFullAssetPath("temp_background2.png"); // Make it not TOO big and try powers of 2 for given dimensions
+	m_brush_background.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
@@ -18,9 +18,9 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	
-	// Template of how we will level data
-	// currently makes ceiling and right wall
-
+	//? Template of how we will level data
+	//? currently makes ceiling and right wall
+	//! Seperate function, do something else based on character, {arrays?]
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
 	if (myfile.is_open())
@@ -31,7 +31,7 @@ void Level::init()
 		while (myfile)
 		{
 			std::cout << line;
-			x = -m_state->getCanvasWidth() * 0.5f; //!! this need to be var, check draw
+			x = -m_state->getCanvasWidth() * 0.5f; //! this need to be var, check draw
 			for (char ch : line)
 			{
 				if (ch != ' ')
@@ -54,7 +54,7 @@ void Level::init()
 	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight(), 1, 1));
 	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, 0, 1, 1));
 */
-	m_blocks.push_back(Box(5, 6, 1, 1)); // small parkour
+	m_blocks.push_back(Box(5, 6, 1, 1)); //? small parkour
 	m_blocks.push_back(Box(4, 6, 1, 1));
 	m_blocks.push_back(Box(3, 6, 1, 1));
 	m_blocks.push_back(Box(3, 5, 1, 1));
@@ -71,7 +71,7 @@ void Level::init()
 	m_blocks.push_back(Box(-3, 2, 1, 1));
 	m_blocks.push_back(Box(-2, 2, 1, 1));
 
-	m_block_brush.outline_opacity = 0.0f;	// texturing
+	m_block_brush.outline_opacity = 0.0f;	//? texturing
 	m_block_brush_debug.fill_opacity = 0.1f;
 	SETCOLOR(m_block_brush_debug.fill_color, 0.1f, 1.0f, 0.1f);
 	SETCOLOR(m_block_brush_debug.outline_color, 0.3f, 1.0f, 0.2f);
@@ -82,24 +82,24 @@ void Level::draw()
 {
 	float w = m_state->getCanvasWidth(); 
 	float h = m_state->getCanvasHeight();
-	//========================================================================================
+
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
 	if (m_state->m_camera_follow_player)
 	{
-		//graphics::drawRect(m_state->getPlayer()->m_pos_x, offset_y, w * 2.0f, h, m_brush_background);
-		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); //!! make w * 2.0f and h * into var for direct access from/to init()
+	;
+		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
 	}
 	else /* background is static */
 	{
-		//graphics::drawRect(w * 0.5f, h * 0.5f, w * 2.0f, h, m_brush_background);
-		graphics::drawRect(w * 0.5f + m_state->getPlayer()->m_camera_offset_x, h * 0.5f + m_state->getPlayer()->m_camera_offset_y, w * 2.0f, h, m_brush_background);
-		//!! 0.5 is based on starting position
+																																			//?? Check below
+		graphics::drawRect(w * 0.5f + m_state->m_global_offset_x, h * 0.5f + m_state->m_global_offset_y, w * 2.0f, h, m_brush_background);	//! somewhat same story like above
+		//? 0.5 is based on starting position
 	}
 
-	//order of draw() matters, if overllaping last goes on top
-	if (m_state->getPlayer()->isActive()) // draws player
+	//? order of draw() matters, if overllaping last goes on top
+	if (m_state->getPlayer()->isActive()) //? draws player
 	{
 		m_state->getPlayer()->draw();
 	}
@@ -120,16 +120,17 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 1000.0f));	// breaks when paused, needs personal timer, cause global
+	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 1000.0f));	//! breaks when paused, needs personal timer, cause global
 
-	SETCOLOR(m_brush_background.fill_color, p, p, 1.0f);	// change light
+	SETCOLOR(m_brush_background.fill_color, p, p, 1.0f);	//? change light
 
+	checkCollisions();
 	if (m_state->getPlayer()->isActive())	
 	{
 		m_state->getPlayer()->update(dt);
 	}
 
-	checkCollisions();
+	
 	
 	GameObject::update(dt);
 
@@ -144,7 +145,7 @@ Level::Level(const std::string& name) : GameObject(name)
 void Level::drawBlock(int i)
 {
 	Box& box = m_blocks[i];
-	//std::string& name = m_block_names[i];	// for textures
+	//std::string& name = m_block_names[i];	//? for textures
 
 	float x = box.m_pos_x + m_state->m_global_offset_x;
 	float y = box.m_pos_y + m_state->m_global_offset_y;
@@ -152,8 +153,8 @@ void Level::drawBlock(int i)
 	m_block_brush.texture = m_state->getFullAssetPath("crate.png");
 	if (!m_state->m_camera_follow_player)
 	{
-		x = box.m_pos_x + m_state->getPlayer()->m_camera_offset_x;	// Check for Y axis
-		y = box.m_pos_y + m_state->getPlayer()->m_camera_offset_y;
+		x = box.m_pos_x + m_state->m_global_offset_x;
+		y = box.m_pos_y + m_state->m_global_offset_y;
 	}
 	graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush);
 
@@ -162,7 +163,7 @@ void Level::drawBlock(int i)
 
 }
 
-void Level::pausedDraw()
+void Level::pausedDraw()	//! make it better than a greyed out screen
 {
 	graphics::Brush paused_brush;
 	paused_brush.fill_opacity = 0.75f;
@@ -175,46 +176,43 @@ void Level::pausedDraw()
 
 void Level::checkCollisions()
 {
+	/*	//? Sitting around currently
 	for (auto& box : m_blocks)
 	{
 		if (m_state->getPlayer()->intersect(box))
 		{
-		//	printf("*");
-
 		}
-	}
-	m_state->getPlayer()->m_collision_x = false;
+	}*/
+
 	for (auto& block : m_blocks)
 	{
 		if (!m_state->getPlayer()->intersectTypeY(block))
 		{
-			float offset = 0.0f;
-			if (offset = m_state->getPlayer()->intersectSideways(block))
+			float offset;
+			if (offset = m_state->getPlayer()->intersectSideways(block))	//? Does not go in if 0
 			{
 				m_state->getPlayer()->m_pos_x += offset;
 
 				m_state->getPlayer()->m_vx = 0.0f;
-				m_state->getPlayer()->m_collision_x = true;
 				break;
 			}
 		}
 	}
-	m_state->getPlayer()->m_collision_y = false;
+
 	for (auto& block : m_blocks)
 	{
 		if (m_state->getPlayer()->intersectTypeY(block))
 		{ 
-			float offset = 0.0f;
-			if (offset = m_state->getPlayer()->intersectY(block))
+			float offset;
+			if (offset = m_state->getPlayer()->intersectY(block))	//? Does not go in if 0
 			{
 				m_state->getPlayer()->m_pos_y += offset;
 
-				// add sound event
+				//? add sound event
 				//if (m_state->getPlayer()->m_vy > 1.0f)
 				//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
 
 				m_state->getPlayer()->m_vy = 0.0f;
-				m_state->getPlayer()->m_collision_y = true;
 				break;
 			}
 		}

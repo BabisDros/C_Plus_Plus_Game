@@ -1,3 +1,11 @@
+/*
+if //!!, really urgent, needs fix
+if //?, basic info
+if //!, needs improvement
+if //??, uncertain
+if //, general use, does not fall in above categories
+*/
+
 #include "sgg/graphics.h"
 #include "util.h"
 #include "GameState.h"

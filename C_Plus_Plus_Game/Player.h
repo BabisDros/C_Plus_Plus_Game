@@ -14,10 +14,12 @@ class Player : public GameObject, public Box
 	const float m_max_velocity = 10.0f;
 
 	bool m_mirrored = false;
-
+	bool m_dev_fly = false;
+	bool m_dev_fly_active = false;
+	bool m_dev_fly_held = false;
 
 	void movePlayer(float dt);
-	
+	void fly(float dt);
 public:
 	Player(std::string name) : GameObject(name) {}
 
@@ -29,14 +31,8 @@ public:
 	float m_vx = 0.f; 
 	float m_vy = 0.f;
 
-	float m_camera_offset_x = 0.f;
-	float m_camera_offset_y = 0.f;
-
-	float m_camera_multiplier_x = 0.f;
-	float m_camera_multiplier_y = 0.f;
-
-	bool m_collision_x = false;
-	bool m_collision_y = false;
+	float m_camera_multiplier_x = 0.f;	// what part of the screen player should be on X axis
+	float m_camera_multiplier_y = 0.f;	// what part of the screen player should be on Y axis
 
 protected:
 	void debugDraw();
