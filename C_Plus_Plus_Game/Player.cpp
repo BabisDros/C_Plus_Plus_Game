@@ -60,7 +60,7 @@ void Player::update(float dt)
 {
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
 	if (m_dev_fly) fly(dt);
-	else movePlayer(dt);
+	else movePlayer(dt);	//! player can currently hover below blocks if holding W, needs fix
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
