@@ -33,14 +33,14 @@
 | UI Element               | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
 | Start menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
-| Pause menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
+| Pause menu	           | {Needs to be made prettier                               |  <ul><li>- [ ] </li></ul>  |
 | Abilities cooldown       | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
 ## Levels
 | Level                    | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| txt generated            | loop will read data of level from file                   |  <ul><li>- [ ] </li></ul>  |
+| txt generated            | loop will read data of level from file {halfway-donw]    |  <ul><li>- [ ] </li></ul>  |
 | Level 1                  | Brief description of the first level                     |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
@@ -56,7 +56,7 @@
 ## Event Types
 | Event                    | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Collisions               | Either for walls, enemies or pick-ups                    |  <ul><li>- [ ] </li></ul>  |
+| Collisions               | Either for walls {works}, enemies or pick-ups            |  <ul><li>- [ ] </li></ul>  |
 |                          | Brief description of the second event                    |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
@@ -70,7 +70,7 @@
 ## Save Load System
 | System                   | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Save/Load System         | Handles save and load                                    |  <ul><li>- [ ] </li></ul>  |
+| Save/Load System         | Handles save and load                                    |  <ul><li>- [x] </li></ul>  |
 
 ## Camera System
 | System                   | Description                                              | Done |
