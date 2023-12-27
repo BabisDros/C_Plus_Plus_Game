@@ -24,10 +24,6 @@ public:
 
 	bool m_paused = false;
 	bool m_paused_held = false;
-	bool m_camera_follow_player = false;
-	bool m_camera_follow_player_x = false;
-	bool m_camera_follow_player_y = false;
-
 
 	int m_fps = 0;
 	int m_time = 0; // used for fps counting purposes
