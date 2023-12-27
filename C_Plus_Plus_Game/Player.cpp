@@ -6,8 +6,8 @@
 
 void Player::init()
 {
-	m_pos_x = m_state->getCanvasWidth() / 2.0f; // centered
-	m_pos_y = m_state->getCanvasHeight() / 2.0f;	//!! make initial var accesible
+	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
+	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
 
 	// Used if we want to have player be on the center always
 	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
@@ -49,7 +49,6 @@ void Player::draw()
 
 	graphics::resetPose(); //reset mirror for next call
 
-	//new for debug, need to be implemented
 	if (m_state->m_debugging)
 	{
 		debugDraw();

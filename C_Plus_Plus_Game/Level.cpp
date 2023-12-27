@@ -30,13 +30,22 @@ void Level::init()
 		std::getline(myfile, line);
 		while (myfile)
 		{
+			if (line == "$") break; //! Metadata point, used for texture, dimensions and for programmer Level data {like size of level}
 			std::cout << line;
 			x = -m_state->getCanvasWidth() * 0.5f; //! this need to be var, check draw
 			for (char ch : line)
-			{
-				if (ch != ' ')
+			{	
+				if (ch == '|') break;
+
+				if (ch == 'A')	 
 				{
 					m_blocks.push_back(Box(x, y, 1, 1));
+					//! Add name in m_block_names[i]
+				}
+				if (ch == 'B')	 
+				{
+					m_blocks.push_back(Box(x, y, 0.5f, 1.f));
+					//! Add name in m_block_names[i], will use metadata to match texture to actual size
 				}
 				x++;
 			}
@@ -54,23 +63,6 @@ void Level::init()
 	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight(), 1, 1));
 	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, 0, 1, 1));
 */
-	m_blocks.push_back(Box(5, 6, 1, 1)); //? small parkour
-	m_blocks.push_back(Box(4, 6, 1, 1));
-	m_blocks.push_back(Box(3, 6, 1, 1));
-	m_blocks.push_back(Box(3, 5, 1, 1));
-	m_blocks.push_back(Box(2, 6, 1, 1));
-	m_blocks.push_back(Box(1, 6, 1, 1));
-	m_blocks.push_back(Box(0, 6, 1, 1));
-	m_blocks.push_back(Box(0, 5, 1, 1));
-	m_blocks.push_back(Box(0, 4, 1, 1));
-	m_blocks.push_back(Box(-1, 4, 1, 1));
-	m_blocks.push_back(Box(-2, 4, 1, 1));
-	m_blocks.push_back(Box(-3, 4, 1, 1));
-	m_blocks.push_back(Box(-3, 4, 1, 1));
-	m_blocks.push_back(Box(-3, 3, 1, 1));
-	m_blocks.push_back(Box(-3, 2, 1, 1));
-	m_blocks.push_back(Box(-2, 2, 1, 1));
-
 	m_block_brush.outline_opacity = 0.0f;	//? texturing
 	m_block_brush_debug.fill_opacity = 0.1f;
 	SETCOLOR(m_block_brush_debug.fill_color, 0.1f, 1.0f, 0.1f);
