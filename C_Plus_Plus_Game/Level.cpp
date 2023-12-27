@@ -18,8 +18,7 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	
-	//? Template of how we will level data
-	//? currently makes ceiling and right wall
+	//? Template of how we will get level data
 	//! Seperate function, do something else based on character, {arrays?]
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
@@ -32,7 +31,7 @@ void Level::init()
 		{
 			if (line == "$") break; //! Metadata point, used for texture, dimensions and for programmer Level data {like size of level}
 			std::cout << line;
-			x = -m_state->getCanvasWidth() * 0.5f; //! this need to be var, check draw
+			x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
 			for (char ch : line)
 			{	
 				if (ch == '|') break;
@@ -78,17 +77,7 @@ void Level::draw()
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
-	if (m_state->m_camera_follow_player)
-	{
-	;
-		graphics::drawRect(offset_x, offset_y, w * 2.0f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
-	}
-	else /* background is static */
-	{
-																																			//?? Check below
-		graphics::drawRect(w * 0.5f + m_state->m_global_offset_x, h * 0.5f + m_state->m_global_offset_y, w * 2.0f, h, m_brush_background);	//! somewhat same story like above
-		//? 0.5 is based on starting position
-	}
+		graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
 
 	//? order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) //? draws player
@@ -112,7 +101,7 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 1000.0f));	//! breaks when paused, needs personal timer, cause global
+	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 10000.0f));	//! breaks when paused, needs personal timer, cause global
 
 	SETCOLOR(m_brush_background.fill_color, p, p, 1.0f);	//? change light
 
@@ -122,10 +111,7 @@ void Level::update(float dt)
 		m_state->getPlayer()->update(dt);
 	}
 
-	
-	
 	GameObject::update(dt);
-
 }
 
 Level::Level(const std::string& name) : GameObject(name)
@@ -133,7 +119,7 @@ Level::Level(const std::string& name) : GameObject(name)
 
 }
 
-//new
+//? Should get replaced with generic static and/or dynamic draw
 void Level::drawBlock(int i)
 {
 	Box& box = m_blocks[i];
@@ -143,15 +129,9 @@ void Level::drawBlock(int i)
 	float y = box.m_pos_y + m_state->m_global_offset_y;
 
 	m_block_brush.texture = m_state->getFullAssetPath("crate.png");
-	if (!m_state->m_camera_follow_player)
-	{
-		x = box.m_pos_x + m_state->m_global_offset_x;
-		y = box.m_pos_y + m_state->m_global_offset_y;
-	}
 	graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush);
 
-	if (m_state->m_debugging)
-		graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush_debug);
+	if (m_state->m_debugging) graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush_debug);
 
 }
 
