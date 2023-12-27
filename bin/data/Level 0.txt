@@ -1,0 +1,17 @@
+AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA               |
+                      A A                      |
+                     A  A                      |
+                    A   A  AAA                 |
+                   A    A  A     B             |
+                  A     A  AAAA                |
+                 A      A     AAAA             |AAA
+               A                     A         |
+                                    A          |
+                          AAAAA   AAA          |
+                         A                     |
+                        A                      |
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|AA
+$
+48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2]
+A: Basic crate
+|: Edge of Level

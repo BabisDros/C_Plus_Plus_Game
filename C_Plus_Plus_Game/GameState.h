@@ -5,8 +5,9 @@
 class GameState
 {
 	std::string m_asset_path = "assets\\";
-	float m_canvas_width = 6.0f;
-	float m_canvas_height = 6.0f;
+	std::string m_data_path = "data\\";
+	float m_canvas_width = 24.0f;
+	float m_canvas_height = m_canvas_width / 2;
 
 	static GameState* m_unique_instance;
 
@@ -19,6 +20,17 @@ public:
 	float m_global_offset_x = 0.0f;
 	float m_global_offset_y = 0.0f;
 	bool m_debugging = false;
+	bool m_debugging_held = false;
+
+	bool m_paused = false;
+	bool m_paused_held = false;
+	bool m_camera_follow_player = false;
+	bool m_camera_follow_player_x = false;
+	bool m_camera_follow_player_y = false;
+
+
+	int m_fps = 0;
+	int m_time = 0; // used for fps counting purposes
 
 	void init();
 	void draw();
@@ -28,12 +40,16 @@ public:
 	~GameState();
 
 	float getCanvasWidth() { return m_canvas_width; }
-
 	float getCanvasHeight() { return m_canvas_height; }
 
+	void showFPS();
+
+	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
 	std::string getAssetDir();
 	std::string getFullAssetPath(const std::string& asset);
+
+	std::string getFullDataPath(const std::string& data);
 
 	class Player* getPlayer() { return m_player; }
 };
