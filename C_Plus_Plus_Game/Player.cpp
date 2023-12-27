@@ -23,26 +23,7 @@ void Player::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 
-	/* background is moving */
-	if (m_state->m_camera_follow_player)
-	{
-		if (!m_state->m_camera_follow_player_x)
-		{
-			graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_state->getCanvasHeight() * m_camera_multiplier_y, 1.0f, 1.0f, m_brush_player);
-		}
-		else if (!m_state->m_camera_follow_player_y)
-		{
-			graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_pos_y + m_state->m_global_offset_y, 1.0f, 1.0f, m_brush_player);
-		}
-		else
-		{ 
-			graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_state->getCanvasHeight() * m_camera_multiplier_y, 1.0f, 1.0f, m_brush_player); 
-		}
-	}
-	else /* background is static */
-	{
-		graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.0f, 1.0f, m_brush_player);
-	}
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.0f, 1.0f, m_brush_player);
 
 	graphics::resetPose(); //reset mirror for next call
 
@@ -62,11 +43,9 @@ void Player::update(float dt)
 	{
 		m_pos_x = m_state->getCanvasWidth() / 2.0f; //? centered
 		m_pos_y = m_state->getCanvasHeight() / 2.0f; //! should be made to get to starting position
-		m_state->m_global_offset_x = 0;
-		m_state->m_global_offset_y = 0;
 	}
 
-	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}
+	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}, only if it isn't complex
 	cameraOffsetY(0.3f, 0.7f);
 }
 
@@ -140,74 +119,31 @@ void Player::debugDraw()
 	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);
 	debug_brush.fill_opacity = 0.1f;
 	debug_brush.outline_opacity = 1.0f;
-	if (m_state->m_camera_follow_player)
-	{ 
-		if (!m_state->m_camera_follow_player_x)
-		{
-			graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_state->getCanvasHeight() * m_camera_multiplier_y, 1.0f, 1.0f, debug_brush);
-		}
-		else if (!m_state->m_camera_follow_player_y)
-		{
-			graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_pos_y + m_state->m_global_offset_y, 1.0f, 1.0f, debug_brush);
-		}
-		else
-		{
-			graphics::drawRect(m_state->getCanvasWidth() * m_camera_multiplier_x, m_state->getCanvasHeight() * m_camera_multiplier_y, 1.0f, 1.0f, debug_brush);
-		}
-	}
-	else
-	{ 
-		graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, debug_brush);
-	}
+
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, debug_brush);
 }
 
 
 void Player::cameraOffsetX(float multiplier1, float multiplier2)
 {
-	if (m_pos_x + m_state->m_global_offset_x <= m_state->getCanvasWidth() * multiplier1) //?? based on starting position
+	if (m_pos_x + m_state->m_global_offset_x <= m_state->getCanvasWidth() * multiplier1)
 	{
-		m_state->m_camera_follow_player = true;
-		m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;
-			
-		m_camera_multiplier_x = multiplier1;
-		m_state->m_camera_follow_player_x = true;
+		m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;	
 	}
-	else if (m_pos_x + m_state->m_global_offset_x >= m_state->getCanvasWidth() * multiplier2) //?? based on starting position
+	else if (m_pos_x + m_state->m_global_offset_x >= m_state->getCanvasWidth() * multiplier2)
 	{
-		m_state->m_camera_follow_player = true;
 		m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
-			
-		m_camera_multiplier_x = multiplier2;
-		m_state->m_camera_follow_player_x = true;
-	}
-	else
-	{
-		m_state->m_camera_follow_player = false;
-		m_state->m_camera_follow_player_x = false;	
 	}
 }
 
 void Player::cameraOffsetY(float multiplier1, float multiplier2)
 {
-	if (m_pos_y + m_state->m_global_offset_y <= m_state->getCanvasHeight() * multiplier1) //?? based on starting position
+	if (m_pos_y + m_state->m_global_offset_y <= m_state->getCanvasHeight() * multiplier1)
 	{
-		m_state->m_camera_follow_player = true;
 		m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier1 - m_pos_y; 
-
-		m_camera_multiplier_y = multiplier1;
-		m_state->m_camera_follow_player_y = true;
 	}
-	else if (m_pos_y + m_state->m_global_offset_y >= m_state->getCanvasHeight() * multiplier2) //?? based on starting position
+	else if (m_pos_y + m_state->m_global_offset_y >= m_state->getCanvasHeight() * multiplier2)
 	{
-		m_state->m_camera_follow_player = true;
 		m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y; 
-			
-		m_camera_multiplier_y = multiplier2;
-		m_state->m_camera_follow_player_y = true;
-	}
-	else
-	{
-		m_state->m_camera_follow_player = false;
-		m_state->m_camera_follow_player_y = false;
 	}
 }

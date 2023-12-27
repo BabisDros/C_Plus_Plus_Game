@@ -77,7 +77,7 @@ void Level::draw()
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
-		graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
+	graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
 
 	//? order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) //? draws player
@@ -116,7 +116,6 @@ void Level::update(float dt)
 
 Level::Level(const std::string& name) : GameObject(name)
 {
-
 }
 
 //? Should get replaced with generic static and/or dynamic draw
