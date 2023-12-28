@@ -86,7 +86,7 @@ void GameState::showFPS()
 }
 
 
-/** Genereic method to switch between modes on every button press
+/** Generic method to switch between modes on every button press
 	\param m_option = var that enables/disables mode
 	\param m_option_held = var to check if it is held
 	\param m_button = binded key press {graphics::getKeyState(graphics:: }

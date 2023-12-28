@@ -12,6 +12,7 @@ void Player::init()
 	m_brush_player.fill_opacity = 1.0f;
 	m_brush_player.outline_opacity = 0.0f;
 	m_brush_player.texture = m_state->getFullAssetPath("temp_player2.png");	
+	
 }
 
 void Player::draw()
@@ -26,13 +27,16 @@ void Player::draw()
 	{
 		debugDraw();
 	}
+
 }
 
 void Player::update(float dt)
 {
+	float delta_time = dt / 1000.0f;
+
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
-	if (m_dev_fly) fly(dt);
-	else movePlayer(dt);	//! player can currently hover below blocks if holding W, needs fix
+	if (m_dev_fly) fly(delta_time);
+	else movePlayer(delta_time);	//! player can currently hover below blocks if holding W, needs fix
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
@@ -42,12 +46,47 @@ void Player::update(float dt)
 
 	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}, only if it isn't complex
 	cameraOffsetY(0.3f, 0.7f);
+
+	dash(delta_time);
 }
 
-void Player::movePlayer(float dt)
+void Player::dash(float delta_time)
 {
-	float delta_time = dt / 1000.0f;
+	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_myTimer.isRunning())
+	{
+		m_myTimer = Timer(m_dash_cooldown);
+		m_myTimer.start();
+		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
+	}
+	
+	if (m_myTimer.isRunning())
+	{
+		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
+		{
+			if (m_mirrored)
+			{
+				m_vx = -m_dashSpeed;
+			}
+			else
+			{
+				m_vx = m_dashSpeed;
+			}
+			m_pos_x += delta_time * m_vx;
+
+		}
+		float timer = m_myTimer.operator float();
+		// Check if the cooldown duration has passed
+		if (timer >= 1.0f) //
+		{
+			m_myTimer.stop();
+		}
+	}
+}
+void Player::movePlayer(float delta_time)
+{
+
 	float move = 0;
+
 	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
 	{
 		move = -1.0f;
@@ -72,7 +111,7 @@ void Player::movePlayer(float dt)
 
 	m_pos_x += delta_time * m_vx;
 
-	if (m_vy == 0.0f)	//! need better if for jump, [check for top, bottom collision?]
+	if (m_vy == 0.0f && !m_collidingUp)	//! need better if for jump, [check for top, bottom collision?]
 	{ 
 		m_vy -= (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;//? not delta_time! Burst [Papaioannou comment]
 	}
@@ -81,11 +120,14 @@ void Player::movePlayer(float dt)
 	
 	m_vy += delta_time * m_gravity;
 	m_pos_y += delta_time * m_vy;
+
+
+	
 }
 
-void Player::fly(float dt)
+
+void Player::fly(float delta_time)
 {
-	float delta_time = dt / 1000.0f;
 	const float velocity = 10.0f;
 	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
 	{
