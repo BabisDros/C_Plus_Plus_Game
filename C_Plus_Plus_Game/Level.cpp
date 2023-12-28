@@ -181,11 +181,11 @@ void Level::checkCollisions()
 				m_state->getPlayer()->m_pos_y += offset;
 				if (offset > 0)
 				{
-					m_state->getPlayer()->collidingUp = true;	
+					m_state->getPlayer()->m_collidingUp = true;	
 				}
 				else
 				{
-					m_state->getPlayer()->collidingUp = false;
+					m_state->getPlayer()->m_collidingUp = false;
 				}
 				//? add sound event
 				//if (m_state->getPlayer()->m_vy > 1.0f)

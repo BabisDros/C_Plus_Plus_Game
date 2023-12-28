@@ -58,7 +58,7 @@ void Player::dash(float delta_time)
 		m_myTimer.start();
 		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
 	}
-	
+	//allow dash movement to complete in certain time. Otherwise character teleports to another position and creates bugs like passing through objects
 	if (m_myTimer.isRunning())
 	{
 		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
@@ -111,21 +111,25 @@ void Player::movePlayer(float delta_time)
 
 	m_pos_x += delta_time * m_vx;
 
-	if (m_vy == 0.0f && !m_collidingUp)	//! need better if for jump, [check for top, bottom collision?]
-	{ 
-		m_vy -= (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;//? not delta_time! Burst [Papaioannou comment]
-	}
+	m_vy -= jump();
+
 	m_vy = std::min(m_max_velocity, m_vy);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	
 	m_vy += delta_time * m_gravity;
 	m_pos_y += delta_time * m_vy;
 
-
-	
 }
 
+float Player::jump() const
+{
+	if (m_vy == 0.0f && !m_collidingUp)	//! need better if for jump, [check for top, bottom collision?]
+	{
+		return (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+	}
 
+	else return 0;
+}
 void Player::fly(float delta_time)
 {
 	const float velocity = 10.0f;

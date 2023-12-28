@@ -14,7 +14,7 @@ class Player : public GameObject, public Box
 	const float m_max_velocity = 5.0f;
 
 	//dash attributes
-	int m_dash_cooldown = 2.f;
+	float m_dash_cooldown = 2.f;
 	float m_dashDuration = 0.3f;
 	float m_dashStartTime = 0.f;
 	float m_dashSpeed = 15.f;
@@ -28,6 +28,7 @@ class Player : public GameObject, public Box
 	void movePlayer(float dt);
 	void dash(float dt);
 	void fly(float dt);
+	float jump() const;
 public:
 	Player(std::string name) : GameObject(name) {}
 
