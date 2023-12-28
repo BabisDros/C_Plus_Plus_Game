@@ -50,38 +50,34 @@ void Player::update(float dt)
 	dash(delta_time);
 }
 
-void Player::dash(float delta_time)
+int Player::getHealth() const
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_myTimer.isRunning())
-	{
-		m_myTimer = Timer(m_dash_cooldown);
-		m_myTimer.start();
-		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
-	}
-	//allow dash movement to complete in certain time. Otherwise character teleports to another position and creates bugs like passing through objects
-	if (m_myTimer.isRunning())
-	{
-		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
-		{
-			if (m_mirrored)
-			{
-				m_vx = -m_dashSpeed;
-			}
-			else
-			{
-				m_vx = m_dashSpeed;
-			}
-			m_pos_x += delta_time * m_vx;
-
-		}
-		float timer = m_myTimer.operator float();
-		// Check if the cooldown duration has passed
-		if (timer >= 1.0f) //
-		{
-			m_myTimer.stop();
-		}
-	}
+	return m_currentHealth;
 }
+
+void Player::setInitialHealth(const int& initialHealth)
+{
+	m_initialHealth = initialHealth;
+	m_currentHealth = initialHealth;
+}
+
+void Player::takeDamage(const int& damage)
+{
+	m_currentHealth -= damage;
+}
+
+bool Player::isAlive() const
+{
+	return m_currentHealth>0;
+}
+
+void Player::destroy()
+{
+	setActive(false);
+}
+
+
+
 void Player::movePlayer(float delta_time)
 {
 
@@ -151,6 +147,44 @@ void Player::fly(float delta_time)
 	{
 		m_pos_y += velocity * delta_time;
 	}
+}
+
+void Player::dash(float delta_time)
+{
+	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_myTimer.isRunning())
+	{
+		m_myTimer = Timer(m_dash_cooldown);
+		m_myTimer.start();
+		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
+	}
+	//allow dash movement to complete in certain time. Otherwise character teleports to another position and created bugs like passing through objects
+	if (m_myTimer.isRunning())
+	{
+		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
+		{
+			if (m_mirrored)
+			{
+				m_vx = -m_dashSpeed;
+			}
+			else
+			{
+				m_vx = m_dashSpeed;
+			}
+			m_pos_x += delta_time * m_vx;
+
+		}
+		float timer = m_myTimer.operator float();
+		// Check if the cooldown duration has passed
+		if (timer >= 1.0f) //
+		{
+			m_myTimer.stop();
+		}
+	}
+}
+
+void Player::slash()
+{
+
 }
 
 void Player::debugDraw()

@@ -3,8 +3,9 @@
 #include "GameObject.h"
 #include "box.h"
 #include "timer.h"
+#include "Destructible.h"
 
-class Player : public GameObject, public Box
+class Player : public GameObject, public Box, public Destructible
 {
 	graphics::Brush m_brush_player;
 	Timer m_myTimer;
@@ -26,15 +27,24 @@ class Player : public GameObject, public Box
 	bool m_dev_fly_held = false;
 
 	void movePlayer(float dt);
-	void dash(float dt);
-	void fly(float dt);
 	float jump() const;
+	void fly(float dt);
+	void dash(float dt);
+	void slash();
+	
 public:
 	Player(std::string name) : GameObject(name) {}
 
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
+	
+	int getHealth() const override;
+	void setInitialHealth(const int& initialHealth) override;
+	void takeDamage(const int& damage) override;
+	bool isAlive() const override;
+	void destroy() override;
+
 	bool m_collidingUp = false;
 //current velocities
 	float m_vx = 0.f; 
