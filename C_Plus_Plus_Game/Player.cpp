@@ -9,14 +9,9 @@ void Player::init()
 	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
 	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
 
-	// Used if we want to have player be on the center always
-	m_state->m_global_offset_x = m_state->getCanvasWidth() / 2.0f - m_pos_x;
-	m_state->m_global_offset_y = m_state->getCanvasHeight() / 2.0f - m_pos_y;
-
 	m_brush_player.fill_opacity = 1.0f;
 	m_brush_player.outline_opacity = 0.0f;
-	m_brush_player.texture = m_state->getFullAssetPath("temp_player2.png");
-	
+	m_brush_player.texture = m_state->getFullAssetPath("temp_player2.png");	
 }
 
 void Player::draw()
@@ -125,25 +120,31 @@ void Player::debugDraw()
 
 
 void Player::cameraOffsetX(float multiplier1, float multiplier2)
-{
-	if (m_pos_x + m_state->m_global_offset_x <= m_state->getCanvasWidth() * multiplier1)
+{															//? 0.5f is based on zoom done on background, check level draw/init
+	if (m_pos_x >= m_state->getCanvasWidth()*(multiplier1 - 0.5f) && (m_pos_x <= m_state->getCanvasWidth() * (multiplier2 + 0.5f))) //? prevents going outside of background
 	{
-		m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;	
-	}
-	else if (m_pos_x + m_state->m_global_offset_x >= m_state->getCanvasWidth() * multiplier2)
-	{
-		m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
+		if (m_pos_x + m_state->m_global_offset_x <= m_state->getCanvasWidth() * multiplier1)
+		{
+			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier1 - m_pos_x;	
+		}
+		else if (m_pos_x + m_state->m_global_offset_x >= m_state->getCanvasWidth() * multiplier2)
+		{
+			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
+		}
 	}
 }
 
 void Player::cameraOffsetY(float multiplier1, float multiplier2)
 {
-	if (m_pos_y + m_state->m_global_offset_y <= m_state->getCanvasHeight() * multiplier1)
-	{
-		m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier1 - m_pos_y; 
-	}
-	else if (m_pos_y + m_state->m_global_offset_y >= m_state->getCanvasHeight() * multiplier2)
-	{
-		m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y; 
+	if (m_pos_y >= m_state->getCanvasHeight() * (multiplier1) && (m_pos_y <= m_state->getCanvasHeight() * (multiplier2))) //? prevents going outside of background
+	{ 
+		if (m_pos_y + m_state->m_global_offset_y <= m_state->getCanvasHeight() * multiplier1)
+		{
+			m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier1 - m_pos_y; 
+		}
+		else if (m_pos_y + m_state->m_global_offset_y >= m_state->getCanvasHeight() * multiplier2)
+		{
+			m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y; 
+		}
 	}
 }

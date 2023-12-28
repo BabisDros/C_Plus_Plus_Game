@@ -1,17 +1,17 @@
-AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA               |
-                      A A                      |
-                     A  A                      |
-                    A   A  AAA                 |
-                   A    A  A     B             |
-                  A     A  AAAA                |
-                 A      A     AAAA             |AAA
-               A                     A         |
-                                    A          |
-                          AAAAA   AAA          |
-                         A                     |
-                        A                      |
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|AA
+AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                 |
+                      A A                        |
+                     A  A                        |
+                    A   A  AAA                   |
+                   A    A  A     B               |
+                  A     A  AAAA                  |
+                 A      A     AAAA               |AAA
+               A                     A           |
+                                    A            |
+                          AAAAA   AAA            |
+                         A                       |
+                        A                        |
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|AA
 $
-48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2]
+50*12 ([CanvasWidth * images stretch + 2] * [CanvasWidth/2]) {+2: we start from 0 and must account for half and half block outside of window}
 A: Basic crate
 |: Edge of Level
