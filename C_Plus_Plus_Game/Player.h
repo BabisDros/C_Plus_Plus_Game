@@ -10,7 +10,7 @@ class Player : public GameObject, public Box
 	Timer m_myTimer;
 	const float m_gravity = 10.f;
 	const float m_accel_vertical = 300.f;
-	const float m_accel_horizontal = 10.f;
+	const float m_accel_horizontal = 15.f;	//? if its too slow, player becomes unable to move (ex. starting next to a wall)
 	const float m_max_velocity = 5.0f;
 
 	//dash attributes
