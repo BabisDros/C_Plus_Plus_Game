@@ -3,7 +3,7 @@
 #include "box.h"
 #include "GameObject.h"
 #include "GameState.h"
-
+//creates an area that will detect collisions
 class DamageBox:public GameObject, public Box
 {
 public:	
@@ -26,9 +26,10 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	void setBrush(graphics::Brush brush) {
-		m_brush=brush;
-	}
+	void setBrush(graphics::Brush brush) {	m_brush = brush; }
+		
+	
+	
 protected:
 	graphics::Brush m_brush;
 };
