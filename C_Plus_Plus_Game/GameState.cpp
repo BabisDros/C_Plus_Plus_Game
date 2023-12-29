@@ -16,7 +16,6 @@ void GameState::init()
 
 	m_player = new Player("Player");
 	m_player->init();
-
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
@@ -38,8 +37,15 @@ void GameState::update(float dt)
 
 	if (!m_current_level) return;
 	
-	if (!m_paused) m_current_level->update(dt);
-	else m_current_level->pausedDraw();	//? Make paused window
+	if (!m_paused)
+	{
+		m_current_level->update(dt);
+		m_pausableClock += graphics::getDeltaTime()/1000;
+	}
+	else
+	{
+		m_current_level->pausedDraw();	//? Make paused window
+	}
 
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
 	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
@@ -48,11 +54,11 @@ void GameState::update(float dt)
 
 GameState* GameState::getInstance()
 {
-	if (m_unique_instance == nullptr)
+	if (s_unique_instance == nullptr)
 	{
-		m_unique_instance = new GameState();
+		s_unique_instance = new GameState();
 	}
-	return m_unique_instance;
+	return s_unique_instance;
 }
 
 GameState::~GameState()
@@ -126,4 +132,4 @@ std::string GameState::getFullDataPath(const std::string& data)
 
 
 
-GameState* GameState::m_unique_instance = nullptr;
+GameState* GameState::s_unique_instance = nullptr;
