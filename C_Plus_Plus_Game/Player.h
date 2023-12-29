@@ -4,10 +4,12 @@
 #include "box.h"
 #include "timer.h"
 #include "Destructible.h"
+#include "DamageBox.h"
 
 class Player : public GameObject, public Box, public Destructible
 {
 	graphics::Brush m_brush_player;
+	
 	Timer m_myTimer;
 	const float m_gravity = 10.f;
 	const float m_accel_vertical = 300.f;
@@ -20,7 +22,10 @@ class Player : public GameObject, public Box, public Destructible
 	float m_dashStartTime = 0.f;
 	float m_dashSpeed = 15.f;
 	//dash attributes
-
+	 
+	//looking left value:-1,looking right value:1
+	int m_lookingDirection = 1;
+	DamageBox damageBox;
 	bool m_mirrored = false;
 	bool m_dev_fly = false;
 	bool m_dev_fly_active = false;
@@ -30,20 +35,19 @@ class Player : public GameObject, public Box, public Destructible
 	float jump() const;
 	void fly(float dt);
 	void dash(float dt);
-	void slash();
+	void slash(float dt);
 	
 public:
 	Player(std::string name) : GameObject(name) {}
-
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
 	
-	int getHealth() const ;
-	void setInitialHealth(const int& initialHealth) ;
-	void takeDamage(const int& damage);
-	bool isAlive() const ;
-	void destroy() ;
+	int getHealth() const override;
+	void setInitialHealth(const int& initialHealth) override;
+	void takeDamage(const int& damage) override;
+	bool isAlive() const override;
+	void destroy() override;
 
 	bool m_collidingUp = false;
 //current velocities
@@ -54,7 +58,6 @@ public:
 	float m_camera_multiplier_y = 0.f;	// what part of the screen player should be on Y axis
 
 protected:
-	void debugDraw();
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);
 

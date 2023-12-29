@@ -4,16 +4,22 @@
 #include "util.h"
 #include <iostream>
 
+
 void Player::init()
 {
 	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
 	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
 
-	m_brush_player.fill_opacity = 1.0f;
-	m_brush_player.outline_opacity = 0.0f;
-	m_brush_player.texture = m_state->getFullAssetPath("temp_player2.png");	
-	
+	setCustomBrushProperties(&m_brush_player, 1.0f, 0.0f, m_state->getFullAssetPath("temp_player2.png"));
+
+	graphics::Brush slash;
+	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
+	damageBox.setBrush(slash);
+
+	damageBox.m_PlayerDirection = &m_lookingDirection;
 }
+
+
 
 void Player::draw()
 {
@@ -25,9 +31,12 @@ void Player::draw()
 
 	if (m_state->m_debugging)
 	{
-		debugDraw();
-	}
-
+		//player
+		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
+		//damagebox
+		debugDraw(damageBox.m_pos_x, damageBox.m_pos_y, damageBox.m_width, damageBox.m_height);
+	}	
+	damageBox.draw();
 }
 
 void Player::update(float dt)
@@ -48,6 +57,7 @@ void Player::update(float dt)
 	cameraOffsetY(0.3f, 0.7f);
 
 	dash(delta_time);
+	slash(delta_time);
 }
 
 int Player::getHealth() const
@@ -80,18 +90,19 @@ void Player::destroy()
 
 void Player::movePlayer(float delta_time)
 {
-
 	float move = 0;
 
 	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
 	{
 		move = -1.0f;
 		m_mirrored = true;
+		m_lookingDirection = -1;
 	}
 	if (graphics::getKeyState(graphics::SCANCODE_D))
 	{
 		move = 1.0f;
 		m_mirrored = false;
+		m_lookingDirection = 1;
 	}
 
 	if (graphics::getKeyState(graphics::SCANCODE_D) ^ graphics::getKeyState(graphics::SCANCODE_A)) //? insta stop
@@ -153,6 +164,7 @@ void Player::dash(float delta_time)
 {
 	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_myTimer.isRunning())
 	{
+		// Create a timer that completes normalized (output) value of timer in m_dash_cooldown seconds.
 		m_myTimer = Timer(m_dash_cooldown);
 		m_myTimer.start();
 		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
@@ -162,40 +174,43 @@ void Player::dash(float delta_time)
 	{
 		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
 		{
-			if (m_mirrored)
-			{
-				m_vx = -m_dashSpeed;
-			}
-			else
-			{
-				m_vx = m_dashSpeed;
-			}
+			m_vx = m_dashSpeed*m_lookingDirection;
 			m_pos_x += delta_time * m_vx;
-
 		}
 		float timer = m_myTimer.operator float();
 		// Check if the cooldown duration has passed
-		if (timer >= 1.0f) //
+		if (timer >= 0.99f) //
 		{
 			m_myTimer.stop();
 		}
 	}
 }
 
-void Player::slash()
+void Player::slash(float delta_time)
 {
+	float lookingDirOffset = 0.5 * (float)m_lookingDirection;//extra offset corrected with the player's direction
+	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_myTimer.isRunning())
+	{	
 
-}
+		damageBox.setActive(true);
+		// Create a timer that outputs->1 in x (0.5 here) seconds.
+		m_myTimer = Timer(0.3f);
+		m_myTimer.start();
+	}
+	//TODO create new timer because it messes the timing when dash is used also
+	if (m_myTimer.isRunning())
+	{
+		float timer = m_myTimer.operator float();
+		//slash damagebox should follow player
+		damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 0.6f, 0.6f);
 
-void Player::debugDraw()
-{
-	graphics::Brush debug_brush;
-	SETCOLOR(debug_brush.fill_color, 1, 0.3f, 0);
-	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);
-	debug_brush.fill_opacity = 0.1f;
-	debug_brush.outline_opacity = 1.0f;
-
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, debug_brush);
+		// Check if the cooldown duration has passed
+		if (timer >= 0.95f) //
+		{
+			damageBox.setActive(false);
+			m_myTimer.stop();
+		}
+	}
 }
 
 

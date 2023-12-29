@@ -1,8 +1,10 @@
 #pragma once
-//used as interface
+//INTERFACE. Objects that can be destructed, should inherit this
 class Destructible 
 {
 public:
+    Destructible(int initialHealth):m_initialHealth(initialHealth), m_currentHealth(initialHealth) {};
+    Destructible() {};
     virtual ~Destructible() {}
 
     virtual int getHealth() const = 0;
@@ -17,6 +19,6 @@ public:
 
     // Additional methods can be added as needed
 protected:
-    float m_initialHealth = 0;
-    float m_currentHealth = 0;
+    int m_initialHealth = 0;
+    int m_currentHealth = 0;
 };
