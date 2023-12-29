@@ -69,7 +69,7 @@ GameState::~GameState()
 
 void GameState::showFPS()
 {
-	int currentTime = graphics::getGlobalTime() / 1000;
+	float currentTime = graphics::getGlobalTime() / 1000;
 	if (currentTime > m_time)
 	{
 		std::cout << m_fps << "\n";

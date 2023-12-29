@@ -16,9 +16,9 @@
 ## Character Abilities
 | Ability                  | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Dashing                  | The player will get sudden un-stoppable movement         |  <ul><li>- [ ] </li></ul> |
+| Dashing                  | The player will get sudden un-stoppable movement         |  <ul><li>- [x] </li></ul> |
 | Climbing                 | Player can ascend or descend walls                       |  <ul><li>- [ ] </li></ul> |
-| Attacking {Maybe}        | The player can melle attack to kill enemies              |  <ul><li>- [ ] </li></ul> |
+| Attacking {Maybe}        | The player can melee attack to kill enemies              |  <ul><li>- [x] </li></ul> |
 | Stamina                  | Player will have to wait for abilities, ex climbin       |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
@@ -34,7 +34,7 @@
 |--------------------------|----------------------------------------------------------|------|
 | Start menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
 | Pause menu	           | {Needs to be made prettier                               |  <ul><li>- [ ] </li></ul>  |
-| Abilities cooldown       | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
+| Abilities cooldown       | Indicator to show the availablity of abilities           |  <ul><li>- [x] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
 ## Levels
@@ -56,7 +56,7 @@
 ## Event Types
 | Event                    | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| Collisions               | Either for walls {works}, enemies or pick-ups            |  <ul><li>- [ ] </li></ul>  |
+| Collisions               | Either for walls {works}, enemies or pick-ups            |  <ul><li>- [x] </li></ul>  |
 |                          | Brief description of the second event                    |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
