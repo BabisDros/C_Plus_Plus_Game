@@ -176,8 +176,7 @@ void Level::checkCollisions()
 		{ 
 			float offset;
 			if (offset = m_state->getPlayer()->intersectY(block))	//? Does not go in if 0
-			{
-				
+			{			
 				m_state->getPlayer()->m_pos_y += offset;
 				if (offset > 0)
 				{
