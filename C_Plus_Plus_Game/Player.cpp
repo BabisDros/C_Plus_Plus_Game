@@ -16,7 +16,7 @@ void Player::init()
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
 	damageBox.setBrush(slash);
 
-	damageBox.m_PlayerDirection = &m_lookingDirection;
+	damageBox.m_parentDirection = &m_lookingDirection;
 }
 
 
@@ -162,54 +162,54 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_myTimer.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_F) && m_dashStartTime==0.f)
 	{
-		// Create a timer that completes normalized (output) value of timer in m_dash_cooldown seconds.
-		m_myTimer = Timer(m_dash_cooldown);
-		m_myTimer.start();
-		m_dashStartTime = graphics::getGlobalTime() / 1000.f;
-	}
-	//allow dash movement to complete in certain time. Otherwise character teleports to another position and created bugs like passing through objects
-	if (m_myTimer.isRunning())
+		m_dashStartTime =m_state-> m_pausableClock;		
+	}	
+	
+	if (m_dashStartTime!=0)
 	{
-		if (graphics::getGlobalTime() / 1000.f - m_dashStartTime < m_dashDuration)
+		float elapsedTime = m_state->m_pausableClock - m_dashStartTime;
+		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
+		if (elapsedTime < m_dashDuration)
 		{
-			m_vx = m_dashSpeed*m_lookingDirection;
+			m_vx = m_dashSpeed * m_lookingDirection;
 			m_pos_x += delta_time * m_vx;
 		}
-		float timer = m_myTimer.operator float();
-		// Check if the cooldown duration has passed
-		if (timer >= 0.99f) //
+		if (elapsedTime >= m_dash_cooldown)
 		{
-			m_myTimer.stop();
+			m_dashStartTime = 0.f;
 		}
 	}
 }
 
 void Player::slash(float delta_time)
 {
-	float lookingDirOffset = 0.5 * (float)m_lookingDirection;//extra offset corrected with the player's direction
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_myTimer.isRunning())
+	
+	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && m_slashStartTime ==0)
 	{	
-
 		damageBox.setActive(true);
-		// Create a timer that outputs->1 in x (0.5 here) seconds.
-		m_myTimer = Timer(0.3f);
-		m_myTimer.start();
+		m_slashStartTime = m_state->m_pausableClock;
 	}
-	//TODO create new timer because it messes the timing when dash is used also
-	if (m_myTimer.isRunning())
+	if (m_slashStartTime!=0)
 	{
-		float timer = m_myTimer.operator float();
-		//slash damagebox should follow player
-		damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 0.6f, 0.6f);
-
-		// Check if the cooldown duration has passed
-		if (timer >= 0.95f) //
+		float elapsedTime = m_state->m_pausableClock - m_slashStartTime;
+		if (elapsedTime < m_slashDuration)
 		{
-			damageBox.setActive(false);
-			m_myTimer.stop();
+			//extra offset corrected with the player's direction
+			float lookingDirOffset = 0.5 * m_lookingDirection;
+			//slash damagebox follows player
+			damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 0.6f, 0.6f);
 		}
+		else if(damageBox.isActive())
+		{			
+			damageBox.setActive(false);
+		}
+
+		if (elapsedTime >= m_slash_cooldown)
+		{
+			m_slashStartTime = 0.f;		
+		}	
 	}
 }
 

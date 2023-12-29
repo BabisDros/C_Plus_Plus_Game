@@ -19,10 +19,17 @@ class Player : public GameObject, public Box, public Destructible
 	//dash attributes
 	float m_dash_cooldown = 2.f;
 	float m_dashDuration = 0.3f;
-	float m_dashStartTime = 0.f;
+	float m_dashStartTime = 0.0f;
 	float m_dashSpeed = 15.f;
 	//dash attributes
 	 
+	//slash attributes
+	float m_slash_cooldown = 2.0f;
+	float m_slashDuration = 0.1f;
+	//zero means not slashing
+	float m_slashStartTime = 0.0f;
+	//dash attributes
+	
 	//looking left value:-1,looking right value:1
 	int m_lookingDirection = 1;
 	DamageBox damageBox;

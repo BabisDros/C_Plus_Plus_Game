@@ -22,14 +22,12 @@ public:
 		m_height = h;
 	}
 
-	int* m_PlayerDirection = 0;
+	int* m_parentDirection = 0;
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
 	void setBrush(graphics::Brush brush) {	m_brush = brush; }
 		
-	
-	
 protected:
 	graphics::Brush m_brush;
 };

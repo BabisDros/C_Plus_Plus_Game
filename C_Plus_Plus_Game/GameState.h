@@ -9,19 +9,19 @@ class GameState
 	float m_canvas_width = 24.0f;
 	float m_canvas_height = m_canvas_width / 2;
 
-	static GameState* m_unique_instance;
-
+	static GameState* s_unique_instance;
+	
 	GameState();
 
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
 
-public:
+public:	
 	float m_global_offset_x = 0.0f;
 	float m_global_offset_y = 0.0f;
 	bool m_debugging = false;
 	bool m_debugging_held = false;
-
+	float m_pausableClock;
 	bool m_paused = false;
 	bool m_paused_held = false;
 
