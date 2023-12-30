@@ -1,11 +1,11 @@
 $ tag, x, y, texture, destructible{1,0}
 A 1 1 crate.png 0
-B 0.5 1 crate.png 0 
+B 2 1 temp_player2.png 0 
 $
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                 |
                       A A                        |
                      A  A                        |
-                    A   A  AAA                   |
+                    A   A  AAA           B       |
                    A    A  A     B               |
                   A     A  AAAA                  |
                  A      A     AAAA               |AAA

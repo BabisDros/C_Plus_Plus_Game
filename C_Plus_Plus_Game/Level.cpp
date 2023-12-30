@@ -128,20 +128,13 @@ void Level::read(std::vector<Box> &m_blocks)
 				v.push_back(s);
 			}
 
-			if (v[4] == "1")
-			{
-				t_bool = true;
-			}
-			else
-			{
-				t_bool = false;
-			}
+			t_bool = v[4] == "1";
 
 			std::tuple <float, float, std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
 			m_objects_data.insert({v[0][0], data});
 			std::getline(myfile, line);
 		}
-
+		std::cout << "Level layout\n";
 		float x, y = 0;
 		while (myfile)
 		{ 

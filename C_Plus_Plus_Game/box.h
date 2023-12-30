@@ -24,7 +24,7 @@ struct Box
     */
     bool intersectTypeY(Box& other)
     {
-        if ((fabs(m_pos_x - other.m_pos_x)) < (fabs(m_pos_y - other.m_pos_y)))
+        if ((fabs(m_pos_x - other.m_pos_x)) * 2.0f - (m_width + other.m_width) < (fabs(m_pos_y - other.m_pos_y)) * 2.0f - (m_height + other.m_height))
         {
             return true;
         }

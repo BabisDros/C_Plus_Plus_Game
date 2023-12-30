@@ -21,11 +21,14 @@ void DamageBox::draw()
 
 void DamageBox::update(float dt)
 {
-	for (auto& block : m_state->getLevel()->getBlocks())
+	for (int i = 0; i < m_state->getLevel()->getBlocks()->size(); ++i)
 	{
-		if (intersect(block) && block->/*typeid(block)== typeid(Destructible)*/)
+		Box* block = &(*m_state->getLevel()->getBlocks())[i]; 
+
+		if (intersect(*block) /*&& typeid(*block) == typeid(Destructible)*/)
 		{
 			std::cout << "colliding";
 		}
 	}
+
 }
