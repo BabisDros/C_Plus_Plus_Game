@@ -1,3 +1,7 @@
+$ tag, x, y, texture, destructible{1,0}
+A 1 1 crate.png 0
+B 0.5 1 crate.png 0 
+$
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                 |
                       A A                        |
                      A  A                        |
@@ -12,6 +16,7 @@ AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                 |
                         A                        |
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|AA
 $
+Info that are not read from program
 50*12 ([CanvasWidth * images stretch + 2] * [CanvasWidth/2]) {+2: we start from 0 and must account for half and half block outside of window}
 A: Basic crate
 |: Edge of Level

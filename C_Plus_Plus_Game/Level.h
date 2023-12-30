@@ -3,6 +3,8 @@
 #include <sgg/graphics.h>
 #include <list>
 #include "box.h"
+#include <map>
+#include <tuple>
 
 class Level : public GameObject
 {
@@ -15,9 +17,10 @@ class Level : public GameObject
 	std::vector<GameObject*> m_static_objects;
 	std::list<GameObject*> m_dynamic_objects;
 
+	std::map <char, std::tuple <float, float, std::string, bool>> m_objects_data;	//? For every tag, width, height, texture and is destructible are saved
 	//? simple terrains
 	std::vector<Box> m_blocks;
-	std::vector<std::string> m_block_names;
+	std::vector<char> m_block_names;
 	const float m_block_size = 1.0f;
 	graphics::Brush m_block_brush;
 	graphics::Brush m_block_brush_debug;
@@ -32,9 +35,5 @@ public:
 	void checkCollisions();
 	void drawBlock(int i);
 	void pausedDraw();
-
-	std::vector<Box> getBlocks()
-	{
-		return m_blocks;
-	}
+	void read(std::vector<Box> &m_blocks);
 };

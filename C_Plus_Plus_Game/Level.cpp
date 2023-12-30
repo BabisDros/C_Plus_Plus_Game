@@ -4,7 +4,7 @@
 #include "Player.h"
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
 
 void Level::init()
 {
@@ -17,51 +17,8 @@ void Level::init()
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->init();
 
-	
-	//? Template of how we will get level data
-	//! Seperate function, do something else based on character, {arrays?]
-	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
-	std::string line;
-	if (myfile.is_open())
-	{
-		float x, y = 0;
-		std::cout << "Level layout\n";
-		std::getline(myfile, line);
-		while (myfile)
-		{
-			if (line == "$") break; //! Metadata point, used for texture, dimensions and for programmer Level data {like size of level}
-			std::cout << line;
-			x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
-			for (char ch : line)
-			{	
-				if (ch == '|') break;
+	read(m_blocks);	//! 
 
-				if (ch == 'A')	 
-				{
-					m_blocks.push_back(Box(x, y, 1, 1));
-					//! Add name in m_block_names[i]
-				}
-				if (ch == 'B')	 
-				{
-					m_blocks.push_back(Box(x, y, 0.5f, 1.f));
-					//! Add name in m_block_names[i], will use metadata to match texture to actual size
-				}
-				x++;
-			}
-			y++;
-			std::cout << "\n";
-			std::getline(myfile, line);
-		}
-	}
-
-	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2 + 2, 1, 1));
-/* Getting idea of location based on canvas
-	m_blocks.push_back(Box(m_state->getCanvasWidth(), m_state->getCanvasHeight() / 2, 1, 1));
-	m_blocks.push_back(Box(0, m_state->getCanvasHeight() / 2, 1, 1));
-
-	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight(), 1, 1));
-	m_blocks.push_back(Box(m_state->getCanvasWidth() / 2, 0, 1, 1));
-*/
 	m_block_brush.outline_opacity = 0.0f;	//? texturing
 	m_block_brush_debug.fill_opacity = 0.1f;
 	SETCOLOR(m_block_brush_debug.fill_color, 0.1f, 1.0f, 0.1f);
@@ -122,15 +79,16 @@ Level::Level(const std::string& name) : GameObject(name)
 void Level::drawBlock(int i)
 {
 	Box& box = m_blocks[i];
-	//std::string& name = m_block_names[i];	//? for textures
+	char& tag = m_block_names[i];
 
 	float x = box.m_pos_x + m_state->m_global_offset_x;
 	float y = box.m_pos_y + m_state->m_global_offset_y;
 
-	m_block_brush.texture = m_state->getFullAssetPath("crate.png");
-	graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush);
 
-	if (m_state->m_debugging) graphics::drawRect(x, y, m_block_size, m_block_size, m_block_brush_debug);
+	m_block_brush.texture = m_state->getFullAssetPath(std::get<2>(m_objects_data.at(tag)));
+	graphics::drawRect(x, y, std::get<0>(m_objects_data.at(tag)), std::get<1>(m_objects_data.at(tag)), m_block_brush);
+
+	if (m_state->m_debugging) graphics::drawRect(x, y, std::get<0>(m_objects_data.at(tag)), std::get<1>(m_objects_data.at(tag)), m_block_brush_debug);
 
 }
 
@@ -143,6 +101,71 @@ void Level::pausedDraw()	//! make it better than a greyed out screen
 
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), 
 		m_state->getCanvasHeight(), paused_brush);
+}
+
+void Level::read(std::vector<Box> &m_blocks)
+{
+	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
+	std::string line;
+
+	if (myfile.is_open())
+	{
+		std::getline(myfile, line);
+		while (line[0] != '$')	//? get to metadata point
+		{
+			std::getline(myfile, line);
+		}
+		std::getline(myfile, line);
+
+		while (line[0] != '$')	//? end of metadata
+		{
+			std::string s;
+			std::stringstream ss(line);
+			std::vector<std::string> v;
+			bool t_bool;
+			while (std::getline(ss, s, ' '))
+			{
+				v.push_back(s);
+			}
+
+			if (v[4] == "1")
+			{
+				t_bool = true;
+			}
+			else
+			{
+				t_bool = false;
+			}
+
+			std::tuple <float, float, std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
+			m_objects_data.insert({v[0][0], data});
+			std::getline(myfile, line);
+		}
+
+		float x, y = 0;
+		while (myfile)
+		{ 
+			std::getline(myfile, line); //? not '$'
+			if (line == "$") break;	//? no more lines on the level
+			std::cout << line;
+			x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
+			for (char ch : line)
+			{
+				if (ch == '|') break;	//? end of line
+				for (auto itr = m_objects_data.begin(); itr != m_objects_data.end(); ++itr)
+				{
+					if (itr->first == ch)
+					{
+						m_blocks.push_back(Box(x, y, std::get<0>(itr->second), std::get<1>(itr->second)));
+						m_block_names.push_back(itr->first);
+					}
+				}
+				x++;
+			}
+			y++;
+			std::cout << "\n";
+		}
+	}
 }
 
 void Level::checkCollisions()
