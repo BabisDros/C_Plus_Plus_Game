@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "Destructible.h"
 #include "DamageBox.h"
+#include "Ability.h"
 
 class Player : public GameObject, public Box, public Destructible
 {
@@ -16,20 +17,9 @@ class Player : public GameObject, public Box, public Destructible
 	const float m_accel_horizontal = 15.f;	//? if its too slow, player becomes unable to move (ex. starting next to a wall)
 	const float m_max_velocity = 5.0f;
 
-	//dash attributes
-	float m_dash_cooldown = 2.f;
-	float m_dashDuration = 0.3f;
-	float m_dashStartTime = 0.0f;
-	float m_dashSpeed = 15.f;
-	//dash attributes
-	 
-	//slash attributes
-	float m_slash_cooldown = 2.0f;
-	float m_slashDuration = 0.1f;
-	//zero means not slashing
-	float m_slashStartTime = 0.0f;
-	//dash attributes
-	
+	Ability dashAbility=Ability(2.0f, 0.3f, 0.0f, 15.f);
+	Ability slashAbility = Ability(2.0f, 0.1f, 0.0f);
+	Ability jumpAbility = Ability(1.0f, 0.0f, 0.0f);
 	//looking left value:-1,looking right value:1
 	int m_lookingDirection = 1;
 	DamageBox damageBox;
@@ -39,7 +29,7 @@ class Player : public GameObject, public Box, public Destructible
 	bool m_dev_fly_held = false;
 
 	void movePlayer(float dt);
-	float jump() const;
+	float jump();
 	void fly(float dt);
 	void dash(float dt);
 	void slash(float dt);

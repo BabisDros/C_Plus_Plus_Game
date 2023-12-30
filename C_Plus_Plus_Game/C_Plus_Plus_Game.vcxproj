@@ -150,6 +150,7 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ability.h" />
     <ClInclude Include="box.h" />
     <ClInclude Include="DamageBox.h" />
     <ClInclude Include="Destructible.h" />

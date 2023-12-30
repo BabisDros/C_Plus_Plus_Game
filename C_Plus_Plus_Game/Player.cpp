@@ -128,15 +128,27 @@ void Player::movePlayer(float delta_time)
 
 }
 
-float Player::jump() const
+float Player::jump()
 {
-	if (m_vy == 0.0f && !m_collidingUp)	//! need better if for jump, [check for top, bottom collision?]
+	float accel = 0;
+	if (m_vy == 0.0f && !m_collidingUp && graphics::getKeyState(graphics::SCANCODE_W) && jumpAbility.getStartTime() == 0)
 	{
-		return (graphics::getKeyState(graphics::SCANCODE_W) ? m_accel_vertical : 0.0f) * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+		jumpAbility.setStartTime(m_state->m_pausableClock);
+		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+	}
+	
+	if (jumpAbility.getStartTime() != 0)
+	{
+		float elapsedTime = m_state->m_pausableClock - jumpAbility.getStartTime();
+		if (elapsedTime >= jumpAbility.getCooldown())
+		{
+			jumpAbility.setStartTime(0.f);
+		}
 	}
 
-	else return 0;
+	return accel;
 }
+
 void Player::fly(float delta_time)
 {
 	const float velocity = 10.0f;
@@ -162,53 +174,52 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && m_dashStartTime==0.f)
+	if (graphics::getKeyState(graphics::SCANCODE_F) && dashAbility.getStartTime()==0)
 	{
-		m_dashStartTime =m_state-> m_pausableClock;		
+		dashAbility.setStartTime(m_state-> m_pausableClock);
 	}	
 	
-	if (m_dashStartTime!=0)
+	if (dashAbility.getStartTime()!= 0)
 	{
-		float elapsedTime = m_state->m_pausableClock - m_dashStartTime;
+		float elapsedTime = m_state->m_pausableClock - dashAbility.getStartTime();
 		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
-		if (elapsedTime < m_dashDuration)
+		if (elapsedTime < dashAbility.getDuration())
 		{
-			m_vx = m_dashSpeed * m_lookingDirection;
+			m_vx = dashAbility.getSpeed() * m_lookingDirection;
 			m_pos_x += delta_time * m_vx;
 		}
-		if (elapsedTime >= m_dash_cooldown)
+		if (elapsedTime >= dashAbility.getCooldown())
 		{
-			m_dashStartTime = 0.f;
+			dashAbility.setStartTime(0.f) ;
 		}
 	}
 }
 
 void Player::slash(float delta_time)
 {
-	
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && m_slashStartTime ==0)
+	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && slashAbility.getStartTime() ==0)
 	{	
 		damageBox.setActive(true);
-		m_slashStartTime = m_state->m_pausableClock;
+		slashAbility.setStartTime(m_state->m_pausableClock);
 	}
-	if (m_slashStartTime!=0)
+	if (slashAbility.getStartTime() !=0)
 	{
-		float elapsedTime = m_state->m_pausableClock - m_slashStartTime;
-		if (elapsedTime < m_slashDuration)
+		float elapsedTime = m_state->m_pausableClock - slashAbility.getStartTime();
+		if (elapsedTime < slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction
 			float lookingDirOffset = 0.5 * m_lookingDirection;
 			//slash damagebox follows player
-			damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 0.6f, 0.6f);
+			damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.f, 1.f);
 		}
 		else if(damageBox.isActive())
 		{			
 			damageBox.setActive(false);
 		}
 
-		if (elapsedTime >= m_slash_cooldown)
+		if (elapsedTime >= slashAbility.getCooldown())
 		{
-			m_slashStartTime = 0.f;		
+			slashAbility.setStartTime(0.f);
 		}	
 	}
 }
