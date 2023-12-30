@@ -36,4 +36,9 @@ public:
 	void drawBlock(int i);
 	void pausedDraw();
 	void read(std::vector<Box> &m_blocks);
+
+	std::vector<Box>* getBlocks()
+	{
+		return &m_blocks;
+	}
 };
