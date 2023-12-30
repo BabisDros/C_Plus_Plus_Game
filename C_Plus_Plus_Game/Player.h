@@ -17,9 +17,9 @@ class Player : public GameObject, public Box, public Destructible
 	const float m_accel_horizontal = 15.f;	//? if its too slow, player becomes unable to move (ex. starting next to a wall)
 	const float m_max_velocity = 5.0f;
 
-	Ability dashAbility=Ability(2.0f, 0.3f, 0.0f, 15.f);
+	Ability dashAbility = Ability(2.0f, 0.3f, 0.0f, 15.f);
 	Ability slashAbility = Ability(2.0f, 0.1f, 0.0f);
-	Ability jumpAbility = Ability(1.0f, 0.0f, 0.0f);
+	Ability jumpAbility = Ability(0.3f, 0.0f, 0.0f);
 	//looking left value:-1,looking right value:1
 	int m_lookingDirection = 1;
 	DamageBox damageBox;

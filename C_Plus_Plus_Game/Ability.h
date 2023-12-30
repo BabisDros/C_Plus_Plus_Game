@@ -1,4 +1,6 @@
-#pragma once
+#pragma 
+/** \param cooldown, duration, startTime, speed=0
+*/
 class  Ability
 {
 private:
@@ -7,6 +9,7 @@ private:
 	float m_startTime;
 	float m_speed;
 public:
+
 	Ability(float cooldown, float duration, float startTime, float speed=0)
 		:m_cooldown(cooldown), m_duration(duration), m_startTime(startTime), m_speed(speed) {};
 
