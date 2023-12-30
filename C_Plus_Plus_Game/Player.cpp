@@ -118,20 +118,20 @@ void Player::movePlayer(float delta_time)
 	m_vy = std::min(m_max_velocity, m_vy);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	
-	m_vy += delta_time * m_gravity;
+	m_vy += delta_time * m_gravity;	
 	m_pos_y += delta_time * m_vy;
 }
 
 float Player::jump()
 {
 	float accel = 0;
-	if (m_vy == 0.0f && !m_collidingUp && graphics::getKeyState(graphics::SCANCODE_W) && jumpAbility.getStartTime() == 0)
+	if (m_vy == 0.0f && !m_collidingUp && graphics::getKeyState(graphics::SCANCODE_W) && !jumpAbility.isRunning())
 	{
 		jumpAbility.setStartTime(m_state->m_pausableClock);
 		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
 	}
 	
-	if (jumpAbility.getStartTime() != 0)
+	if (jumpAbility.isRunning())
 	{
 		float elapsedTime = m_state->m_pausableClock - jumpAbility.getStartTime();
 		if (elapsedTime >= jumpAbility.getCooldown())
@@ -167,12 +167,12 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && dashAbility.getStartTime()==0)
+	if (graphics::getKeyState(graphics::SCANCODE_F) && !dashAbility.isRunning())
 	{
 		dashAbility.setStartTime(m_state-> m_pausableClock);
 	}	
 	
-	if (dashAbility.getStartTime()!= 0)
+	if (dashAbility.isRunning())
 	{
 		float elapsedTime = m_state->m_pausableClock - dashAbility.getStartTime();
 		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
@@ -190,12 +190,12 @@ void Player::dash(float delta_time)
 
 void Player::slash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && slashAbility.getStartTime() ==0)
+	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !slashAbility.isRunning())
 	{	
 		damageBox.setActive(true);
 		slashAbility.setStartTime(m_state->m_pausableClock);
 	}
-	if (slashAbility.getStartTime() !=0)
+	if (slashAbility.isRunning())
 	{
 		float elapsedTime = m_state->m_pausableClock - slashAbility.getStartTime();
 		if (elapsedTime < slashAbility.getDuration())
