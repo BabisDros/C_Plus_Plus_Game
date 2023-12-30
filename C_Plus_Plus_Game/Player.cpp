@@ -4,7 +4,6 @@
 #include "util.h"
 #include <iostream>
 
-
 void Player::init()
 {
 	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
@@ -18,8 +17,6 @@ void Player::init()
 
 	damageBox.m_parentDirection = &m_lookingDirection;
 }
-
-
 
 void Player::draw()
 {
@@ -65,11 +62,11 @@ int Player::getHealth() const
 	return m_currentHealth;
 }
 
-void Player::setInitialHealth(const int& initialHealth)
+void Player::resetHealth()
 {
-	m_initialHealth = initialHealth;
-	m_currentHealth = initialHealth;
+	m_currentHealth = m_initialHealth;
 }
+
 
 void Player::takeDamage(const int& damage)
 {
@@ -85,8 +82,6 @@ void Player::destroy()
 {
 	setActive(false);
 }
-
-
 
 void Player::movePlayer(float delta_time)
 {
@@ -125,7 +120,6 @@ void Player::movePlayer(float delta_time)
 	
 	m_vy += delta_time * m_gravity;
 	m_pos_y += delta_time * m_vy;
-
 }
 
 float Player::jump()
@@ -145,7 +139,6 @@ float Player::jump()
 			jumpAbility.setStartTime(0.f);
 		}
 	}
-
 	return accel;
 }
 
