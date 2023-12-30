@@ -21,4 +21,11 @@ void DamageBox::draw()
 
 void DamageBox::update(float dt)
 {
+	for (auto& block : m_state->getLevel()->getBlocks())
+	{
+		if (intersect(block) && typeid(block)== typeid(Destructible))
+		{
+			std::cout << "colliding";
+		}
+	}
 }

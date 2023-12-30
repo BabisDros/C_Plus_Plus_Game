@@ -32,4 +32,9 @@ public:
 	void checkCollisions();
 	void drawBlock(int i);
 	void pausedDraw();
+
+	std::vector<Box> getBlocks()
+	{
+		return m_blocks;
+	}
 };

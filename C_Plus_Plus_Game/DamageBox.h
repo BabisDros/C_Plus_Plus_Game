@@ -3,6 +3,8 @@
 #include "box.h"
 #include "GameObject.h"
 #include "GameState.h"
+#include "Level.h"
+#include "Destructible.h"
 //creates an area that will detect collisions
 class DamageBox:public GameObject, public Box
 {
