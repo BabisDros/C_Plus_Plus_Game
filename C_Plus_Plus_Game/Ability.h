@@ -33,5 +33,10 @@ public:
 	{
 		return m_speed;
 	}
+
+	bool isRunning()const
+	{
+		return m_startTime != 0;
+	}
 };
 
