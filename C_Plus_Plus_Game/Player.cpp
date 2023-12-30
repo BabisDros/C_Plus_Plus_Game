@@ -16,6 +16,8 @@ void Player::init()
 	damageBox.setBrush(slash);
 
 	damageBox.m_parentDirection = &m_lookingDirection;
+	m_initialHealth = m_currentHealth = 100;
+
 }
 
 void Player::draw()
@@ -66,7 +68,6 @@ void Player::resetHealth()
 {
 	m_currentHealth = m_initialHealth;
 }
-
 
 void Player::takeDamage(const int& damage)
 {
