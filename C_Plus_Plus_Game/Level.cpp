@@ -17,7 +17,7 @@ void Level::init()
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->init();
 
-	read(m_blocks);	//! 
+	read();	//! 
 
 	m_block_brush.outline_opacity = 0.0f;	//? texturing
 	m_block_brush_debug.fill_opacity = 0.1f;
@@ -78,18 +78,14 @@ Level::Level(const std::string& name) : GameObject(name)
 //? Should get replaced with generic static and/or dynamic draw
 void Level::drawBlock(int i)
 {
-	Box& box = m_blocks[i];
-	char& tag = m_block_names[i];
-
+	LevelBox& box = m_blocks[i];
 	float x = box.m_pos_x + m_state->m_global_offset_x;
 	float y = box.m_pos_y + m_state->m_global_offset_y;
 
+	m_block_brush.texture = m_state->getFullAssetPath(*box.getTexture());
+	graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush);
 
-	m_block_brush.texture = m_state->getFullAssetPath(std::get<2>(m_objects_data.at(tag)));
-	graphics::drawRect(x, y, std::get<0>(m_objects_data.at(tag)), std::get<1>(m_objects_data.at(tag)), m_block_brush);
-
-	if (m_state->m_debugging) graphics::drawRect(x, y, std::get<0>(m_objects_data.at(tag)), std::get<1>(m_objects_data.at(tag)), m_block_brush_debug);
-
+	if (m_state->m_debugging) graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush_debug);
 }
 
 void Level::pausedDraw()	//! make it better than a greyed out screen
@@ -103,7 +99,7 @@ void Level::pausedDraw()	//! make it better than a greyed out screen
 		m_state->getCanvasHeight(), paused_brush);
 }
 
-void Level::read(std::vector<Box> &m_blocks)
+void Level::read()
 {
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
@@ -129,8 +125,8 @@ void Level::read(std::vector<Box> &m_blocks)
 			}
 
 			t_bool = v[4] == "1";
-
-			std::tuple <float, float, std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
+			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
+			
 			m_objects_data.insert({v[0][0], data});
 			std::getline(myfile, line);
 		}
@@ -149,8 +145,8 @@ void Level::read(std::vector<Box> &m_blocks)
 				{
 					if (itr->first == ch)
 					{
-						m_blocks.push_back(Box(x, y, std::get<0>(itr->second), std::get<1>(itr->second)));
-						m_block_names.push_back(itr->first);
+						m_blocks.push_back(LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+							&std::get<2>(itr->second), std::get<3>(itr->second)));
 					}
 				}
 				x++;

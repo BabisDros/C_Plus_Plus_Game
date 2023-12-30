@@ -5,6 +5,7 @@
 #include "box.h"
 #include <map>
 #include <tuple>
+#include "LevelBox.h"
 
 class Level : public GameObject
 {
@@ -16,12 +17,10 @@ class Level : public GameObject
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	std::list<GameObject*> m_dynamic_objects;
+	std::vector<LevelBox> m_blocks;
 
-	std::map <char, std::tuple <float, float, std::string, bool>> m_objects_data;	//? For every tag, width, height, texture and is destructible are saved
-	//? simple terrains
-	std::vector<Box> m_blocks;
-	std::vector<char> m_block_names;
-	const float m_block_size = 1.0f;
+	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is destructible are saved
+
 	graphics::Brush m_block_brush;
 	graphics::Brush m_block_brush_debug;
 
@@ -35,5 +34,5 @@ public:
 	void checkCollisions();
 	void drawBlock(int i);
 	void pausedDraw();
-	void read(std::vector<Box> &m_blocks);
+	void read();
 };
