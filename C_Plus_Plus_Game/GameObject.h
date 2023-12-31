@@ -17,6 +17,7 @@ public:
 	virtual void draw(){}
 	virtual void update(float dt){}
 	virtual ~GameObject(){}
-	bool isActive() { return m_active; }
+	bool isActive() const { return m_active; }
 	void setActive(bool state) { m_active = state; }
+	int getId() const { return m_id; }
 };

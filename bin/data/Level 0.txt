@@ -1,5 +1,5 @@
 $ tag, x, y, texture, destructible{1,0}
-A 1 1 crate.png 0
+A 1 1 crate.png 1
 B 2 1 temp_player2.png 0
 C 48 1 crate.png 0
 D 1 2 temp_player2.png 0

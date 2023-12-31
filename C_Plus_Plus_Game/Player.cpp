@@ -40,6 +40,7 @@ void Player::draw()
 
 void Player::update(float dt)
 {
+	damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
@@ -57,6 +58,7 @@ void Player::update(float dt)
 
 	dash(delta_time);
 	slash(delta_time);
+	//std::cout << "Player pos " << m_pos_x  << std::endl;
 }
 
 int Player::getHealth() const

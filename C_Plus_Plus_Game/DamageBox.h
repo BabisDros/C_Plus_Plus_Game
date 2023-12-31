@@ -9,10 +9,10 @@
 class DamageBox:public GameObject, public Box
 {
 public:	
-	DamageBox() {};
+	DamageBox() { init(); };
 	DamageBox(float x, float y, float w, float h) :Box(x, y, w, h) 
 	{
-		//best to initialize object when created?
+		//best to initialize object when created
 		init(); 
 	}
 

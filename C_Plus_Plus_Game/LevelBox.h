@@ -8,7 +8,6 @@ class LevelBox : public GameObject, public Box
 protected:
 	const std::string* texture;
 	bool isDestructible;
-
 public:
 	LevelBox(float x, float y, float w, float h, const std::string* texture, bool destructible)
 		:Box(x, y, w, h), texture(texture), isDestructible(destructible) {}
@@ -18,7 +17,7 @@ public:
 		return texture;
 	}
 
-	bool getIsDestructible()
+	bool getIsDestructible() const
 	{
 		return isDestructible;
 	}

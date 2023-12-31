@@ -36,7 +36,7 @@ public:
 	void pausedDraw();
 	void read();
 
-	std::vector<Box>* getBlocks()
+	std::vector<LevelBox>* getBlocks()
 	{
 		return &m_blocks;
 	}
