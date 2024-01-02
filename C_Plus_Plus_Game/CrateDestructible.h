@@ -1,8 +1,7 @@
 #pragma once
-#include "GameObject.h"
 #include "IDestructible.h"
 #include "LevelBox.h"
-class CrateDestructible:public GameObject,public LevelBox, public IDestructible
+class CrateDestructible:public LevelBox, public IDestructible
 {
 public:
 	CrateDestructible(float x, float y, float w, float h, const std::string* texture, bool destructible) 

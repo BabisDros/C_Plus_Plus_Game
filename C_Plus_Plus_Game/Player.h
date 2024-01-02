@@ -9,7 +9,6 @@
 
 class Player : public GameObject, public Box, public IDestructible
 {
-	graphics::Brush m_brush_player;
 	DamageBox damageBox;
 	Ability dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
 	Ability slashAbility = Ability(2.0f, 0.1f, 0.0f);
@@ -39,12 +38,8 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	
-	int getHealth() const override;
-	void resetHealth() override;
-	void takeDamage(const int& damage) override;
-	bool isAlive() const override;
 	void destroy() override;
-
+	void instantiateParticles() override;
 	bool m_collidingUp = false;
 //current velocities
 	float m_vx = 0.f; 

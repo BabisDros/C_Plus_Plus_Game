@@ -33,8 +33,5 @@ public:
 	void setBrush(graphics::Brush brush) {	m_brush = brush; }
 private:
 	bool damageOnce = false;
-protected:
-	graphics::Brush m_brush;
-
 };
 

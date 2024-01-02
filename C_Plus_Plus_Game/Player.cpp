@@ -1,5 +1,4 @@
 #include "Player.h"
-#include <sgg/graphics.h>
 #include "GameState.h"
 #include "util.h"
 #include <iostream>
@@ -9,7 +8,7 @@ void Player::init()
 	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
 	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
 
-	setCustomBrushProperties(&m_brush_player, 1.0f, 0.0f, m_state->getFullAssetPath("Player\\Idle\\Idle1.png"));
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Player\\Idle\\Idle1.png"));
 
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
@@ -24,7 +23,7 @@ void Player::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 																						//! -0.5f MUST be gone
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y-0.5f, 2.0f, 2.0f, m_brush_player);
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y-0.5f, 2.0f, 2.0f, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
 
@@ -58,29 +57,14 @@ void Player::update(float dt)
 	//std::cout << "Player pos " << m_pos_x  << std::endl;
 }
 
-int Player::getHealth() const
-{
-	return m_currentHealth;
-}
-
-void Player::resetHealth()
-{
-	m_currentHealth = m_initialHealth;
-}
-
-void Player::takeDamage(const int& damage)
-{
-	m_currentHealth -= damage;
-}
-
-bool Player::isAlive() const
-{
-	return m_currentHealth>0;
-}
 
 void Player::destroy()
 {
 	setActive(false);
+}
+
+void Player::instantiateParticles()
+{
 }
 
 void Player::movePlayer(float delta_time)
