@@ -37,6 +37,10 @@ public:
 	{
 		return m_blocks;
 	}
+	std::list<GameObject*> getDynamicObjects() const
+	{
+		return m_dynamic_objects;
+	}
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer)

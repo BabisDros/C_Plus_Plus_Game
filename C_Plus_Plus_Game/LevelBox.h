@@ -22,12 +22,16 @@ public:
 
 	void draw() override
 	{
-		float x = m_pos_x + m_state->m_global_offset_x;
-		float y = m_pos_y + m_state->m_global_offset_y;
-		m_brush.texture = m_state->getFullAssetPath(*m_texture);
-		graphics::drawRect(x, y, m_width, m_height, m_brush);
+		if (isActive())
+		{
+			float x = m_pos_x + m_state->m_global_offset_x;
+			float y = m_pos_y + m_state->m_global_offset_y;
+			m_brush.texture = m_state->getFullAssetPath(*m_texture);
+			graphics::drawRect(x, y, m_width, m_height, m_brush);
 
-		if (m_state->m_debugging) debugDraw(x, y, m_width, m_height, getId());
+			if (m_state->m_debugging) debugDraw(x, y, m_width, m_height, getId());
+		}
+		
 	}
 	const std::string* getTexture()
 	{

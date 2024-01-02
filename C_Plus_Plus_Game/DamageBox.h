@@ -31,6 +31,7 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	void setBrush(graphics::Brush brush) {	m_brush = brush; }
+	void checkForCollisions();
 private:
 	bool damageOnce = false;
 };
