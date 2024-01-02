@@ -1,16 +1,82 @@
 #pragma once
 #include <string>
+#include <sgg/graphics.h>
 #include "GameObject.h"
-class HealthUi
+#include "Util.h"
+
+class HealthUI :public GameObject
 {
-public:
-	HealthUi();
-	~HealthUi();
 
 private:
-	std::string bgTexture;
-	std::string fillTexture;
+	graphics::Brush m_fill;
+	float m_pos_x = 10.0f;
+	float m_pos_y = 0.0f;
+	float m_width = 0.5f;
+	float m_height = 0.2f;
+	//adjust offset to appear above gameobject
+	float m_offsetY = 1.f;
+	float m_newWidth = m_width;
+	float m_duration = 0.3f;
+	float m_startTime=0.0f;
+public:
+	HealthUI() { init(); };
+	HealthUI(float x, float y)
+		: m_pos_x(x), m_pos_y(y) { init(); };
+	~HealthUI() {  };
+
+	void init() override
+	{
+		setActive(false);
+		SETCOLOR(m_brush.fill_color, 1.0, 0.0, 0.0);//background red
+		SETCOLOR(m_fill.fill_color, 1.0, 0.5, 0.0);//orange
+		setCustomBrushProperties(&m_brush, 0.5f, 0.5f);
+		setCustomBrushProperties(&m_fill, 0.5f, 0.5f);
+	}
+
+	void draw() override
+	{
+		if (isActive())
+		{
+			//draw 
+			graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_width, m_height, m_brush);
+			graphics::drawRect(m_pos_x + m_state->m_global_offset_x-(m_width-m_newWidth), m_pos_y + m_state->m_global_offset_y - m_offsetY, m_newWidth, m_height, m_fill);
+			deactivateHealth();		
+		}
+		
+		if (m_state->m_debugging)
+		{
+			debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
+		}
+	}
+	void setPosition(float x, float y,const std::string* texture)
+	{
+		//m_brush.texture = *texture;
+		m_pos_x = x;
+		m_pos_y = y;
+	}
+
+	void setSize(float width,float height)
+	{
+		m_width = width;
+		m_height = height;
+		
+	}
+
+	void refresh(const int& damage, const float& initialHealth, const  float& currentHealth)
+	{
+		m_startTime = *m_state->getPausableClock();
+		setActive(true);
+		//reduces size of fill, so that the red background appears
+		m_newWidth = currentHealth * m_width / initialHealth;
+		
+	}
+	//s
+	void deactivateHealth()
+	{
+		if (*m_state->getPausableClock() - m_startTime > m_duration)
+		{
+			setActive(false);		
+		}
+	}
 };
 
-HealthUi::HealthUi() {}
-HealthUi::~HealthUi() {}

@@ -2,7 +2,7 @@
 #include <sgg/graphics.h>
 #define SETCOLOR(c, r, g, b) {c[0] = r; c[1] = g; c[2] = b;}
 
-static void setCustomBrushProperties(graphics::Brush* brush, float fill, float outline, std::string texture)
+static void setCustomBrushProperties(graphics::Brush* brush, float fill, float outline, std::string texture="")
 {
 	brush->fill_opacity = 1.0f;
 	brush->outline_opacity = 0.0f;

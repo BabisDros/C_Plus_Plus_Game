@@ -38,6 +38,7 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	
+	void takeDamage(const int& damage) override;
 	void destroy() override;
 	void instantiateParticles() override;
 	bool m_collidingUp = false;

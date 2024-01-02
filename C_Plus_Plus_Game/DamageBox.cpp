@@ -1,8 +1,6 @@
 #include "DamageBox.h"
 #include <iostream>
-#include "IDestructible.h"
 #include "Util.h"
-
 
 void DamageBox::init()
 {

@@ -62,6 +62,10 @@ void Player::update(float dt)
 }
 
 
+void Player::takeDamage(const int& damage)
+{
+}
+
 void Player::destroy()
 {
 	setActive(false);
