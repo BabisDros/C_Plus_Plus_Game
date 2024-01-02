@@ -5,23 +5,21 @@ C 48 1 crate.png 0
 D 1 2 temp_player2.png 0
 Z 1 1 slashFx.png 0 1
 T 5 1 crate.png 0
-E 1 9 crate.png 0
-$
+$ Level Layout
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
-E                     A A                       |
-                     A  A                       |
+                      A A                       |
+               P     A  A                       |
                     A   A  AAA           D      |
                    A    A  A     B              |
                   A     A  AAAA                 |
                  A      A     AAAA              |AAA
-               A                     A          |
+               B                     A          |
                                     A    D      |
                           AAAAA   AAA         Z |
-     P                   A                     A|
+                                                |
 C                                               |AA
 $ Info that are not read from program
 48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2])
 A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
-P: Player, 

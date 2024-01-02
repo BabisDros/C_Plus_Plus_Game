@@ -4,6 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <filesystem>
 
 GameState::GameState()
 {
@@ -11,7 +12,13 @@ GameState::GameState()
 
 void GameState::init()
 {
-	m_current_level = new Level();
+	std::string path = getFullDataPath("");
+	for (const auto& entry : std::filesystem::directory_iterator(path))	// list of level names on data folder
+		levels.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention
+		erase(0, getFullDataPath("").size()));	// remove parent directory
+
+	m_current_level = new Level(levels.front());
+	levels.pop_front();
 	m_current_level->init();
 
 	m_player = new Player("Player");
@@ -50,6 +57,7 @@ void GameState::update(float dt)
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
 	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
+	if (goNextLevel) nextLevel();
 }
 
 GameState* GameState::getInstance()
@@ -89,6 +97,17 @@ void GameState::showFPS()
 	{
 		m_fps++;
 	}
+}
+
+void GameState::nextLevel()
+{
+	m_current_level->~Level();
+	m_current_level = new Level(levels.front());
+	m_current_level->init();
+	if (levels.size()>1) levels.pop_front();	//? If the isn't at least 1 more level, next tp instance will result in crash
+	m_player->init();
+	graphics::preloadBitmaps(getAssetDir()); //! preload assets, not needed if all assets in 1 folder
+	goNextLevel = false;
 }
 
 

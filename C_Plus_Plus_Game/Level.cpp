@@ -85,7 +85,7 @@ void Level::read()
 {
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
-
+	char ending;
 	if (myfile.is_open())
 	{
 		std::getline(myfile, line);
@@ -105,7 +105,15 @@ void Level::read()
 			{
 				v.push_back(s);
 			}
-
+			if (v.size() == 6)	// has ending value
+			{ 
+				ending = v[0][0];
+			}
+			if (v[0][0] == 'P')
+			{
+				std::getline(myfile, line);
+				continue;	// does not make tuple
+			}
 			t_bool = v[4] == "1";
 			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is IDestructible
 			
@@ -118,12 +126,19 @@ void Level::read()
 		while (myfile)
 		{ 
 			std::getline(myfile, line); //? not '$'
-			if (line == "$") break;	//? no more lines on the level
+			if (line[0] == '$') break;	//? no more lines on the level
 			std::cout << line;
 			x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
 			for (char ch : line)
 			{
 				if (ch == '|') break;	//? end of line
+				if (ch == 'P')	// Player
+				{
+					m_player_start_x = x + 1 / 2.f;
+					m_player_start_y = y + 1 / 2.f;
+					x++;
+					continue;
+				}
 				for (auto itr = m_objects_data.begin(); itr != m_objects_data.end(); ++itr)
 				{
 					if (itr->first == ch)
@@ -134,12 +149,12 @@ void Level::read()
 							m_dynamic_objects.push_back(new CrateDestructible(30,x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
 								&std::get<2>(itr->second), destructible));
 						}
-						
 						else
 						{
 							m_blocks.push_back(new LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
 								&std::get<2>(itr->second), destructible));
 						}
+						if (itr->first == ending) m_level_end = m_blocks.back();
 					}
 				}
 				x++;
@@ -160,6 +175,8 @@ void Level::checkCollisions()
 		{
 		}
 	}*/
+
+	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;
 
 	for (auto& block : m_blocks)
 	{
