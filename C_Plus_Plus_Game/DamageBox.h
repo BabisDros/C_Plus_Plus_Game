@@ -3,14 +3,18 @@
 #include "box.h"
 #include "GameObject.h"
 #include "GameState.h"
-//creates an area that will detect collisions
+#include "Level.h"
+#include "IDestructible.h"
+/// <summary>
+/// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
+/// </summary>
 class DamageBox:public GameObject, public Box
 {
 public:	
-	DamageBox() {};
+	DamageBox() { init(); };
 	DamageBox(float x, float y, float w, float h) :Box(x, y, w, h) 
 	{
-		//best to initialize object when created?
+		//best to initialize object when created
 		init(); 
 	}
 
@@ -21,14 +25,13 @@ public:
 		m_width = w;
 		m_height = h;
 	}
-
+	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
 	void setBrush(graphics::Brush brush) {	m_brush = brush; }
-		
-protected:
-	graphics::Brush m_brush;
+private:
+	bool damageOnce = false;
 };
 

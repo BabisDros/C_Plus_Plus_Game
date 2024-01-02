@@ -6,23 +6,21 @@
 #include <map>
 #include <tuple>
 #include "LevelBox.h"
+#include "CrateDestructible.h"
 
 class Level : public GameObject
 {
-	graphics::Brush m_brush_background;
-
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
 
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
+	//seperate list for destructibles to improve performance. TODO:use a binary search to find elements and then remove destructed
 	std::list<GameObject*> m_dynamic_objects;
-	std::vector<LevelBox> m_blocks;
+	std::vector<LevelBox*> m_blocks;
+	
 
-	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is destructible are saved
-
-	graphics::Brush m_block_brush;
-	graphics::Brush m_block_brush_debug;
+	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
 
 public:
 	void init() override;
@@ -32,7 +30,23 @@ public:
 	~Level();
 
 	void checkCollisions();
-	void drawBlock(int i);
 	void pausedDraw();
 	void read();
+
+	std::vector<LevelBox*> getBlocks() const
+	{
+		return m_blocks;
+	}
+
+	template <typename Container>
+	void destroyGameObjects(Container& myContainer)
+	{
+		for (auto p_gob : myContainer)
+		{
+			if (p_gob)
+			{
+				delete p_gob;
+			}
+		}
+	}
 };

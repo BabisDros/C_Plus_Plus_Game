@@ -3,6 +3,7 @@ A 1 1 crate.png 0
 B 2 1 temp_player2.png 0
 C 48 1 crate.png 0
 D 1 2 temp_player2.png 0
+E 1 1 crate.png 1
 $
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
 A                     A A                       |
@@ -14,7 +15,7 @@ A                     A A                       |
                A                     A          |
                                     A    D      |
                           AAAAA   AAA           |
-                         A                     A|
+              EE         A                     A|
 C                                               |AA
 $
 Info that are not read from program

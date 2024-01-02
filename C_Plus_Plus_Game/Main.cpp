@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	graphics::setCanvasSize(GameState::getInstance()->getCanvasWidth(), 
 							GameState::getInstance()->getCanvasHeight());
 	graphics::setCanvasScaleMode(graphics::CANVAS_SCALE_FIT);
-
+	graphics::setFont("assets\\OpenSans-Regular.ttf");
 	graphics::startMessageLoop();
 	return 0;
 }

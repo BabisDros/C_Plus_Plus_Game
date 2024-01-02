@@ -8,8 +8,8 @@
 
 void Level::init()
 {
-	m_brush_background.outline_opacity = 0.0f;
-	m_brush_background.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
+	m_brush.outline_opacity = 0.0f;
+	m_brush.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
@@ -18,12 +18,6 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	read();	//! 
-
-	m_block_brush.outline_opacity = 0.0f;	//? texturing
-	m_block_brush_debug.fill_opacity = 0.1f;
-	SETCOLOR(m_block_brush_debug.fill_color, 0.1f, 1.0f, 0.1f);
-	SETCOLOR(m_block_brush_debug.outline_color, 0.3f, 1.0f, 0.2f);
-
 }
 
 void Level::draw()
@@ -34,7 +28,7 @@ void Level::draw()
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
-	graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush_background); //! make w * 2.0f and h * into var for direct access from/to init()
+	graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
 
 	//? order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) //? draws player
@@ -50,7 +44,7 @@ void Level::draw()
 
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
-		drawBlock(i);
+		m_blocks[i]->draw();
 	}
 
 	if (m_state->m_paused) pausedDraw();
@@ -60,7 +54,7 @@ void Level::update(float dt)
 {
 	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 10000.0f));	//! breaks when paused, needs personal timer, cause global
 
-	SETCOLOR(m_brush_background.fill_color, p, p, 1.0f);	//? change light
+	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 
 	checkCollisions();
 	if (m_state->getPlayer()->isActive())	
@@ -75,18 +69,6 @@ Level::Level(const std::string& name) : GameObject(name)
 {
 }
 
-//? Should get replaced with generic static and/or dynamic draw
-void Level::drawBlock(int i)
-{
-	LevelBox& box = m_blocks[i];
-	float x = box.m_pos_x + m_state->m_global_offset_x;
-	float y = box.m_pos_y + m_state->m_global_offset_y;
-
-	m_block_brush.texture = m_state->getFullAssetPath(*box.getTexture());
-	graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush);
-
-	if (m_state->m_debugging) graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush_debug);
-}
 
 void Level::pausedDraw()	//! make it better than a greyed out screen
 {
@@ -125,13 +107,14 @@ void Level::read()
 			}
 
 			t_bool = v[4] == "1";
-			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
+			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is IDestructible
 			
 			m_objects_data.insert({v[0][0], data});
 			std::getline(myfile, line);
 		}
 		std::cout << "Level layout\n";
 		float x, y = 0;
+		bool destructible=false;
 		while (myfile)
 		{ 
 			std::getline(myfile, line); //? not '$'
@@ -145,8 +128,18 @@ void Level::read()
 				{
 					if (itr->first == ch)
 					{
-						m_blocks.push_back(LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
-							&std::get<2>(itr->second), std::get<3>(itr->second)));
+						destructible = std::get<3>(itr->second);
+						if (destructible)
+						{
+							m_dynamic_objects.push_back(new CrateDestructible(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+								&std::get<2>(itr->second), destructible));
+						}
+						
+						else
+						{
+							m_blocks.push_back(new LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+								&std::get<2>(itr->second), destructible));
+						}
 					}
 				}
 				x++;
@@ -169,10 +162,10 @@ void Level::checkCollisions()
 
 	for (auto& block : m_blocks)
 	{
-		if (!m_state->getPlayer()->intersectTypeY(block))
+		if (!m_state->getPlayer()->intersectTypeY(*block))
 		{
 			float offset;
-			if (offset = m_state->getPlayer()->intersectSideways(block))	//? Does not go in if 0
+			if (offset = m_state->getPlayer()->intersectSideways(*block))	//? Does not go in if 0
 			{
 				m_state->getPlayer()->m_pos_x += offset;
 
@@ -184,10 +177,10 @@ void Level::checkCollisions()
 
 	for (auto& block : m_blocks)
 	{
-		if (m_state->getPlayer()->intersectTypeY(block))
+		if (m_state->getPlayer()->intersectTypeY(*block))
 		{ 
 			float offset;
-			if (offset = m_state->getPlayer()->intersectY(block))	//? Does not go in if 0
+			if (offset = m_state->getPlayer()->intersectY(*block))	//? Does not go in if 0
 			{			
 				m_state->getPlayer()->m_pos_y += offset;
 				if (offset > 0)
@@ -211,9 +204,9 @@ void Level::checkCollisions()
 
 Level::~Level()
 {
-	for (auto p_gob : m_static_objects)
-		if (p_gob) delete p_gob;
-
-	for (auto p_gob : m_dynamic_objects)
-		if (p_gob) delete p_gob;
+	destroyGameObjects(m_static_objects);
+	destroyGameObjects(m_dynamic_objects);
+	destroyGameObjects(m_blocks);
 }
+
+

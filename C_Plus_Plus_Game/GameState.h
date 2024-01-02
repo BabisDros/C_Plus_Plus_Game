@@ -47,5 +47,6 @@ public:
 
 	std::string getFullDataPath(const std::string& data);
 
-	class Player* getPlayer() { return m_player; }
+	Player* getPlayer() { return m_player; }
+	Level* getLevel() { return m_current_level; }
 };
