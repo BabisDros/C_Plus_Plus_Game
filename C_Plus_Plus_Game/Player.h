@@ -11,7 +11,7 @@ class Player : public GameObject, public Box, public IDestructible
 {
 	DamageBox damageBox;
 	Ability dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
-	Ability slashAbility = Ability(2.0f, 0.1f, 0.0f);
+	Ability slashAbility = Ability(1.0f, 0.1f, 0.0f);
 	Ability jumpAbility = Ability(0.3f, 0.0f, 0.0f);
 
 	const float m_gravity = 10.f;

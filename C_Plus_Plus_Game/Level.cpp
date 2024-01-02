@@ -131,7 +131,7 @@ void Level::read()
 						destructible = std::get<3>(itr->second);
 						if (destructible)
 						{
-							m_dynamic_objects.push_back(new CrateDestructible(100,x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+							m_dynamic_objects.push_back(new CrateDestructible(30,x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
 								&std::get<2>(itr->second), destructible));
 						}
 						
@@ -149,6 +149,7 @@ void Level::read()
 		}
 	}
 }
+
 
 void Level::checkCollisions()
 {
@@ -198,6 +199,26 @@ void Level::checkCollisions()
 				m_state->getPlayer()->m_vy = 0.0f;
 				break;
 			}
+		}
+	}
+}
+std::vector<LevelBox*> Level::getBlocks() const
+{
+	return m_blocks;
+}
+std::list<GameObject*> Level::getDynamicObjects() const
+{
+	return m_dynamic_objects;
+}
+
+template <typename Container>
+void Level::destroyGameObjects(Container& myContainer)
+{
+	for (auto p_gob : myContainer)
+	{
+		if (p_gob)
+		{
+			delete p_gob;
 		}
 	}
 }

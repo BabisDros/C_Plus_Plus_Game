@@ -33,24 +33,12 @@ public:
 	void pausedDraw();
 	void read();
 
-	std::vector<LevelBox*> getBlocks() const
-	{
-		return m_blocks;
-	}
-	std::list<GameObject*> getDynamicObjects() const
-	{
-		return m_dynamic_objects;
-	}
+	std::vector<LevelBox*> getBlocks() const;
+
+	std::list<GameObject*> getDynamicObjects() const;
+
 
 	template <typename Container>
-	void destroyGameObjects(Container& myContainer)
-	{
-		for (auto p_gob : myContainer)
-		{
-			if (p_gob)
-			{
-				delete p_gob;
-			}
-		}
-	}
+	void destroyGameObjects(Container& myContainer);
+
 };

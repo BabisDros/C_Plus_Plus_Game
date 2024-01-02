@@ -11,7 +11,7 @@ protected:
 	int m_id = 0;
 	bool m_active = true;
 	graphics::Brush m_brush;
-	//m_brush_debug not needed.debugDraw method in util.h has a default brush. 
+	//m_brush_debug not needed.debugDraw() method in util.h has a default brush. 
 public:
 	GameObject(const std::string& name = "");
 	virtual void init(){}

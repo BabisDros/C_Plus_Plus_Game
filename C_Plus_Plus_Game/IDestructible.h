@@ -17,7 +17,6 @@ public:
     virtual void resetHealth() { m_currentHealth = m_initialHealth; };
     virtual void takeDamage(const int& damage) 
     {
-
         if (m_currentHealth > 0)
         {
             float pausableClock = *GameState::getInstance()->getPausableClock();
@@ -35,7 +34,7 @@ public:
     };
     virtual bool isAlive() const { return m_currentHealth > 0; };
 
-    //object is not destroyed but setActive false
+    //Object is not destroyed but setActive false
     virtual void destroy() = 0;
     virtual void instantiateParticles() = 0;
 
