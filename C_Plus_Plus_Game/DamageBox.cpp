@@ -31,9 +31,9 @@ void DamageBox::update(float dt)
 {	
 	if (isActive())
 	{
-		for (int i = 0; i < m_state->getLevel()->getBlocks()->size(); ++i)
+		for (int i = 0; i < m_state->getLevel()->getBlocks().size(); ++i)
 		{
-			LevelBox* block = &(*m_state->getLevel()->getBlocks())[i];
+			LevelBox* block = (m_state->getLevel()->getBlocks())[i];
 			
 			if (intersect(*block) && block->getIsDestructible()/*&& typeid(*block) == typeid(IDestructible)*/)
 			{

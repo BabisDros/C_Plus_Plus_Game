@@ -12,20 +12,11 @@ void CrateDestructible::update(float dt)
 {
 }
 
-int CrateDestructible::getHealth() const
-{
-	return 0;
-}
 
-void CrateDestructible::resetHealth()
+void CrateDestructible::destroy()
 {
 }
 
-void CrateDestructible::takeDamage(const int& damage)
+void CrateDestructible::instantiateParticles()
 {
-}
-
-bool CrateDestructible::isAlive() const
-{
-	return false;
 }

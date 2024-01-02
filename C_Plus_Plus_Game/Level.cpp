@@ -78,14 +78,14 @@ Level::Level(const std::string& name) : GameObject(name)
 //? Should get replaced with generic static and/or dynamic draw
 void Level::drawBlock(int i)
 {
-	LevelBox& box = m_blocks[i];
-	float x = box.m_pos_x + m_state->m_global_offset_x;
-	float y = box.m_pos_y + m_state->m_global_offset_y;
+	LevelBox* box = m_blocks[i];
+	float x = box->m_pos_x + m_state->m_global_offset_x;
+	float y = box->m_pos_y + m_state->m_global_offset_y;
 
-	m_block_brush.texture = m_state->getFullAssetPath(*box.getTexture());
-	graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush);
+	m_block_brush.texture = m_state->getFullAssetPath(*box->getTexture());
+	graphics::drawRect(x, y, box->m_width, box->m_height, m_block_brush);
 
-	if (m_state->m_debugging) debugDraw(x, y, box.m_width, box.m_height, getId());
+	if (m_state->m_debugging) debugDraw(x, y, box->m_width, box->m_height, getId());
 }
 
 void Level::pausedDraw()	//! make it better than a greyed out screen
@@ -132,6 +132,7 @@ void Level::read()
 		}
 		std::cout << "Level layout\n";
 		float x, y = 0;
+		bool destructible=false;
 		while (myfile)
 		{ 
 			std::getline(myfile, line); //? not '$'
@@ -145,8 +146,19 @@ void Level::read()
 				{
 					if (itr->first == ch)
 					{
-						m_blocks.push_back(LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
-							&std::get<2>(itr->second), std::get<3>(itr->second)));
+						destructible = std::get<3>(itr->second);
+						if (destructible)
+						{
+							m_dynamic_objects.push_back(new CrateDestructible(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+								&std::get<2>(itr->second), destructible));
+						}
+						
+						
+							m_blocks.push_back(new LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+								&std::get<2>(itr->second), destructible));
+						
+						
+
 					}
 				}
 				x++;
@@ -169,10 +181,10 @@ void Level::checkCollisions()
 
 	for (auto& block : m_blocks)
 	{
-		if (!m_state->getPlayer()->intersectTypeY(block))
+		if (!m_state->getPlayer()->intersectTypeY(*block))
 		{
 			float offset;
-			if (offset = m_state->getPlayer()->intersectSideways(block))	//? Does not go in if 0
+			if (offset = m_state->getPlayer()->intersectSideways(*block))	//? Does not go in if 0
 			{
 				m_state->getPlayer()->m_pos_x += offset;
 
@@ -184,10 +196,10 @@ void Level::checkCollisions()
 
 	for (auto& block : m_blocks)
 	{
-		if (m_state->getPlayer()->intersectTypeY(block))
+		if (m_state->getPlayer()->intersectTypeY(*block))
 		{ 
 			float offset;
-			if (offset = m_state->getPlayer()->intersectY(block))	//? Does not go in if 0
+			if (offset = m_state->getPlayer()->intersectY(*block))	//? Does not go in if 0
 			{			
 				m_state->getPlayer()->m_pos_y += offset;
 				if (offset > 0)
@@ -211,9 +223,9 @@ void Level::checkCollisions()
 
 Level::~Level()
 {
-	for (auto p_gob : m_static_objects)
-		if (p_gob) delete p_gob;
-
-	for (auto p_gob : m_dynamic_objects)
-		if (p_gob) delete p_gob;
+	destroyGameObjects(m_static_objects);
+	destroyGameObjects(m_dynamic_objects);
+	destroyGameObjects(m_blocks);
 }
+
+

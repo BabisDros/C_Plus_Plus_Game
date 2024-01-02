@@ -1,19 +1,16 @@
 #pragma once
 #include "GameObject.h"
 #include "IDestructible.h"
-
-class CrateDestructible:public GameObject,public IDestructible
+#include "LevelBox.h"
+class CrateDestructible:public GameObject,public LevelBox, public IDestructible
 {
 public:
-	CrateDestructible(std::string name) : GameObject(name) {}
+	CrateDestructible(float x, float y, float w, float h, const std::string* texture, bool destructible) 
+		: LevelBox(x, y, w, h, texture, destructible) {}
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
 
-	int getHealth() const override;
-	void resetHealth() override;
-	void takeDamage(const int& damage) override;
-	bool isAlive() const override;
 	void destroy() override;
-
+	void instantiateParticles() override;
 };

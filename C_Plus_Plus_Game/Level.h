@@ -6,6 +6,7 @@
 #include <map>
 #include <tuple>
 #include "LevelBox.h"
+#include "CrateDestructible.h"
 
 class Level : public GameObject
 {
@@ -17,7 +18,9 @@ class Level : public GameObject
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	std::list<GameObject*> m_dynamic_objects;
-	std::vector<LevelBox> m_blocks;
+	std::vector<LevelBox*> m_blocks;
+	//seperate list for destructibles to improve performance. TODO:use a binary search to find elements and then remove destructed
+	std::list<GameObject> m_destructibles;
 
 	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
 
@@ -36,8 +39,20 @@ public:
 	void pausedDraw();
 	void read();
 
-	std::vector<LevelBox>* getBlocks()
+	std::vector<LevelBox*> getBlocks()
 	{
-		return &m_blocks;
+		return m_blocks;
+	}
+
+	template <typename Container>
+	void destroyGameObjects(Container& myContainer)
+	{
+		for (auto p_gob : myContainer)
+		{
+			if (p_gob)
+			{
+				delete p_gob;
+			}
+		}
 	}
 };
