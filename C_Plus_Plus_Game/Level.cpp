@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "Enemy.h"
 
 void Level::init()
 {
@@ -18,7 +19,8 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	read();	//! 
-//	new Entity(30, 8, 1, 1);
+	m_test_enemy.push_back(new Enemy(""));
+	m_test_enemy.back()->init();
 }
 
 void Level::draw()
@@ -48,6 +50,8 @@ void Level::draw()
 		m_blocks[i]->draw();
 	}
 
+	m_test_enemy.front()->draw();
+	
 	if (m_state->m_paused) pausedDraw();
 }
 
@@ -62,7 +66,7 @@ void Level::update(float dt)
 	{
 		m_state->getPlayer()->update(dt);
 	}
-
+	m_test_enemy.front()->update(dt);
 	GameObject::update(dt);
 }
 

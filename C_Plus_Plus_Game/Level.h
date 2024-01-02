@@ -7,6 +7,7 @@
 #include <tuple>
 #include "LevelBox.h"
 #include "CrateDestructible.h"
+#include "Enemy.h"
 
 class Level : public GameObject
 {
@@ -18,7 +19,7 @@ class Level : public GameObject
 	//seperate list for destructibles to improve performance. TODO:use a binary search to find elements and then remove destructed
 	std::list<GameObject*> m_dynamic_objects;
 	std::vector<LevelBox*> m_blocks;
-	
+
 
 	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
 	LevelBox *m_level_end;
@@ -26,13 +27,15 @@ public:
 	float m_player_start_x;
 	float m_player_start_y;
 	
+	std::list<Enemy*> m_test_enemy;
+
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
 	Level(const std::string& name = "Level 0");
 	~Level();
 
-	void checkCollisions();
+//	void checkCollisions();
 	void pausedDraw();
 	void read();
 
