@@ -18,6 +18,7 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	read();	//! 
+//	new Entity(30, 8, 1, 1);
 }
 
 void Level::draw()
@@ -55,8 +56,8 @@ void Level::update(float dt)
 	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 10000.0f));	//! breaks when paused, needs personal timer, cause global
 
 	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
-
-	checkCollisions();
+	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
+//+++	checkCollisions();
 	if (m_state->getPlayer()->isActive())	
 	{
 		m_state->getPlayer()->update(dt);
@@ -164,16 +165,16 @@ void Level::read()
 		}
 	}
 }
-
+/*	//+++
 void Level::checkCollisions()
 {
-	/*	//? Sitting around currently
-	for (auto& box : m_blocks)
-	{
-		if (m_state->getPlayer()->intersect(box))
-		{
-		}
-	}*/
+		//? Sitting around currently
+	//for (auto& box : m_blocks)
+	//{
+	//	if (m_state->getPlayer()->intersect(box))
+	//	{
+	//	}
+	//}
 
 	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;
 
@@ -186,7 +187,7 @@ void Level::checkCollisions()
 			{
 				m_state->getPlayer()->m_pos_x += offset;
 
-				m_state->getPlayer()->m_vx = 0.0f;
+//				m_state->getPlayer()->m_vx = 0.0f;
 				break;
 			}
 		}
@@ -212,13 +213,13 @@ void Level::checkCollisions()
 				//if (m_state->getPlayer()->m_vy > 1.0f)
 				//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
 
-				m_state->getPlayer()->m_vy = 0.0f;
+//				m_state->getPlayer()->m_vy = 0.0f;
 				break;
 			}
 		}
 	}
 }
-
+*/
 Level::~Level()
 {
 	destroyGameObjects(m_static_objects);

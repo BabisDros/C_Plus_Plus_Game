@@ -40,6 +40,7 @@ void Player::draw()
 
 void Player::update(float dt)
 {
+	checkCollision();
 	damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 
@@ -189,7 +190,7 @@ void Player::slash(float delta_time)
 		if (elapsedTime < slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction
-			float lookingDirOffset = 0.5 * m_lookingDirection;
+			float lookingDirOffset = 0.5f * m_lookingDirection;
 			//slash damagebox follows player
 			damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
 		}
