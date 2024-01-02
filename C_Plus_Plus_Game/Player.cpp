@@ -2,11 +2,15 @@
 #include "GameState.h"
 #include "util.h"
 #include <iostream>
+#include "Level.h"
 
 void Player::init()
 {
-	m_pos_x = m_state->getCanvasWidth() / 4.0f; //
-	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
+//	m_pos_x = m_state->getCanvasWidth() / 4.0f; 
+//	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
+
+	m_pos_x = m_state->getLevel()->m_player_start_x;
+	m_pos_y = m_state->getLevel()->m_player_start_y;
 
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Player\\Idle\\Idle1.png"));
 
@@ -214,6 +218,14 @@ void Player::cameraOffsetX(float multiplier1, float multiplier2)
 		{
 			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
 		}
+	}
+	else if (m_pos_x < m_state->getCanvasWidth() * (multiplier1 - 0.5f))	//! Not needed for Y since there isn't currently anything higher
+	{
+		m_state->m_global_offset_x = m_state->getCanvasWidth() * 0.5f;
+	}
+	else if (m_pos_x > m_state->getCanvasWidth() * (multiplier2 + 0.5f))
+	{
+		m_state->m_global_offset_x = -m_state->getCanvasWidth() * 0.5f;
 	}
 }
 

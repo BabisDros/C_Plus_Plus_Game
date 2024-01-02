@@ -45,9 +45,6 @@ public:
 	float m_vx = 0.f; 
 	float m_vy = 0.f;
 
-	float m_camera_multiplier_x = 0.f;	// what part of the screen player should be on X axis
-	float m_camera_multiplier_y = 0.f;	// what part of the screen player should be on Y axis
-
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);

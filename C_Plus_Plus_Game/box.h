@@ -54,8 +54,8 @@ struct Box
 
     float intersectY(Box& other)
     {
-        if (fabs(m_pos_x - other.m_pos_x) * 2.0f >= (m_width + other.m_width))
-            return 0.0f;
+ //       if (fabs(m_pos_x - other.m_pos_x) * 2.0f >= (m_width + other.m_width))
+ //           return 0.0f;
         if (m_pos_y > other.m_pos_y)
             return std::max<float>(0.0f, other.m_pos_y + (other.m_height / 2.0f) - m_pos_y + (m_height / 2.0f));
         else
@@ -71,8 +71,8 @@ struct Box
     */
     float intersectSideways(Box &other)
     {
-        if (fabs(m_pos_y - other.m_pos_y) * 2.0f >= (m_width + other.m_width))
-            return 0.0f;
+//        if (fabs(m_pos_y - other.m_pos_y) * 2.0f >= (m_height + other.m_height))
+//            return 0.0f;
         if (m_pos_x > other.m_pos_x)
             return std::max<float>(0.0f, other.m_pos_x + (other.m_width / 2.0f) - m_pos_x + (m_width / 2.0f));
         else

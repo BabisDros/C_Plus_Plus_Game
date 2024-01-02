@@ -1,6 +1,7 @@
 #pragma once
 #include "sgg/graphics.h"
 #include <string>
+#include <list>
 
 class GameState
 {
@@ -25,6 +26,9 @@ public:
 	bool m_paused = false;
 	bool m_paused_held = false;
 
+	bool goNextLevel = false;
+	std::list<std::string> levels;
+
 	int m_fps = 0;
 	int m_time = 0; // used for fps counting purposes
 
@@ -39,6 +43,7 @@ public:
 	float getCanvasHeight() { return m_canvas_height; }
 
 	void showFPS();
+	void nextLevel();
 
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 

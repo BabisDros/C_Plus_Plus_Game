@@ -21,8 +21,11 @@ class Level : public GameObject
 	
 
 	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
-
+	LevelBox *m_level_end;
 public:
+	float m_player_start_x;
+	float m_player_start_y;
+	
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
