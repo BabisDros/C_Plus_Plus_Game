@@ -26,7 +26,6 @@ class Player :public IDestructible, public Entity
 	bool m_dev_fly_active = false;
 	bool m_dev_fly_held = false;
 
-	void movePlayer(float dt);
 	float jump();
 	void fly(float dt);
 	void dash(float dt);
@@ -38,6 +37,7 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	
+	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
 	bool m_collidingUp = false;

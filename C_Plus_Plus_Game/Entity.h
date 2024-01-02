@@ -8,6 +8,7 @@ public:
 	template <typename Container>
 	void checkCollision(Container myContainer);
 	Entity(std::string name) : GameObject(name) {}
+	virtual void movement(float dt);
 
 protected:
 	bool m_mirrored = false;

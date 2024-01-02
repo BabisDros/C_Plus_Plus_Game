@@ -47,7 +47,7 @@ void Player::update(float dt)
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
 	if (m_dev_fly) fly(delta_time);
-	else movePlayer(delta_time);	//! player can currently hover below blocks if holding W, needs fix
+	else movement(delta_time);	//! player can currently hover below blocks if holding W, needs fix
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
@@ -73,7 +73,7 @@ void Player::instantiateParticles()
 {
 }
 
-void Player::movePlayer(float delta_time)
+void Player::movement(float delta_time)
 {
 	float move = 0;
 
