@@ -9,8 +9,8 @@ protected:
 	const std::string* texture;
 	bool isDestructible;
 public:
-	LevelBox(float x, float y, float w, float h, const std::string* texture, bool destructible)
-		:Box(x, y, w, h), texture(texture), isDestructible(destructible) {}
+	LevelBox(float x, float y, float w, float h, const std::string* texture, bool IDestructible)
+		:Box(x, y, w, h), texture(texture), isDestructible(IDestructible) {}
 
 	const std::string* getTexture()
 	{

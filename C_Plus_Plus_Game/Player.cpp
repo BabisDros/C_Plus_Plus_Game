@@ -30,10 +30,7 @@ void Player::draw()
 
 	if (m_state->m_debugging)
 	{
-		//player
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
-		//damagebox
-		debugDraw(damageBox.m_pos_x, damageBox.m_pos_y, damageBox.m_width, damageBox.m_height);
 	}	
 	damageBox.draw();
 }
@@ -206,7 +203,7 @@ void Player::slash(float delta_time)
 			//extra offset corrected with the player's direction
 			float lookingDirOffset = 0.5 * m_lookingDirection;
 			//slash damagebox follows player
-			damageBox.setPosition(m_pos_x + lookingDirOffset + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.f, 1.f);
+			damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
 		}
 		else if(damageBox.isActive())
 		{			

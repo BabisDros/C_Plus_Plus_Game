@@ -3,11 +3,11 @@
 #include "GameObject.h"
 #include "box.h"
 #include "timer.h"
-#include "Destructible.h"
+#include "IDestructible.h"
 #include "DamageBox.h"
 #include "Ability.h"
 
-class Player : public GameObject, public Box, public Destructible
+class Player : public GameObject, public Box, public IDestructible
 {
 	graphics::Brush m_brush_player;
 	DamageBox damageBox;

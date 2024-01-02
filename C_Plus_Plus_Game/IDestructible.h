@@ -1,11 +1,11 @@
 #pragma once
 //INTERFACE. Objects that can be destructed should inherit this
-class Destructible 
+class IDestructible 
 {
 public:
-    Destructible(int initialHealth):m_initialHealth(initialHealth), m_currentHealth(initialHealth) {};
-    Destructible() {};
-    virtual ~Destructible() {}
+    IDestructible(int initialHealth):m_initialHealth(initialHealth), m_currentHealth(initialHealth) {};
+    IDestructible() {};
+    virtual ~IDestructible() {}
     virtual int getHealth() const = 0;
     virtual void resetHealth() = 0;
     virtual void takeDamage(const int& damage) = 0;

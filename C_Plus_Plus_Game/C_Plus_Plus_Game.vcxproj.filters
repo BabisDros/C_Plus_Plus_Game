@@ -36,6 +36,9 @@
     <ClCompile Include="DamageBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CrateDestructible.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util.h">
@@ -62,10 +65,16 @@
     <ClInclude Include="DamageBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Destructible.h">
+    <ClInclude Include="IDestructible.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Ability.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CrateDestructible.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

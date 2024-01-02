@@ -85,7 +85,7 @@ void Level::drawBlock(int i)
 	m_block_brush.texture = m_state->getFullAssetPath(*box.getTexture());
 	graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush);
 
-	if (m_state->m_debugging) graphics::drawRect(x, y, box.m_width, box.m_height, m_block_brush_debug);
+	if (m_state->m_debugging) debugDraw(x, y, box.m_width, box.m_height, getId());
 }
 
 void Level::pausedDraw()	//! make it better than a greyed out screen
@@ -125,7 +125,7 @@ void Level::read()
 			}
 
 			t_bool = v[4] == "1";
-			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is Destructible
+			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is IDestructible
 			
 			m_objects_data.insert({v[0][0], data});
 			std::getline(myfile, line);

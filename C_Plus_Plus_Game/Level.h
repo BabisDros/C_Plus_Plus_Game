@@ -19,7 +19,7 @@ class Level : public GameObject
 	std::list<GameObject*> m_dynamic_objects;
 	std::vector<LevelBox> m_blocks;
 
-	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is destructible are saved
+	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
 
 	graphics::Brush m_block_brush;
 	graphics::Brush m_block_brush_debug;

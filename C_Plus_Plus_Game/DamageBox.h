@@ -4,8 +4,10 @@
 #include "GameObject.h"
 #include "GameState.h"
 #include "Level.h"
-#include "Destructible.h"
-//creates an area that will detect collisions
+#include "IDestructible.h"
+/// <summary>
+/// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
+/// </summary>
 class DamageBox:public GameObject, public Box
 {
 public:	
@@ -29,8 +31,10 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	void setBrush(graphics::Brush brush) {	m_brush = brush; }
-		
+private:
+	bool damageOnce = false;
 protected:
 	graphics::Brush m_brush;
+
 };
 

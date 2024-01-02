@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CrateDestructible.cpp" />
     <ClCompile Include="DamageBox.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -152,8 +153,9 @@
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="box.h" />
+    <ClInclude Include="CrateDestructible.h" />
     <ClInclude Include="DamageBox.h" />
-    <ClInclude Include="Destructible.h" />
+    <ClInclude Include="IDestructible.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Level.h" />
