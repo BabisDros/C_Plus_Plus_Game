@@ -50,12 +50,12 @@ void Enemy::movement(float dt)
 	m_pos_y += delta_time * m_vy;
 	float move = 0.f;
 	bool change = true;
-	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f + 0.0625f < m_pos_x - m_width / 2.f)
+	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
 	{
 		m_mirrored = false;
 		move = -1;
 	}
-	else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f - 0.0625f > m_pos_x + m_width / 2.f)
+	else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f > m_pos_x + m_width / 2.f)
 	{
 		m_mirrored = true;
 		move = 1;
