@@ -33,7 +33,7 @@ void Player::draw()
 
 	if (m_state->m_debugging)
 	{
-		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
+		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
 	damageBox.draw();
 }
