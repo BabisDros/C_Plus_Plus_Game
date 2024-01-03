@@ -12,7 +12,7 @@ void Player::init()
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
-	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Player\\Idle\\Idle1.png"));
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Idle1.png"));
 
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
@@ -27,7 +27,7 @@ void Player::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 																						//! -0.5f MUST be gone
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y-0.5f, 2.0f, 2.0f, m_brush);
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.2f, 1.0f, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
 

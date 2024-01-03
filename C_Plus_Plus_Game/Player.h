@@ -30,7 +30,7 @@ class Player :public IDestructible, public Entity
 	void slash(float dt);
 	
 public:
-	Player(std::string name) : Entity(name) {}
+	Player(std::string name) : Entity(name) { m_width = 0.5f; }
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
