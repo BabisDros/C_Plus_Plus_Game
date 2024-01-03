@@ -1,8 +1,6 @@
 #pragma once
 #include <sgg/graphics.h>
 #include "GameObject.h"
-#include "box.h"
-#include "timer.h"
 #include "IDestructible.h"
 #include "DamageBox.h"
 #include "Ability.h"

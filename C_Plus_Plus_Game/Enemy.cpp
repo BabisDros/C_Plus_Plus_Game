@@ -30,7 +30,7 @@ void Enemy::draw()
 void Enemy::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
-//	std::vector<Player*> temp(1,m_state->getPlayer());	Attempt to interact with player
+//	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
 //	checkCollision(temp);
 	movement(dt);
 }

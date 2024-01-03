@@ -8,7 +8,7 @@ T 5 1 crate.png 0
 $ Level Layout
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
                       A A                       |
-               P     A  A                       |
+                    PA  A                       |
                     A   A  AAA           D      |
                    A    A  A     B              |
                   A     A  AAAA                 |
