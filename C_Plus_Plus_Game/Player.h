@@ -1,8 +1,6 @@
 #pragma once
 #include <sgg/graphics.h>
 #include "GameObject.h"
-#include "box.h"
-#include "timer.h"
 #include "IDestructible.h"
 #include "DamageBox.h"
 #include "Ability.h"
@@ -36,6 +34,7 @@ public:
 	{
 		setHealthValues(initialHealth);
 		healthUi->setPosition(m_pos_x, m_pos_y);
+		m_width = 0.5f;
 	}
 	~Player()
 	{

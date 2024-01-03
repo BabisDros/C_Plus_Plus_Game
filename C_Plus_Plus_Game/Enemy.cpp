@@ -8,6 +8,8 @@ void Enemy::init()
 {
 	m_pos_x = -8.f;
 	m_pos_y = 8.f;
+	m_homebase_x = m_pos_x;
+	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("temp_enemy2.png"));
 
 	m_initialHealth = m_currentHealth = 100;
@@ -23,14 +25,14 @@ void Enemy::draw()
 
 	if (m_state->m_debugging)
 	{
-		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
+		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}
 }
 
 void Enemy::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
-//	std::vector<Player*> temp(1,m_state->getPlayer());	Attempt to interact with player
+//	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
 //	checkCollision(temp);
 	movement(dt);
 }
@@ -49,7 +51,7 @@ void Enemy::movement(float dt)
 	m_vy += delta_time * m_gravity;
 	m_pos_y += delta_time * m_vy;
 	float move = 0.f;
-	bool change = true;
+	bool canMove = true;
 	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
 	{
 		m_mirrored = false;
@@ -60,10 +62,11 @@ void Enemy::movement(float dt)
 		m_mirrored = true;
 		move = 1;
 	}
-	else change = false;
+	else canMove = false;
 
 	m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
-	if (!change) m_vx = 0;
+	move = delta_time * m_vx;
+	if (!canMove || fabs(m_pos_x - m_homebase_x + move) > m_movement_range_x)  m_vx = 0;	// If it will get him outside of territory, stop
 	m_pos_x += delta_time * m_vx;
 }
