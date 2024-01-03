@@ -2,7 +2,7 @@ $ tag, width, height, texture, destructible{1,0}, Level_End {1,""}
 A 1 1 crate.png 0
 B 2 1 temp_player2.png 0
 C 48 1 crate.png 0
-D 1 2 temp_player2.png 0
+D 1 2 temp_player2.png 1
 Z 1 1 slashFx.png 0 1
 T 5 1 crate.png 0
 E 1 9 crate.png 0

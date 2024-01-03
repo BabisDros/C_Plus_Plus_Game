@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClCompile Include="CrateDestructible.cpp" />
     <ClCompile Include="DamageBox.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -156,6 +158,8 @@
     <ClInclude Include="CrateDestructible.h" />
     <ClInclude Include="DamageBox.h" />
     <ClInclude Include="HealthUI.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="IDestructible.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />

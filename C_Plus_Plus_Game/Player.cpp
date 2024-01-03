@@ -41,12 +41,14 @@ void Player::draw()
 
 void Player::update(float dt)
 {
+	checkCollision(m_state->getLevel()->getBlocks());
+	checkCollision(m_state->getLevel()->m_test_enemy);
 	damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
 	if (m_dev_fly) fly(delta_time);
-	else movePlayer(delta_time);	//! player can currently hover below blocks if holding W, needs fix
+	else movement(delta_time);	//! player can currently hover below blocks if holding W, needs fix
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
@@ -71,7 +73,7 @@ void Player::instantiateParticles()
 {
 }
 
-void Player::movePlayer(float delta_time)
+void Player::movement(float delta_time)
 {
 	float move = 0;
 
@@ -189,7 +191,7 @@ void Player::slash(float delta_time)
 		if (elapsedTime < slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction
-			float lookingDirOffset = 0.5 * m_lookingDirection;
+			float lookingDirOffset = 0.5f * m_lookingDirection;
 			//slash damagebox follows player
 			damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
 		}

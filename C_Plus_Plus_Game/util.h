@@ -26,5 +26,5 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 	debug_textBrush.fill_opacity = 1.f;
 	debug_textBrush.outline_opacity = 1.0f;
 	float centeringValue = idStr.size() / 25.f;//centering offset value for 0.2 size font
-	graphics::drawText(centerX- centeringValue, centerY, 0.2, idStr, debug_textBrush);
+	graphics::drawText(centerX- centeringValue, centerY, 0.2f, idStr, debug_textBrush);
 }

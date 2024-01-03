@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "Enemy.h"
 
 void Level::init()
 {
@@ -18,6 +19,8 @@ void Level::init()
 		if (p_gob) p_gob->init();
 
 	read();	//! 
+	m_test_enemy.push_back(new Enemy(""));
+	m_test_enemy.back()->init();
 }
 
 void Level::draw()
@@ -47,6 +50,8 @@ void Level::draw()
 		m_blocks[i]->draw();
 	}
 
+	m_test_enemy.front()->draw();
+	
 	if (m_state->m_paused) pausedDraw();
 }
 
@@ -55,13 +60,13 @@ void Level::update(float dt)
 	float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
 
 	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
-
-	checkCollisions();
+	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
+//+++	checkCollisions();
 	if (m_state->getPlayer()->isActive())	
 	{
 		m_state->getPlayer()->update(dt);
 	}
-
+	m_test_enemy.front()->update(dt);
 	GameObject::update(dt);
 }
 
@@ -164,17 +169,16 @@ void Level::read()
 		}
 	}
 }
-
-
+/*	//+++
 void Level::checkCollisions()
 {
-	/*	//? Sitting around currently
-	for (auto& box : m_blocks)
-	{
-		if (m_state->getPlayer()->intersect(box))
-		{
-		}
-	}*/
+		//? Sitting around currently
+	//for (auto& box : m_blocks)
+	//{
+	//	if (m_state->getPlayer()->intersect(box))
+	//	{
+	//	}
+	//}
 
 	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;
 
@@ -187,7 +191,7 @@ void Level::checkCollisions()
 			{
 				m_state->getPlayer()->m_pos_x += offset;
 
-				m_state->getPlayer()->m_vx = 0.0f;
+//				m_state->getPlayer()->m_vx = 0.0f;
 				break;
 			}
 		}
@@ -213,12 +217,13 @@ void Level::checkCollisions()
 				//if (m_state->getPlayer()->m_vy > 1.0f)
 				//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
 
-				m_state->getPlayer()->m_vy = 0.0f;
+//				m_state->getPlayer()->m_vy = 0.0f;
 				break;
 			}
 		}
 	}
 }
+*/
 std::vector<LevelBox*> Level::getBlocks() const
 {
 	return m_blocks;
