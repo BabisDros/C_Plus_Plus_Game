@@ -10,7 +10,6 @@ void CrateDestructible::draw()
 {
 	//call base class
 	LevelBox::draw();
-    //healthUi->setPosition(m_pos_x, m_pos_y);
 	healthUi->draw();
 }
 void CrateDestructible::takeDamage(const int& damage)

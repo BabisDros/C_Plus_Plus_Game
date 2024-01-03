@@ -15,7 +15,7 @@ private:
 	float m_height = 0.2f;
 	//adjust offset to appear above gameobject
 	float m_offsetY = 1.f;
-	float m_newWidth = m_width;
+	float m_proportionalWidth = m_width;
 	float m_duration = 0.3f;
 	float m_startTime=0.0f;
 public:
@@ -37,10 +37,10 @@ public:
 	{
 		if (isActive())
 		{
-			//draw 
+			float positionCorrection = m_width - m_proportionalWidth;
 			graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_width, m_height, m_brush);
-			graphics::drawRect(m_pos_x + m_state->m_global_offset_x-(m_width-m_newWidth), m_pos_y + m_state->m_global_offset_y - m_offsetY, m_newWidth, m_height, m_fill);
-			deactivateHealth();		
+			graphics::drawRect(m_pos_x + m_state->m_global_offset_x- positionCorrection, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_proportionalWidth, m_height, m_fill);
+			disableAfterElapsedTime();
 		}
 		
 		if (m_state->m_debugging)
@@ -65,13 +65,12 @@ public:
 	void refresh(const int& damage, const float& initialHealth, const  float& currentHealth)
 	{
 		m_startTime = *m_state->getPausableClock();
-		setActive(true);
 		//reduces size of fill, so that the red background appears
-		m_newWidth = currentHealth * m_width / initialHealth;
-		
+		m_proportionalWidth = currentHealth * m_width / initialHealth;
+		setActive(true);	
 	}
-	//s
-	void deactivateHealth()
+	
+	void disableAfterElapsedTime()
 	{
 		if (*m_state->getPausableClock() - m_startTime > m_duration)
 		{

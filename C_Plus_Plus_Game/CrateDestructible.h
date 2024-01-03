@@ -11,11 +11,8 @@ public:
 		: LevelBox(x, y, w, h, texture, destructible) 
 	{
 		init();
-		std::cout << "box y =" << y << std::endl;
-		setHealths(initialHealth);
+		setHealthValues(initialHealth);
 		healthUi = new HealthUI(x, y);
-		/*healthUi.setPosition(x,y,texture);
-		healthUi.setSize(m_width, m_height);*/
 	}
 
 	void init() override;

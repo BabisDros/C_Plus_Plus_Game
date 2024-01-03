@@ -16,7 +16,7 @@ public:
     }
     
 
-    void setHealths(int health)
+    void setHealthValues(int health)
     { 
         m_initialHealth = health;
         m_currentHealth = health;
