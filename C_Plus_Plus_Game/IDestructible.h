@@ -6,15 +6,9 @@
 class IDestructible
 {
 public:
-    
-
-    IDestructible() {};
-    virtual ~IDestructible() 
-    {
-       /* if (healthUi)
-            delete healthUi;*/
-    }
-    
+    HealthUI* healthUi;
+    IDestructible() :healthUi(new HealthUI()) {};
+    ~IDestructible() {}
 
     void setHealthValues(int health)
     { 
@@ -23,24 +17,25 @@ public:
     }
     virtual int getHealth() const { return m_currentHealth; };
     virtual void resetHealth() { m_currentHealth = m_initialHealth; };
-    virtual void takeDamage(const int& damage) = 0;
-    //{
-    //    if (m_currentHealth > 0)
-    //    {
-    //        float pausableClock = *GameState::getInstance()->getPausableClock();
-    //        
-    //        if (pausableClock - damageTakenTimestamp  > invisibilityDuration)
-    //        {
-    //            damageTakenTimestamp = pausableClock;
-    //            m_currentHealth -= damage;
-    //            //healthUi->refreshHealth(damage, m_initialHealth, m_currentHealth);
-    //        }      
-    //    }
-    //    else
-    //    {
-    //        destroy();
-    //    }
-    //};
+
+    virtual void takeDamage(const int& damage) 
+    {
+        if (m_currentHealth > 0)
+        {
+            float pausableClock = *GameState::getInstance()->getPausableClock();
+            if (pausableClock - damageTakenTimestamp > invincibilityDuration)
+            {
+                damageTakenTimestamp = pausableClock;
+                m_currentHealth -= damage;
+                healthUi->updateUIOnDamage(damage, m_initialHealth, m_currentHealth);
+            }
+        }
+        else
+        {
+            destroy();
+        }
+    }
+
     virtual bool isAlive() const { return m_currentHealth > 0; };
 
     //Object is not destroyed but setActive false

@@ -21,7 +21,7 @@ void GameState::init()
 	levels.pop_front();
 	m_current_level->init();
 
-	m_player = new Player("Player");
+	m_player = new Player("Player",100);
 	m_player->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font

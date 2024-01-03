@@ -36,6 +36,7 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
 	}	
 	damageBox.draw();
+	healthUi->draw();
 }
 
 void Player::update(float dt)
@@ -59,11 +60,6 @@ void Player::update(float dt)
 	dash(delta_time);
 	slash(delta_time);
 	//std::cout << "Player pos " << m_pos_x  << std::endl;
-}
-
-
-void Player::takeDamage(const int& damage)
-{
 }
 
 void Player::destroy()

@@ -12,23 +12,6 @@ void CrateDestructible::draw()
 	LevelBox::draw();
 	healthUi->draw();
 }
-void CrateDestructible::takeDamage(const int& damage)
-{
-        if (m_currentHealth > 0)
-        {
-            float pausableClock = *GameState::getInstance()->getPausableClock();
-            if (pausableClock - damageTakenTimestamp > invincibilityDuration)
-            {
-                damageTakenTimestamp = pausableClock;
-                m_currentHealth -= damage;
-                healthUi->refresh(damage,m_initialHealth,m_currentHealth);
-            }
-        }
-        else
-        {
-            destroy();
-        }
-}
 
 void CrateDestructible::destroy()
 {

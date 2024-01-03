@@ -9,6 +9,7 @@
 
 class Player : public GameObject, public Box, public IDestructible
 {
+	
 	DamageBox damageBox;
 	Ability dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
 	Ability slashAbility = Ability(1.0f, 0.1f, 0.0f);
@@ -33,12 +34,20 @@ class Player : public GameObject, public Box, public IDestructible
 	void slash(float dt);
 	
 public:
-	Player(std::string name) : GameObject(name) {}
+	Player(std::string name,float initialHealth) : GameObject(name)
+	{
+		setHealthValues(initialHealth);
+		healthUi->setPosition(m_pos_x, m_pos_y);
+	}
+	~Player()
+	{
+		if (healthUi)
+			delete healthUi;
+	}
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	
-	void takeDamage(const int& damage) override;
+
 	void destroy() override;
 	void instantiateParticles() override;
 	bool m_collidingUp = false;
