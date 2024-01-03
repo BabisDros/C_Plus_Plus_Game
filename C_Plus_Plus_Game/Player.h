@@ -49,7 +49,6 @@ public:
 	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
-	bool m_collidingUp = false;
 //current velocities
 //	float m_vx = 0.f; 
 //	float m_vy = 0.f;

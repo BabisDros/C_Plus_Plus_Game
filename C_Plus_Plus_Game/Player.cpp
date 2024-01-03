@@ -115,7 +115,7 @@ void Player::movement(float delta_time)
 float Player::jump()
 {
 	float accel = 0;
-	if (m_vy == 0.0f && !m_collidingUp && graphics::getKeyState(graphics::SCANCODE_W) && !jumpAbility.isRunning())
+	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !jumpAbility.isRunning())
 	{
 		jumpAbility.setStartTime(*m_state->getPausableClock());
 		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]

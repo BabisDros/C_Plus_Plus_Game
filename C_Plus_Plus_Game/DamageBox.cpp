@@ -17,12 +17,12 @@ void DamageBox::draw()
 		}
 		graphics::drawRect(m_pos_x+ m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
 		graphics::resetPose(); //reset mirror for next call	
+		
+		if (m_state->m_debugging)
+		{
+			debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
+		}
 	}
-	if (m_state->m_debugging)
-	{		
-		debugDraw(m_pos_x+ m_state->m_global_offset_x, m_pos_y+ m_state->m_global_offset_y, m_width, m_height);
-	}
-	
 }
 
 void DamageBox::update(float dt)
