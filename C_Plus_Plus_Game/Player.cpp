@@ -36,6 +36,7 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height);
 	}	
 	damageBox.draw();
+	healthUi->draw();
 }
 
 void Player::update(float dt)
@@ -62,7 +63,6 @@ void Player::update(float dt)
 	slash(delta_time);
 	//std::cout << "Player pos " << m_pos_x  << std::endl;
 }
-
 
 void Player::destroy()
 {
@@ -117,13 +117,13 @@ float Player::jump()
 	float accel = 0;
 	if (m_vy == 0.0f && !m_collidingUp && graphics::getKeyState(graphics::SCANCODE_W) && !jumpAbility.isRunning())
 	{
-		jumpAbility.setStartTime(m_state->m_pausableClock);
+		jumpAbility.setStartTime(*m_state->getPausableClock());
 		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
 	}
 	
 	if (jumpAbility.isRunning())
 	{
-		float elapsedTime = m_state->m_pausableClock - jumpAbility.getStartTime();
+		float elapsedTime = *m_state->getPausableClock() - jumpAbility.getStartTime();
 		if (elapsedTime >= jumpAbility.getCooldown())
 		{
 			jumpAbility.setStartTime(0.f);
@@ -159,12 +159,12 @@ void Player::dash(float delta_time)
 {
 	if (graphics::getKeyState(graphics::SCANCODE_F) && !dashAbility.isRunning())
 	{
-		dashAbility.setStartTime(m_state-> m_pausableClock);
+		dashAbility.setStartTime(*m_state->getPausableClock());
 	}	
 	
 	if (dashAbility.isRunning())
 	{
-		float elapsedTime = m_state->m_pausableClock - dashAbility.getStartTime();
+		float elapsedTime = *m_state->getPausableClock() - dashAbility.getStartTime();
 		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
 		if (elapsedTime < dashAbility.getDuration())
 		{
@@ -183,11 +183,11 @@ void Player::slash(float delta_time)
 	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !slashAbility.isRunning())
 	{	
 		damageBox.setActive(true);
-		slashAbility.setStartTime(m_state->m_pausableClock);
+		slashAbility.setStartTime(*m_state->getPausableClock());
 	}
 	if (slashAbility.isRunning())
 	{
-		float elapsedTime = m_state->m_pausableClock - slashAbility.getStartTime();
+		float elapsedTime = *m_state->getPausableClock() - slashAbility.getStartTime();
 		if (elapsedTime < slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction

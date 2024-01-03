@@ -40,10 +40,10 @@ void Level::draw()
 	}
 /* Not used currently
 	for (auto p_gob : m_static_objects)
-		if (p_gob) p_gob->draw();
+		if (p_gob) p_gob->draw();*/
 
 	for (auto p_gob : m_dynamic_objects)
-		if (p_gob) p_gob->draw();*/
+		if (p_gob) p_gob->draw();
 
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
@@ -57,7 +57,7 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	float p = 0.5f + fabs(cos(graphics::getGlobalTime() / 10000.0f));	//! breaks when paused, needs personal timer, cause global
+	float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
 
 	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
@@ -151,7 +151,7 @@ void Level::read()
 						destructible = std::get<3>(itr->second);
 						if (destructible)
 						{
-							m_dynamic_objects.push_back(new CrateDestructible(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
+							m_dynamic_objects.push_back(new CrateDestructible(30,x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
 								&std::get<2>(itr->second), destructible));
 						}
 						else
@@ -224,6 +224,27 @@ void Level::checkCollisions()
 	}
 }
 */
+std::vector<LevelBox*> Level::getBlocks() const
+{
+	return m_blocks;
+}
+std::list<GameObject*> Level::getDynamicObjects() const
+{
+	return m_dynamic_objects;
+}
+
+template <typename Container>
+void Level::destroyGameObjects(Container& myContainer)
+{
+	for (auto p_gob : myContainer)
+	{
+		if (p_gob)
+		{
+			delete p_gob;
+		}
+	}
+}
+
 Level::~Level()
 {
 	destroyGameObjects(m_static_objects);

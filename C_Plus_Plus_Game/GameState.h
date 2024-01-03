@@ -13,7 +13,7 @@ class GameState
 	static GameState* s_unique_instance;
 	
 	GameState();
-
+	float m_pausableClock = 0.0f;
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
 
@@ -22,7 +22,7 @@ public:
 	float m_global_offset_y = 0.0f;
 	bool m_debugging = false;
 	bool m_debugging_held = false;
-	float m_pausableClock;
+
 	bool m_paused = false;
 	bool m_paused_held = false;
 
@@ -35,7 +35,7 @@ public:
 	void init();
 	void draw();
 	void update(float dt);
-
+	float* getPausableClock() { return &m_pausableClock; };
 	static GameState* getInstance();
 	~GameState();
 
@@ -54,4 +54,5 @@ public:
 
 	Player* getPlayer() { return m_player; }
 	Level* getLevel() { return m_current_level; }
+	
 };

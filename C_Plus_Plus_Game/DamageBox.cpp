@@ -1,8 +1,6 @@
 #include "DamageBox.h"
 #include <iostream>
-#include "IDestructible.h"
 #include "Util.h"
-
 
 void DamageBox::init()
 {
@@ -31,16 +29,25 @@ void DamageBox::update(float dt)
 {	
 	if (isActive())
 	{
-		for (int i = 0; i < m_state->getLevel()->getBlocks().size(); ++i)
-		{
-			LevelBox* block = (m_state->getLevel()->getBlocks())[i];
-			
-			if (intersect(*block) && block->getIsDestructible()/*&& typeid(*block) == typeid(IDestructible)*/)
-			{
+		checkForCollisions();		
+	}
+}
 
-				std::cout << "Damage box pos "<< m_pos_x << " block pos " << block->getId()<< std::endl;
-				
-			}
+void DamageBox::checkForCollisions()
+{
+	for (auto& gameobj:  m_state->getLevel()->getDynamicObjects())
+	{
+		//all gameobjects in DynamicObjects considered destructible
+		IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);
+		
+		//all objects will be setActive(false) when health is 0. TODO if performance improvement needed: could delete them, and shorten the list
+		if (intersect(*dynamic_cast<Box*>(gameobj)) && destructiblePtr)
+		{		
+			destructiblePtr->takeDamage(10);
 		}
 	}
 }
+
+
+
+

@@ -12,7 +12,7 @@ class Player :public IDestructible, public Entity
 {
 	DamageBox damageBox;
 	Ability dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
-	Ability slashAbility = Ability(2.0f, 0.1f, 0.0f);
+	Ability slashAbility = Ability(1.0f, 0.1f, 0.0f);
 	Ability jumpAbility = Ability(0.3f, 0.0f, 0.0f);
 
 	const float m_gravity = 10.f;
@@ -32,7 +32,16 @@ class Player :public IDestructible, public Entity
 	void slash(float dt);
 	
 public:
-	Player(std::string name) : Entity(name) {}
+	Player(std::string name,float initialHealth) : Entity(name)
+	{
+		setHealthValues(initialHealth);
+		healthUi->setPosition(m_pos_x, m_pos_y);
+	}
+	~Player()
+	{
+		if (healthUi)
+			delete healthUi;
+	}
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
