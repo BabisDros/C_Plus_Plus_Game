@@ -153,7 +153,7 @@ void Level::read()
 							{
 								if (itr->first == ch)
 								{
-									m_dynamic_objects.push_back(new Enemy(""));
+									m_dynamic_objects.push_back(new Enemy("", x + 1/2.0f, y+ 1/2.0f));//+ 1/2 of width/height
 									break;
 								}
 							}
@@ -199,7 +199,7 @@ std::string Level::getDataTitle(std::string s)
 	return s;
 }
 
-//? keep substring after ':'
+//? keep substring right of ':'
 void Level::getDataValue(std::string& s)
 {
 	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)
