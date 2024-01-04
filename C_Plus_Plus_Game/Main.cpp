@@ -5,7 +5,7 @@ if //!, needs improvement
 if //??, uncertain
 if //, general use, does not fall in above categories
 */
-
+#pragma once
 #include "sgg/graphics.h"
 #include "util.h"
 #include "GameState.h"

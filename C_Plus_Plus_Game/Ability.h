@@ -1,4 +1,4 @@
-#pragma 
+#pragma once
 /** \param cooldown, duration, startTime, speed=0
 */
 class  Ability

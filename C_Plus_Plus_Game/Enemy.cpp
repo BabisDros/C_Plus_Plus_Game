@@ -1,9 +1,11 @@
+#pragma once
 #include "Enemy.h"
 #include "util.h"
 #include "GameState.h"
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
+
 void Enemy::init()
 {
 	m_homebase_x = m_pos_x;

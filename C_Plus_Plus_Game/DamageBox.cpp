@@ -1,3 +1,4 @@
+#pragma once
 #include "DamageBox.h"
 #include <iostream>
 #include "Util.h"
