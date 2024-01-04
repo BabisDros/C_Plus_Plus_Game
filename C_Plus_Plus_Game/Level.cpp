@@ -88,7 +88,6 @@ void Level::read()
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line, title;
 	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
-	char ending, tag;
 	int x, y=0;
 	if (myfile.is_open())
 	{

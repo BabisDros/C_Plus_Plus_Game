@@ -4,6 +4,7 @@
 
 class Enemy :public IDestructible, public Entity
 {
+//	DamageBox damageBox;
 	const float m_gravity = 10.f;
 	const float m_accel_vertical = 12.f;
 	const float m_accel_horizontal = 12.f;	//? if its too slow, entity becomes unable to move (ex. starting next to a wall)
@@ -16,7 +17,6 @@ class Enemy :public IDestructible, public Entity
 	float m_movement_range_y = 2.f;
 
 	int m_movement_type = 3;	// 1: follow player | 2: static on x axis | 3: static on y axis | 4: static circling
-	int m_direction = 1; // 1: right, -1: left
 public:
 //	Enemy(std::string name, float width, float height, std::string& texture) : Entity(name) {}
 	Enemy(std::string name, float pos_x, float pos_y) : Entity(name) {

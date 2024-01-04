@@ -27,7 +27,7 @@ Terrain
 }
 Terrain
 {
-	C
+	C: Floor
 	{
 		width: 48
 		height: 1

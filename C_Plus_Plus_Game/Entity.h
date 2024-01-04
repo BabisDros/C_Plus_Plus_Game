@@ -14,6 +14,7 @@ protected:
 	bool m_mirrored = false;
 	float m_vx = 0.f;
 	float m_vy = 0.f;
+	int m_lookingDirection = 1; //looking left value: -1 | looking right value: 1
 };
 
 template<typename Container>

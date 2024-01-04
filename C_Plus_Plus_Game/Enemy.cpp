@@ -45,16 +45,17 @@ void Enemy::instantiateParticles()
 
 void Enemy::movement(float dt)
 {
+	float delta_time = dt / 1000.f;
 	switch (m_movement_type)
 	{
 		case 1: 
-			movementDynamic(dt / 1000.0f);
+			movementDynamic(delta_time);
 			break;
 		case 2:
-			movementStaticX(dt / 1000.0f);
+			movementStaticX(delta_time);
 			break;
 		case 3:
-			movementStaticY(dt / 1000.0f);
+			movementStaticY(delta_time);
 			break;
 	}
 }
@@ -63,11 +64,11 @@ void Enemy::movementStaticX(float dt)
 {
 	if (fabs(m_pos_x - m_homebase_x + dt * m_vx) > m_movement_range_x)
 	{
-		m_direction *= -1;
+		m_lookingDirection *= -1;
 		m_vx = 0;
 	}
-	m_mirrored = m_direction == 1;
-	m_vx = std::min(m_max_velocity, m_vx + dt * m_direction * m_accel_horizontal);
+	m_mirrored = m_lookingDirection == 1;
+	m_vx = std::min(m_max_velocity, m_vx + dt * m_lookingDirection * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	m_pos_x += dt * m_vx;
 
@@ -75,7 +76,7 @@ void Enemy::movementStaticX(float dt)
 	{
 		if (intersect(*itr))
 		{
-			m_direction *= -1;
+			m_lookingDirection *= -1;
 			break;
 		}
 	}
@@ -85,10 +86,10 @@ void Enemy::movementStaticY(float dt)
 {
 	if (fabs(m_pos_y - m_homebase_y + dt * m_vy) > m_movement_range_y)
 	{
-		m_direction *= -1;
+		m_lookingDirection *= -1;
 		m_vy = 0;
 	}
-	m_vy = std::min(m_max_velocity, m_vy + dt * m_direction * m_accel_vertical);
+	m_vy = std::min(m_max_velocity, m_vy + dt * m_lookingDirection * m_accel_vertical);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	m_pos_y += dt * m_vy;
 
@@ -96,7 +97,7 @@ void Enemy::movementStaticY(float dt)
 	{
 		if (intersect(*itr))
 		{
-			m_direction *= -1;
+			m_lookingDirection *= -1;
 			break;
 		}
 	}
