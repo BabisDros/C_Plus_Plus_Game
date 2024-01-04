@@ -2,9 +2,6 @@
 #include <sgg/graphics.h>
 #include "box.h"
 #include "GameObject.h"
-#include "GameState.h"
-#include "Level.h"
-#include "IDestructible.h"
 /// <summary>
 /// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
 /// </summary>

@@ -3,7 +3,7 @@
 #include <sgg/graphics.h>
 #include "GameObject.h"
 #include "Util.h"
-
+#include "GameState.h"
 class HealthUI :public GameObject
 {
 private:

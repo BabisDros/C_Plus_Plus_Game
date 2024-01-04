@@ -2,6 +2,8 @@
 #include "DamageBox.h"
 #include <iostream>
 #include "Util.h"
+#include "GameState.h"
+#include "Level.h"
 
 void DamageBox::init()
 {
