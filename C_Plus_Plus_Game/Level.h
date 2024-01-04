@@ -21,7 +21,25 @@ class Level : public GameObject
 	std::vector<LevelBox*> m_blocks;
 
 
-	std::map <char, std::tuple <float, float, const std::string , bool>> m_objects_data;	//? For every tag, width, height, texture and is IDestructible are saved
+	std::map <char, std::vector<std::string>> m_terrain_data;	//? For every tag, width, height, texture and is IDestructible are saved
+	std::map <char, std::vector<std::string>> m_enemy_data;	//? for every tag, width, height, texture, health, territory_x and territory_y are saved
+	std::vector<std::string> m_terrain_titles = { 
+		"width",
+		"height",
+		"texture",
+		"destructible",
+		"health",
+		"level_end"};
+
+	std::vector<std::string> m_enemy_titles = {
+	"width",
+	"height",
+	"texture",
+	"health",
+	"territory_x",
+	"territory_y" };
+	
+	char m_level_end_tag;
 	LevelBox *m_level_end;
 public:
 	float m_player_start_x;
@@ -38,6 +56,11 @@ public:
 //	void checkCollisions();
 	void pausedDraw();
 	void read();
+	void removeSpaces(std::string& s);
+	void ignoreEmptyLine(std::ifstream& file, std::string& line);
+	std::string getDataTitle(std::string s);
+	void getDataValue(std::string& s);
+	void saveObjectData(std::map <char, std::vector<std::string>>& data, std::vector<std::string> titles, std::ifstream& file, std::string& line);
 
 	std::vector<LevelBox*> getBlocks() const;
 

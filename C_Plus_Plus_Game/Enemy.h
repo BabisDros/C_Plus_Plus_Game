@@ -16,6 +16,7 @@ class Enemy :public IDestructible, public Entity
 	float m_movement_range_y = 10.f;
 
 public:
+//	Enemy(std::string name, float width, float height, std::string& texture) : Entity(name) {}
 	Enemy(std::string name) : Entity(name) {}
 	void init() override;
 	void draw() override;
