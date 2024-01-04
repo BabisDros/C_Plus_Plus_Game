@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
+
 void Enemy::init()
 {
 	m_pos_x = -8.f;

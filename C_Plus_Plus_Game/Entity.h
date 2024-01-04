@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "box.h"
 #include "GameState.h"
+#include <iostream>//debug
 class Entity : public Box, public GameObject
 {
 public:
@@ -22,6 +23,7 @@ inline void Entity::checkCollision(Container myContainer)
 	
 	for (auto& block : myContainer)
 	{
+		std::cout << typeid(block).name();
 		if (!intersectTypeY(*block))
 		{
 			float offset;
@@ -36,6 +38,7 @@ inline void Entity::checkCollision(Container myContainer)
 
 	for (auto& block : myContainer)
 	{
+
 		if (intersectTypeY(*block))
 		{
 			float offset;

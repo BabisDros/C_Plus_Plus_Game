@@ -27,7 +27,7 @@ public:
             {
                 damageTakenTimestamp = pausableClock;
                 m_currentHealth -= damage;
-                healthUi->updateUIOnDamage(damage, m_initialHealth, m_currentHealth);
+                healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
             }
         }
         else

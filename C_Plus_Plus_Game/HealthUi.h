@@ -29,7 +29,7 @@ public:
 	{
 		setActive(false);
 		SETCOLOR(m_brush.fill_color, 1.0, 0.0, 0.0);//background red
-		SETCOLOR(m_fill.fill_color, 1.0, 0.5, 0.0);//orange
+		SETCOLOR(m_fill.fill_color, 0.0, 1.0, 0.0);//green
 		setCustomBrushProperties(&m_brush, 0.5f, 0.5f);
 		setCustomBrushProperties(&m_fill, 0.5f, 0.5f);
 	}
@@ -42,12 +42,12 @@ public:
 			graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_width, m_height, m_brush);
 			graphics::drawRect(m_pos_x + m_state->m_global_offset_x- positionCorrection, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_proportionalWidth, m_height, m_fill);
 			disableAfterElapsedTime();
-		}
-		
-		if (m_state->m_debugging)
-		{
-			debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_width, m_height);
-		}
+
+			if (m_state->m_debugging)
+			{
+				debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_width, m_height, m_id);
+			}
+		}		
 	}
 	void setPosition(float x, float y)
 	{
@@ -55,7 +55,7 @@ public:
 		m_pos_y = y;
 	}
 
-	void updateUIOnDamage(const int& damage, const float& initialHealth, const  float& currentHealth)
+	void updateUIOnDamage(const float& initialHealth, const  float& currentHealth)
 	{
 		m_startTime = *m_state->getPausableClock();
 

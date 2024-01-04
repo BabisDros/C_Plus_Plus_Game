@@ -1,3 +1,4 @@
+#include "UIManager.h"
 #include "GameState.h"
 #include "Level.h"
 #include "Player.h"
@@ -6,12 +7,13 @@
 #include <iostream>
 #include <filesystem>
 
+
 GameState::GameState()
 {
 }
 
 void GameState::init()
-{
+{	
 	std::string path = getFullDataPath("");
 	for (const auto& entry : std::filesystem::directory_iterator(path))	// list of level names on data folder
 		levels.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention
@@ -20,7 +22,7 @@ void GameState::init()
 	m_current_level = new Level(levels.front());
 	levels.pop_front();
 	m_current_level->init();
-
+	UIManager::getInstance()->init();
 	m_player = new Player("Player",100);
 	m_player->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
@@ -32,6 +34,11 @@ void GameState::draw()
 	if (!m_current_level) return;
 
 	m_current_level->draw();
+	if (m_currentState ==States:: Menu)
+	{
+		UIManager::getInstance()->draw();
+	}
+	
 }
 
 void GameState::update(float dt)

@@ -30,7 +30,7 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	void setBrush(graphics::Brush brush) {	m_brush = brush; }
+	void setBrush(const graphics::Brush& brush) {	m_brush = brush; }
 	void checkForCollisions();
 };
 

@@ -43,6 +43,7 @@ void Player::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->m_test_enemy);
+	//checkCollision(m_state->getLevel()->getDynamicObjects());
 	damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 
@@ -61,7 +62,6 @@ void Player::update(float dt)
 
 	dash(delta_time);
 	slash(delta_time);
-	//std::cout << "Player pos " << m_pos_x  << std::endl;
 }
 
 void Player::destroy()
