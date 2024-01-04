@@ -11,16 +11,13 @@ void Level::init()
 {
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
-
+	read();
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
 
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->init();
 
-	read();	//! 
-	m_test_enemy.push_back(new Enemy(""));
-	m_test_enemy.back()->init();
 }
 
 void Level::draw()
@@ -42,15 +39,13 @@ void Level::draw()
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->draw();*/
 
-	for (auto p_gob : m_dynamic_objects)
-		if (p_gob) p_gob->draw();
-
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
 		m_blocks[i]->draw();
 	}
 
-	m_test_enemy.front()->draw();
+	for (auto p_gob : m_dynamic_objects)
+		if (p_gob) p_gob->draw();
 	
 	if (m_state->m_paused) pausedDraw();
 }
@@ -61,12 +56,14 @@ void Level::update(float dt)
 
 	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
-//+++	checkCollisions();
+
 	if (m_state->getPlayer()->isActive())	
 	{
 		m_state->getPlayer()->update(dt);
 	}
-	m_test_enemy.front()->update(dt);
+
+	for (auto p_gob : m_dynamic_objects)
+		if (p_gob) p_gob->update(dt);
 	GameObject::update(dt);
 }
 
