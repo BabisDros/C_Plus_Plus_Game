@@ -53,8 +53,8 @@ void Player::update(float dt)
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
-		m_pos_x = m_state->getCanvasWidth() / 2.0f; //? centered
-		m_pos_y = m_state->getCanvasHeight() / 2.0f; //! should be made to get to starting position
+		m_pos_x = m_state->getLevel()->m_player_start_x; //? centered
+		m_pos_y = m_state->getLevel()->m_player_start_y; //! should be made to get to starting position
 	}
 
 	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}, only if it isn't complex

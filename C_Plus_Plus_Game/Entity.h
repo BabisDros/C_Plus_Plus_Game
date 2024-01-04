@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "box.h"
 #include "GameState.h"
+
 class Entity : public Box, public GameObject
 {
 public:

@@ -47,9 +47,6 @@ public:
 	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
-//current velocities
-//	float m_vx = 0.f; 
-//	float m_vy = 0.f;
 
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
