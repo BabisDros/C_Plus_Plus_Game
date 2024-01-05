@@ -65,6 +65,6 @@ void LevelManager::loadSaveFile()
 	// Set Data to player
 	std::getline(saveFile, line);
 	m_state->getLevel()->getDataValue(line);
-	m_state->getPlayer()->m_currentHealth = (stoi(line)); //Better setter required
+	m_state->getPlayer()->setHealth((stoi(line))) ; //Better setter required
 	saveData();
 }

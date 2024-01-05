@@ -9,7 +9,7 @@ public:
 		: LevelBox(x, y, w, h, texture, destructible) 
 	{
 		init();
-		setHealthValues(initialHealth);
+		setInitialHealthValues(initialHealth);
 		healthUi->setPosition(x,y);
 	}
 	~CrateDestructible() 

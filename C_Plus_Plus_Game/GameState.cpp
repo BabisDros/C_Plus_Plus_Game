@@ -22,11 +22,13 @@ void GameState::init()
 }
 
 void GameState::draw()
-{	
-	UIManager::getInstance()->drawMenu();
-	
-	if (!m_current_level) return;
-	m_current_level->draw();
+{		
+	if (m_current_level!=nullptr)
+	{
+		m_current_level->draw();
+	}
+
+	UIManager::getInstance()->draw();
 }
 
 
