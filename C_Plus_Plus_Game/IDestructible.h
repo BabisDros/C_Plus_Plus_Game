@@ -41,10 +41,10 @@ public:
     //Object is not destroyed but setActive false
     virtual void destroy() = 0;
     virtual void instantiateParticles() = 0;
-
+    int m_currentHealth = 0;
 protected:
     int m_initialHealth = 0;
-    int m_currentHealth = 0;
+    
     //duration when the object can take anymore damage. Take damage once per hit
     float invincibilityDuration = 0.5f;
     float damageTakenTimestamp=0.0f;

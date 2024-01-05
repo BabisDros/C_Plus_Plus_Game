@@ -17,7 +17,7 @@ class Enemy :public IDestructible, public Entity
 	float m_movement_range_x = 2.f;
 	float m_movement_range_y = 2.f;
 
-	int m_movement_type = 2;	// 1: follow player | 2: static on x axis | 3: static on y axis | 4: static circling
+	int m_movement_type = 3;	// 1: follow player | 2: static on x axis | 3: static on y axis | 4: static circling
 public:
 	//	Enemy(std::string name, float width, float height, std::string& texture) : Entity(name) {}
 	Enemy(std::string name, float pos_x, float pos_y) : Entity(name) {

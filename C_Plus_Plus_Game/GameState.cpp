@@ -1,4 +1,5 @@
 #pragma once
+#include "LevelManager.h"
 #include "UIManager.h"
 #include "GameState.h"
 #include "Level.h"
@@ -6,7 +7,6 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
-#include <filesystem>
 
 
 GameState::GameState()
@@ -15,14 +15,8 @@ GameState::GameState()
 
 void GameState::init()
 {	
-	std::string path = getFullDataPath("");
-	for (const auto& entry : std::filesystem::directory_iterator(path))	// list of level names on data folder
-		levels.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention
-		erase(0, getFullDataPath("").size()));	// remove parent directory
-
-	
 	UIManager::getInstance()->init();
-	
+	LevelManager::getInstance()->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
@@ -33,7 +27,6 @@ void GameState::draw()
 	
 	if (!m_current_level) return;
 	m_current_level->draw();
-	
 }
 
 
@@ -61,7 +54,7 @@ void GameState::update(float dt)
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
 	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
-	if (goNextLevel) nextLevel();
+	if (goNextLevel) LevelManager::getInstance()->nextLevel();
 }
 
 GameState* GameState::getInstance()
@@ -87,21 +80,19 @@ GameState::~GameState()
 
 void GameState::handleStates()
 {
-	if (m_currentState == Menu && graphics::getKeyState(graphics::SCANCODE_N))
+	if (m_currentState == Menu)
 	{
 		if (graphics::getKeyState(graphics::SCANCODE_N))
 		{
-			m_current_level = new Level(levels.front());
-			levels.pop_front();
-			m_current_level->init();
-			m_player = new Player("Player", 100);
-			m_player->init();
-
+			LevelManager::getInstance()->nextLevel();
 			m_currentState = States::InGame;
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_L))
 		{
-
+			LevelManager::getInstance()->loadingFile = true;
+			LevelManager::getInstance()->loadSaveFile();
+			LevelManager::getInstance()->loadingFile = false;
+			m_currentState = States::InGame;
 		}
 	}
 }
@@ -111,7 +102,7 @@ void GameState::showFPS()
 	float currentTime = graphics::getGlobalTime() / 1000;
 	if (currentTime > m_time)
 	{
-		std::cout << m_fps << "\n";
+		std::cout << m_fps << std::endl;
 		m_fps = 0;
 		while (currentTime > m_time)
 		{
@@ -122,17 +113,6 @@ void GameState::showFPS()
 	{
 		m_fps++;
 	}
-}
-
-void GameState::nextLevel()
-{
-	m_current_level->~Level();
-	m_current_level = new Level(levels.front());
-	m_current_level->init();
-	if (levels.size()>1) levels.pop_front();	//? If the isn't at least 1 more level, next tp instance will result in crash
-	m_player->init();
-	graphics::preloadBitmaps(getAssetDir()); //! preload assets, not needed if all assets in 1 folder
-	goNextLevel = false;
 }
 
 States& GameState::getCurrentState()
