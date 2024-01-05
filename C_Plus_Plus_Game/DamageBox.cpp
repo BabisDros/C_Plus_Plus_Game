@@ -14,7 +14,7 @@ void DamageBox::draw()
 {
 	if (isActive())
 	{
-		if (*m_parentDirection <  0)
+		if (*m_parentDirection < 0 && canBeMirrored)
 		{ 
 			graphics::setScale(-1.0f, 1.0f);//mirrors image according to player's direction
 		}
