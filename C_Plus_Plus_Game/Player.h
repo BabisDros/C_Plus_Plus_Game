@@ -30,14 +30,8 @@ class Player :public IDestructible, public Entity
 public:
 	Player(std::string name,float initialHealth) : Entity(name)
 	{
-		setHealthValues(initialHealth);
-		healthUi->setPosition(m_pos_x, m_pos_y);
+		setInitialHealthValues(initialHealth);
 		m_width = 0.5f;
-	}
-	~Player()
-	{
-		if (healthUi)
-			delete healthUi;
 	}
 	void init() override;
 	void draw() override;
@@ -46,7 +40,7 @@ public:
 	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
-
+	
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);

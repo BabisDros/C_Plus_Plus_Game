@@ -22,15 +22,13 @@ void GameState::init()
 }
 
 void GameState::draw()
-{
-	if (m_currentState == Menu)
+{		
+	if (m_current_level!=nullptr)
 	{
-		UIManager::getInstance()->draw();
+		m_current_level->draw();
 	}
 
-	if (!m_current_level) return;
-
-	m_current_level->draw();
+	UIManager::getInstance()->draw();
 }
 
 
@@ -117,6 +115,11 @@ void GameState::showFPS()
 	{
 		m_fps++;
 	}
+}
+
+States& GameState::getCurrentState()
+{
+	return m_currentState;
 }
 
 
