@@ -20,27 +20,28 @@ void GameState::init()
 		levels.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention
 		erase(0, getFullDataPath("").size()));	// remove parent directory
 
-	m_current_level = new Level(levels.front());
-	levels.pop_front();
-	m_current_level->init();
+	
 	UIManager::getInstance()->init();
-	m_player = new Player("Player",100);
-	m_player->init();
+	
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
 
 void GameState::draw()
 {
+	
+	if (m_currentState == Menu)
+	{
+		UIManager::getInstance()->draw();
+	}
+
 	if (!m_current_level) return;
 
 	m_current_level->draw();
-	if (m_currentState == Menu)
-	{
-		//UIManager::getInstance()->draw();
-	}
 	
 }
+
+
 
 void GameState::update(float dt)
 {
@@ -49,7 +50,7 @@ void GameState::update(float dt)
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
-
+	handleStates();
 	if (!m_current_level) return;
 	
 	if (!m_paused)
@@ -61,7 +62,7 @@ void GameState::update(float dt)
 	{
 		m_current_level->pausedDraw();	//? Make paused window
 	}
-
+	
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
 	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
@@ -86,6 +87,27 @@ GameState::~GameState()
 	if (m_current_level)
 	{
 		delete m_current_level;
+	}
+}
+
+void GameState::handleStates()
+{
+	if (m_currentState == Menu && graphics::getKeyState(graphics::SCANCODE_N))
+	{
+		if (graphics::getKeyState(graphics::SCANCODE_N))
+		{
+			m_current_level = new Level(levels.front());
+			levels.pop_front();
+			m_current_level->init();
+			m_player = new Player("Player", 100);
+			m_player->init();
+
+			m_currentState = States::InGame;
+		}
+		else if (graphics::getKeyState(graphics::SCANCODE_L))
+		{
+
+		}
 	}
 }
 
