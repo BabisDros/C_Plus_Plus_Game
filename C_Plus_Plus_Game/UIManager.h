@@ -16,6 +16,7 @@ public:
 	void drawPlayerHealth();
 	void drawMenu();
 	void drawText();
+	void drawPause();
 	void onPlayerHealthChanged();
 	static UIManager* getInstance();
 };

@@ -46,8 +46,6 @@ public:
 	Level(const std::string& name = "Level 0");
 	~Level();
 
-	void pausedDraw();
-
 	void read();	// methods used to read from file
 	void removeSpaces(std::string& s);
 	void ignoreEmptyLine(std::ifstream& file, std::string& line);

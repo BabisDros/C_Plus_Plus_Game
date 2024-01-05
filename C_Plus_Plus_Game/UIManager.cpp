@@ -9,10 +9,7 @@ UIManager* UIManager::s_unique_instance = nullptr;
 void UIManager::init()
 {
 	m_state = GameState::getInstance();
-	//std::cout << "calllll"<< m_state->getFullAssetPath("UI\\main_menu_alt.png");
 	setCustomBrushProperties(&menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));	
-	/*playerHealth->setSize(5.f, 1.f);
-	playerHealth->setPosition(0.f, 0.f);*/
 }
 
 
@@ -25,13 +22,36 @@ void UIManager::draw()
 	else
 	{
 		drawPlayerHealth();
+		if (m_state->getCurrentState() == States::Paused)
+		{
+			drawPause();
+		}
 	}
-	//std::cout << m_state->getCurrentState();
 }
 
 void UIManager::drawPlayerHealth()
 {
 	playerHealthUI->draw();
+}
+
+
+void UIManager::drawPause()	//! make it better than a greyed out screen
+{
+	graphics::Brush paused_brush;
+	paused_brush.fill_opacity = 0.75f;
+	paused_brush.outline_opacity = 0.f;
+	SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
+
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
+		m_state->getCanvasHeight(), paused_brush);
+
+	std::string str = "Paused";
+	graphics::Brush textBrush;
+	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
+	textBrush.fill_opacity = 1.f;
+	textBrush.outline_opacity = 1.0f;
+	float centeringValue = str.size() / 4.f;//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValue, m_state->getCanvasHeight() / 2, 1.f, str, textBrush);
 }
 
 void UIManager::drawText()
@@ -46,6 +66,7 @@ void UIManager::drawText()
 
 void UIManager::onPlayerHealthChanged()
 {
+	playerHealthUI->updateUIOnDamage(20,10);
 }
 
 void UIManager::drawMenu()

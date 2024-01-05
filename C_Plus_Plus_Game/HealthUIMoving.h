@@ -6,8 +6,9 @@ class HealthUIMoving :public HealthUI
 	//adjust offset to appear above gameobject. 
 	float m_offsetY = 1.f;
 public:
-	HealthUIMoving() :HealthUI() {}
-	HealthUIMoving(float x, float y, float width, float height) :HealthUI(x, y, width, height) {}
+	HealthUIMoving() :HealthUI() { init(); }
+	HealthUIMoving(float x, float y, float width, float height) :HealthUI(x, y, width, height) { init(); }
+
 	void init() override
 	{
 		setActive(false);
@@ -23,7 +24,6 @@ public:
 			graphics::drawRect(m_pos_x + m_state->m_global_offset_x - positionCorrection, m_pos_y + m_state->m_global_offset_y - m_offsetY, m_proportionalWidth, m_height, m_fill);
 
 			disableAfterElapsedTime();
-
 
 			if (m_state->m_debugging)
 			{

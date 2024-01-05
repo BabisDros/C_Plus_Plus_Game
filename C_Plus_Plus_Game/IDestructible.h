@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <iostream>//for debugging
 #include "HealthUIMoving.h"
 //INTERFACE. Objects that can be destructed should implement this
 class IDestructible
