@@ -1,11 +1,111 @@
-$ tag, x, y, texture, destructible{1,0}, Level_End {1,""}
-A 1 1 crate.png 0
-B 2 1 temp_player2.png 0
-C 48 1 crate.png 0
-D 1 2 temp_player2.png 0
-Z 1 1 slashFx.png 0 1
-T 5 1 crate.png 0
-$ Level Layout
+Terrain
+{
+	A
+	{
+		width: 1
+		height: 1
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 0
+	}
+
+}
+
+Terrain
+{
+	B
+	{
+		width: 2
+		height: 1
+		texture: temp_player2.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	C
+	{
+		width: 48
+		height: 1
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	D
+	{
+		width: 1
+		height: 2
+		texture: temp_player2.png
+		destructible: 1
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	Z
+	{
+		width: 1
+		height: 1
+		texture: slashFx.png
+		destructible:
+		health:
+		level_end: 1
+	}
+
+}
+Terrain
+{
+	T
+	{
+		width: 5
+		height: 1
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	E
+	{
+		width: 1
+		height: 9
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
+Terrain
+{
+	F
+	{
+		width: 1
+		height: 1
+		texture: crate.png
+		destructible: 1
+		health:
+		level_end: 
+	}
+
+}
+
+Level
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
                       A A                       |
                     PA  A                       |
@@ -23,3 +123,12 @@ $ Info that are not read from program
 A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
+
+$ tag, x, y, texture, destructible{1,0}, Level_End {1,""}
+A 1 1 crate.png 0
+B 2 1 temp_player2.png 0
+C 48 1 crate.png 0
+D 1 2 temp_player2.png 0
+Z 1 1 slashFx.png 0 1
+T 5 1 crate.png 0
+$ Level Layout

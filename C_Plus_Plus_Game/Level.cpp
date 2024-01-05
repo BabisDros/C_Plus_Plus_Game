@@ -13,16 +13,13 @@ void Level::init()
 {
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
-
+	read();
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
 
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->init();
 
-	read();	//! 
-	m_test_enemy.push_back(new Enemy(""));
-	m_test_enemy.back()->init();
 }
 
 void Level::draw()
@@ -44,15 +41,13 @@ void Level::draw()
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->draw();*/
 
-	for (auto p_gob : m_dynamic_objects)
-		if (p_gob) p_gob->draw();
-
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
 		m_blocks[i]->draw();
 	}
 
-	m_test_enemy.front()->draw();
+	for (auto p_gob : m_dynamic_objects)
+		if (p_gob) p_gob->draw();
 	
 	if (m_state->m_paused) pausedDraw();
 }
@@ -63,12 +58,14 @@ void Level::update(float dt)
 
 	SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
-//+++	checkCollisions();
+
 	if (m_state->getPlayer()->isActive())	
 	{
 		m_state->getPlayer()->update(dt);
 	}
-	m_test_enemy.front()->update(dt);
+
+	for (auto p_gob : m_dynamic_objects)
+		if (p_gob) p_gob->update(dt);
 	GameObject::update(dt);
 }
 
@@ -91,141 +88,172 @@ void Level::pausedDraw()	//! make it better than a greyed out screen
 void Level::read()
 {
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
-	std::string line;
-	char ending;
+	std::string line, title;
+	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
+	char ending, tag;
+	int x, y=0;
 	if (myfile.is_open())
 	{
-		std::getline(myfile, line);
-		while (line[0] != '$')	//? get to metadata point
-		{
-			std::getline(myfile, line);
-		}
-		std::getline(myfile, line);
-
-		while (line[0] != '$')	//? end of metadata
-		{
-			std::string s;
-			std::stringstream ss(line);
-			std::vector<std::string> v;
-			bool t_bool;
-			while (std::getline(ss, s, ' '))
+		while(true)
+		{ 
+			ignoreEmptyLine(myfile, line);
+			if (line[0] == '$') break;
+			if (line == "Terrain")
 			{
-				v.push_back(s);
+				saveObjectData(m_terrain_data, m_terrain_titles, myfile, line);
 			}
-			if (v.size() == 6)	// has ending value
-			{ 
-				ending = v[0][0];
-			}
-			if (v[0][0] == 'P')
+			else if (line == "Enemy")
 			{
+				saveObjectData(m_enemy_data, m_enemy_titles, myfile, line);
+			}
+			else if (line == "Level")
+			{
+				std::cout << "Level layout\n";
 				std::getline(myfile, line);
-				continue;	// does not make tuple
-			}
-			t_bool = v[4] == "1";
-			std::tuple <float, float, const std::string, bool> data = std::make_tuple(std::stof(v[1]), std::stof(v[2]), v[3], t_bool);	//? data values (x, y, texture, is IDestructible
-			
-			m_objects_data.insert({v[0][0], data});
-			std::getline(myfile, line);
-		}
-		std::cout << "Level layout\n";
-		float x, y = 0;
-		bool destructible=false;
-		while (myfile)
-		{ 
-			std::getline(myfile, line); //? not '$'
-			if (line[0] == '$') break;	//? no more lines on the level
-			std::cout << line;
-			x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
-			for (char ch : line)
-			{
-				if (ch == '|') break;	//? end of line
-				if (ch == 'P')	// Player
-				{
-					m_player_start_x = x + 1 / 2.f;
-					m_player_start_y = y + 1 / 2.f;
-					x++;
-					continue;
-				}
-				for (auto itr = m_objects_data.begin(); itr != m_objects_data.end(); ++itr)
-				{
-					if (itr->first == ch)
+				while (line[0] !='$')
+				{ 
+					std::cout << line;
+					x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
+					bool tag_found, destructible;
+					for (char ch : line)
 					{
-						destructible = std::get<3>(itr->second);
-						if (destructible)
+						tag_found = false;
+						if (ch == ' ') { x++; continue; } // empty space
+						if (ch == '|') break;	//? end of line
+						if (ch == 'P')	// Player
 						{
-							m_dynamic_objects.push_back(new CrateDestructible(30,x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
-								&std::get<2>(itr->second), destructible));
+							m_player_start_x = x + 1 / 2.f;
+							m_player_start_y = y + 1 / 2.f;
+							x++;
+							continue;
 						}
-						else
+						for (auto itr = m_terrain_data.begin(); itr != m_terrain_data.end(); ++itr)
 						{
-							m_blocks.push_back(new LevelBox(x + std::get<0>(itr->second) / 2.f, y + std::get<1>(itr->second) / 2.f, std::get<0>(itr->second), std::get<1>(itr->second),
-								&std::get<2>(itr->second), destructible));
+							if (itr->first == ch)
+							{
+								destructible = (itr->second)[3] == "1";
+								if (destructible)
+								{
+									m_dynamic_objects.push_back(new CrateDestructible(30,x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+										&(itr->second)[2], destructible));
+									tag_found = true;
+									break;
+								}
+								else
+								{
+									m_blocks.push_back(new LevelBox(x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+										&(itr->second)[2], destructible));
+									if (itr->first == m_level_end_tag) m_level_end = m_blocks.back();
+									tag_found = true;
+									break;
+								}
+							}
 						}
-						if (itr->first == ending) m_level_end = m_blocks.back();
+						if (!tag_found)	// make enemy
+						{
+							for (auto itr = m_enemy_data.begin(); itr != m_enemy_data.end(); ++itr)
+							{
+								if (itr->first == ch)
+								{
+									m_dynamic_objects.push_back(new Enemy(""));
+									break;
+								}
+							}
+						}
+						x++;
 					}
+					y++;
+					std::cout << "\n";
+					std::getline(myfile, line);
 				}
-				x++;
 			}
-			y++;
-			std::cout << "\n";
 		}
 	}
 }
-/*	//+++
-void Level::checkCollisions()
+
+void Level::removeSpaces(std::string& s)
 {
-		//? Sitting around currently
-	//for (auto& box : m_blocks)
-	//{
-	//	if (m_state->getPlayer()->intersect(box))
-	//	{
-	//	}
-	//}
-
-	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;
-
-	for (auto& block : m_blocks)
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) 
 	{
-		if (!m_state->getPlayer()->intersectTypeY(*block))
-		{
-			float offset;
-			if (offset = m_state->getPlayer()->intersectSideways(*block))	//? Does not go in if 0
-			{
-				m_state->getPlayer()->m_pos_x += offset;
+		return !std::isspace(ch);
+	}));
+}
 
-//				m_state->getPlayer()->m_vx = 0.0f;
-				break;
-			}
-		}
+//? gets next line in file and trims empty spaces in front until it gets a non-empty line
+void Level::ignoreEmptyLine(std::ifstream& file, std::string& line)
+{
+	std::getline(file, line);
+	removeSpaces(line);
+	while (line == "")	// looks for non-empty line
+	{
+		std::getline(file, line);
+		removeSpaces(line);
 	}
-
-	for (auto& block : m_blocks)
+}
+//? returns substring left of ':'
+std::string Level::getDataTitle(std::string s)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) 
 	{
-		if (m_state->getPlayer()->intersectTypeY(*block))
-		{ 
-			float offset;
-			if (offset = m_state->getPlayer()->intersectY(*block))	//? Does not go in if 0
-			{			
-				m_state->getPlayer()->m_pos_y += offset;
-				if (offset > 0)
-				{
-					m_state->getPlayer()->m_collidingUp = true;	
-				}
-				else
-				{
-					m_state->getPlayer()->m_collidingUp = false;
-				}
-				//? add sound event
-				//if (m_state->getPlayer()->m_vy > 1.0f)
-				//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
+		return ch == ':';
+	}).base(), s.end());	// removes anything right of ':'
+	s.pop_back(); // removes ':'
+	return s;
+}
 
-//				m_state->getPlayer()->m_vy = 0.0f;
-				break;
+//? keep substring after ':'
+void Level::getDataValue(std::string& s)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)
+		{
+			return ch == ':';
+		}));
+	s.erase(0, 1); // removes ':'
+	removeSpaces(s);
+}
+
+void Level::saveObjectData(std::map<char, std::vector<std::string>>& database, std::vector<std::string> titles, std::ifstream& file, std::string& line)
+{
+	char tag;
+	std::string title;
+	std::vector <std::string> data(database.size(), "");
+	ignoreEmptyLine(file, line);
+	if (line[0] = '{')
+	{
+		ignoreEmptyLine(file, line);
+		tag = line[0];
+		ignoreEmptyLine(file, line);
+		if (line[0] = '{')
+		{
+			ignoreEmptyLine(file, line);
+			while (line[0] != '}')
+			{
+				// read data				// ex. line = width: 5
+				title = getDataTitle(line);	// ex. title = width
+				int index = 0;
+				for (std::string type : titles)
+				{
+					if (title == type)
+					{
+						getDataValue(line);
+						data.insert(data.begin() + index, line);
+						break;
+					}
+					index++;
+				}
+				ignoreEmptyLine(file, line);	//go to  next data
 			}
+			// add data for tag to database
+			if (data[5] != "" && database == m_terrain_data)	// has ending value
+			{
+				m_level_end_tag = tag;	// this tag represents end of level
+			}
+			database.insert({ tag, data });
+			ignoreEmptyLine(file, line);	// go to next data type
 		}
 	}
 }
-*/
+
 std::vector<LevelBox*> Level::getBlocks() const
 {
 	return m_blocks;

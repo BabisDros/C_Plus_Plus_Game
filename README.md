@@ -40,7 +40,7 @@
 ## Levels
 | Level                    | Description                                              | Done |
 |--------------------------|----------------------------------------------------------|------|
-| txt generated            | loop will read data of level from file {halfway-donw]    |  <ul><li>- [ ] </li></ul>  |
+| txt generated            | loop will read data of level from file                   |  <ul><li>- [x] </li></ul>  |
 | Level 1                  | Brief description of the first level                     |  <ul><li>- [ ] </li></ul>  |
 | ...                      | ...                                                      | ...  |
 
