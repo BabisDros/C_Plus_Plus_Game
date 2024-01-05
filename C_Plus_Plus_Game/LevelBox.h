@@ -1,18 +1,17 @@
 #pragma once
-#include "box.h"
 #include <string>
-#include "GameObject.h"
 #include "util.h"
 #include "Gamestate.h"
+#include "CollisionObject.h"
 
-class LevelBox : public GameObject, public Box
+class LevelBox :public CollisionObject
 {
 protected:
 	const std::string* m_texture;
 	bool& isDestructible;
 public:
 	LevelBox(float x, float y, float w, float h, const std::string* texture, bool destructible)
-		:Box(x, y, w, h), m_texture(texture), isDestructible(destructible) { init(); }
+		:CollisionObject(x, y, w, h), m_texture(texture), isDestructible(destructible) { init(); }
 
 	void init() override
 	{
@@ -30,8 +29,7 @@ public:
 			graphics::drawRect(x, y, m_width, m_height, m_brush);
 
 			if (m_state->m_debugging) debugDraw(x, y, m_width, m_height, getId());
-		}
-		
+		}		
 	}
 	const std::string* getTexture()
 	{

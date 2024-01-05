@@ -5,7 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "Enemy.h"
+#include "LevelBox.h"
+#include "CrateDestructible.h"
+#include "box.h"
 
 void Level::init()
 {
@@ -256,7 +258,7 @@ std::vector<LevelBox*> Level::getBlocks() const
 {
 	return m_blocks;
 }
-std::list<GameObject*> Level::getDynamicObjects() const
+std::list<CollisionObject*> Level::getDynamicObjects() const
 {
 	return m_dynamic_objects;
 }

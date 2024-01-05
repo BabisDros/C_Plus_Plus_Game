@@ -2,6 +2,12 @@
 #include "sgg/graphics.h"
 #include <string>
 #include <list>
+enum States
+{
+	Menu,
+	InGame,
+	Pause
+};
 
 class GameState
 {
@@ -11,7 +17,7 @@ class GameState
 	float m_canvas_height = m_canvas_width / 2;
 
 	static GameState* s_unique_instance;
-	
+	static States m_currentState;
 	GameState();
 	float m_pausableClock = 0.0f;
 	class Player* m_player = 0;
@@ -52,7 +58,7 @@ public:
 
 	std::string getFullDataPath(const std::string& data);
 
-	Player* getPlayer() { return m_player; }
-	Level* getLevel() { return m_current_level; }
+	class Player* getPlayer() { return m_player; }
+	class Level* getLevel() { return m_current_level; }
 	
 };
