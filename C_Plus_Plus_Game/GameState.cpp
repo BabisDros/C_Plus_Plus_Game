@@ -1,3 +1,4 @@
+#pragma once
 #include "UIManager.h"
 #include "GameState.h"
 #include "Level.h"

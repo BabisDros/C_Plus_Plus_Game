@@ -27,7 +27,7 @@ Terrain
 }
 Terrain
 {
-	C
+	C: Floor
 	{
 		width: 48
 		height: 1
@@ -127,33 +127,41 @@ E                     A A                       |
                   A     A  AAAA                 |
                  A      AAAA     A              |AAA
                A                     A          |
-  V                                 A    D      |
+  V                         V       A    D      |
                           AAAAA   AAA         Z |
      P         FFF       A                     A|
 C                                               |AA
-$ tag, width, height, texture, destructible{1,0}, Level_End {1,""}
+$ 
 $
-A 1 1 crate.png 0
-B 2 1 temp_player2.png 0
-C 48 1 crate.png 0
-D 1 2 temp_player2.png 1
-Z 1 1 slashFx.png 0 1
-T 5 1 crate.png 0
-E 1 9 crate.png 0
-F 1 1 crate.png 1
-$
-AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
-E                     A A                       |
-                     A  A                       |
-                    A   A  AAA           D      |
-                   A    A  A     B              |
-                  A     A  AAAA                 |
-                 A      AAAA     A              |AAA
-               A                     A          |
-                                    A    D      |
-                          AAAAA   AAA         Z |
-     P         FFF       A                     A|
-C                                               |AA
+Templates
+
+Terrain
+{
+	tag
+	{
+		width:
+		height:
+		texture:
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
+Enemy
+{
+	tag
+	{
+		width:
+		height:
+		texture:
+		health:
+		territory_x:
+		territory_y:
+	}
+
+}
 $ Info that are not read from program
 48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2])
 A: Basic crate

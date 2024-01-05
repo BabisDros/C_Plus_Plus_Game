@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include "GameState.h"
 #include "HealthUI.h"
 //INTERFACE. Objects that can be destructed should implement this
 class IDestructible

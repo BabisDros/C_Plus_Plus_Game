@@ -16,6 +16,7 @@ protected:
 	bool m_mirrored = false;
 	float m_vx = 0.f;
 	float m_vy = 0.f;
+	int m_lookingDirection = 1; //looking left value: -1 | looking right value: 1
 };
 
 template<typename Container>
@@ -41,9 +42,9 @@ inline void Entity::checkCollision(Container myContainer)
 
 	for (auto& block : myContainer)
 	{
-		if (intersectTypeY(*block))
+		if (block->isActive())
 		{
-			if (block->isActive())
+			if (intersectTypeY(*block))
 			{
 				float offset;
 				if (offset = intersectY(*block))	//? Does not go in if 0
