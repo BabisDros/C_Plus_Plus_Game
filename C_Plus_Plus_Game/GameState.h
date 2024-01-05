@@ -20,10 +20,12 @@ class GameState
 	static States m_currentState;
 	GameState();
 	float m_pausableClock = 0.0f;
+
+
+public:	
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
 
-public:	
 	float m_global_offset_x = 0.0f;
 	float m_global_offset_y = 0.0f;
 	bool m_debugging = false;
@@ -33,7 +35,6 @@ public:
 	bool m_paused_held = false;
 
 	bool goNextLevel = false;
-	std::list<std::string> levels;
 
 	int m_fps = 0;
 	int m_time = 0; // used for fps counting purposes
@@ -50,7 +51,6 @@ public:
 
 	void handleStates();
 	void showFPS();
-	void nextLevel();
 
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 

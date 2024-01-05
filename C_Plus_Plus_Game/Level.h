@@ -1,9 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include <sgg/graphics.h>
-#include <list>
 #include <map>
-#include <tuple>
 #include "Enemy.h"
 
 class Level : public GameObject

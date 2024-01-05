@@ -7,8 +7,6 @@
 
 void Player::init()
 {
-//	m_pos_x = m_state->getCanvasWidth() / 4.0f; 
-//	m_pos_y = m_state->getCanvasHeight() - 1.f;	//?? make initial var accesible
 
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
@@ -20,7 +18,7 @@ void Player::init()
 	damageBox.setBrush(slash);
 
 	damageBox.m_parentDirection = &m_lookingDirection;
-	m_initialHealth = m_currentHealth = 100;
+//	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
 }
 
@@ -49,12 +47,12 @@ void Player::update(float dt)
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
 	if (m_dev_fly) fly(delta_time);
-	else movement(delta_time);	//! player can currently hover below blocks if holding W, needs fix
+	else movement(delta_time);
 
 	if (m_pos_y > m_state->getCanvasHeight() + 2) //? is in void
 	{
-		m_pos_x = m_state->getLevel()->m_player_start_x; //? centered
-		m_pos_y = m_state->getLevel()->m_player_start_y; //! should be made to get to starting position
+		m_pos_x = m_state->getLevel()->m_player_start_x; 
+		m_pos_y = m_state->getLevel()->m_player_start_y;
 	}
 
 	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}, only if it isn't complex
