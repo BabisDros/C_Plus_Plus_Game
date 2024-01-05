@@ -52,6 +52,7 @@ public:
 	void handleStates();
 	void showFPS();
 
+	States& getCurrentState();
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
 	std::string getAssetDir();

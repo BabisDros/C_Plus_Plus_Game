@@ -163,6 +163,8 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="HealthUIMoving.h" />
+    <ClInclude Include="HealthUIFixed.h" />
     <ClInclude Include="IDestructible.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />

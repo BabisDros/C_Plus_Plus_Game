@@ -7,7 +7,6 @@
 
 void Player::init()
 {
-
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
@@ -19,7 +18,6 @@ void Player::init()
 
 	damageBox.m_parentDirection = &m_lookingDirection;
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
-
 }
 
 void Player::draw()
@@ -35,7 +33,6 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
 	damageBox.draw();
-	healthUi->draw();
 }
 
 void Player::update(float dt)

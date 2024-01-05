@@ -11,7 +11,7 @@ static void setCustomBrushProperties(graphics::Brush* brush, float fillOpacity, 
 
 static void debugDraw(float centerX, float centerY, float width, float height,int id=-1)
 {
-	
+	//box visuals
 	graphics::Brush debug_brush;
 	SETCOLOR(debug_brush.fill_color, 1, 0.3f, 0);
 	SETCOLOR(debug_brush.outline_color, 1, 0.1f, 0);
@@ -19,9 +19,10 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 	debug_brush.outline_opacity = 1.0f;
 	graphics::drawRect(centerX, centerY, width, height, debug_brush);
 
-	std::string idStr = std::to_string(id);
+	
+	//text visuals
+	std::string idStr = std::to_string(id);//cast to string
 	graphics::Brush debug_textBrush;
-	//SETCOLOR(debug_nameBrush.fill_color, 1, 0.3f, 0);
 	SETCOLOR(debug_textBrush.outline_color, 1, 0.1f, 0);
 	debug_textBrush.fill_opacity = 1.f;
 	debug_textBrush.outline_opacity = 1.0f;
