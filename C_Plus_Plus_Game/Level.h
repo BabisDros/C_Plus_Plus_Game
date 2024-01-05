@@ -29,20 +29,18 @@ class Level : public GameObject
 		"level_end"};
 
 	std::vector<std::string> m_enemy_titles = {
-	"width",
-	"height",
-	"texture",
-	"health",
-	"territory_x",
-	"territory_y" };
+		"width",
+		"height",
+		"texture",
+		"health",
+		"territory_x",
+		"territory_y" };
 	
 	char m_level_end_tag;
 	LevelBox *m_level_end;
 public:
 	float m_player_start_x;
 	float m_player_start_y;
-	
-	std::list<Enemy*> m_test_enemy;
 
 	void init() override;
 	void draw() override;
@@ -50,9 +48,9 @@ public:
 	Level(const std::string& name = "Level 0");
 	~Level();
 
-//	void checkCollisions();
 	void pausedDraw();
-	void read();
+
+	void read();	// methods used to read from file
 	void removeSpaces(std::string& s);
 	void ignoreEmptyLine(std::ifstream& file, std::string& line);
 	std::string getDataTitle(std::string s);
@@ -62,7 +60,6 @@ public:
 	std::vector<LevelBox*> getBlocks() const;
 
 	std::list<CollisionObject*> getDynamicObjects() const;
-
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);

@@ -159,8 +159,8 @@
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="CrateDestructible.h" />
     <ClInclude Include="DamageBox.h" />
-    <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="IDestructible.h" />
     <ClInclude Include="GameObject.h" />

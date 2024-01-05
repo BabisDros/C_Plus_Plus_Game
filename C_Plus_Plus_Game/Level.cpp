@@ -1,3 +1,4 @@
+#pragma once
 #include "Level.h"
 #include "GameState.h"
 #include "util.h"
@@ -83,6 +84,15 @@ void Level::pausedDraw()	//! make it better than a greyed out screen
 
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), 
 		m_state->getCanvasHeight(), paused_brush);
+
+	std::string str = "Paused";
+	graphics::Brush debug_textBrush;
+	//SETCOLOR(debug_nameBrush.fill_color, 1, 0.3f, 0);
+	SETCOLOR(debug_textBrush.outline_color, 1, 0.1f, 0);
+	debug_textBrush.fill_opacity = 1.f;
+	debug_textBrush.outline_opacity = 1.0f;
+	float centeringValue = str.size() / 4.f;//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth()/2 - centeringValue, m_state->getCanvasHeight()/2, 1.f, str, debug_textBrush);
 }
 
 void Level::read()
@@ -90,7 +100,6 @@ void Level::read()
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line, title;
 	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
-	char ending, tag;
 	int x, y=0;
 	if (myfile.is_open())
 	{
@@ -155,7 +164,7 @@ void Level::read()
 							{
 								if (itr->first == ch)
 								{
-									m_dynamic_objects.push_back(new Enemy(""));
+									m_dynamic_objects.push_back(new Enemy("", x + 1/2.0f, y+ 1/2.0f));//+ 1/2 of width/height
 									break;
 								}
 							}
@@ -201,7 +210,7 @@ std::string Level::getDataTitle(std::string s)
 	return s;
 }
 
-//? keep substring after ':'
+//? keep substring right of ':'
 void Level::getDataValue(std::string& s)
 {
 	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)

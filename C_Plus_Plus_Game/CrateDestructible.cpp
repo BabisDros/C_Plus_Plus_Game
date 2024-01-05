@@ -1,3 +1,4 @@
+#pragma once
 #include "CrateDestructible.h"
 
 void CrateDestructible ::init() 

@@ -18,7 +18,6 @@ class Player :public IDestructible, public Entity
 	const float m_accel_horizontal = 15.f;	//? if its too slow, player becomes unable to move (ex. starting next to a wall)
 	const float m_max_velocity = 5.0f;	
 	//looking left value:-1,looking right value:1
-	int m_lookingDirection = 1;
 	
 	bool m_dev_fly = false;
 	bool m_dev_fly_active = false;
@@ -48,9 +47,6 @@ public:
 	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
-//current velocities
-//	float m_vx = 0.f; 
-//	float m_vy = 0.f;
 
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
