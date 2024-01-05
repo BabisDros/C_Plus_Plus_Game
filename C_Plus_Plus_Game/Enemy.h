@@ -20,7 +20,7 @@ class Enemy :public IDestructible, public Entity
 	float m_movement_range_y = 2.f;
 
 	int m_direction_y = 1; // 1: up | -1: down
-	int m_movement_type = 2;	// 1: follow player | 2: static on x axis | 3: static on y axis | 4: static circling
+	int m_movement_type = 3;	// 1: follow player | 2: static on x axis | 3: static on y axis | 4: static circling
 
 	bool m_rangedAttack = true;
 	float m_projectile_vx;

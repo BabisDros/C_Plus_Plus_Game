@@ -67,7 +67,6 @@ void Enemy::movement(float dt)
 		case 3:
 			movementStaticY(delta_time);
 			break;
-			
 	}
 }
 
@@ -122,16 +121,17 @@ void Enemy::movementDynamic(float dt)
 	bool canFollow = true;
 	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
 	{
-		m_mirrored = false;
+		m_lookingDirection = -1;
 		move = -1;
 	}
 	else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f > m_pos_x + m_width / 2.f)
 	{
-		m_mirrored = true;
+		m_lookingDirection = 1;
 		move = 1;
 	}
 	else canFollow = false;
 
+	m_mirrored = m_lookingDirection == -1;
 	m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	move = dt * m_vx;
