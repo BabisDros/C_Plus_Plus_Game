@@ -51,7 +51,7 @@ public:
 	void handleStates();
 	void showFPS();
 	void nextLevel();
-
+	States& getCurrentState();
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
 	std::string getAssetDir();
@@ -61,5 +61,6 @@ public:
 
 	class Player* getPlayer() { return m_player; }
 	class Level* getLevel() { return m_current_level; }
+	
 	
 };

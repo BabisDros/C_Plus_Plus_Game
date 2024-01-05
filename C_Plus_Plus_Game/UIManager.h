@@ -11,5 +11,7 @@ class UIManager
 public:
 	void init();
 	void draw();
+	void drawPlayerHealth();
+	void drawMenu();
 	static UIManager* getInstance();
 };

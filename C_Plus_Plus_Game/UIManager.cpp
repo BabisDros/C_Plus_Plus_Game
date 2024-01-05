@@ -13,9 +13,24 @@ void UIManager::init()
 
 void UIManager::draw()
 {
+	if (m_state->getCurrentState() == States::Menu)
+	{
+		drawMenu();
+	}
+}
+
+void UIManager::drawPlayerHealth()
+{
+
+}
+
+void UIManager::drawMenu()
+{
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
 		m_state->getCanvasHeight(), menu);
 }
+
+
 
 UIManager* UIManager::getInstance()
 {

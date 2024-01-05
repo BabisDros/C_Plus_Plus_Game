@@ -28,15 +28,10 @@ void GameState::init()
 }
 
 void GameState::draw()
-{
+{	
+	UIManager::getInstance()->drawMenu();
 	
-	if (m_currentState == Menu)
-	{
-		UIManager::getInstance()->draw();
-	}
-
 	if (!m_current_level) return;
-
 	m_current_level->draw();
 	
 }
@@ -138,6 +133,11 @@ void GameState::nextLevel()
 	m_player->init();
 	graphics::preloadBitmaps(getAssetDir()); //! preload assets, not needed if all assets in 1 folder
 	goNextLevel = false;
+}
+
+States& GameState::getCurrentState()
+{
+	return m_currentState;
 }
 
 

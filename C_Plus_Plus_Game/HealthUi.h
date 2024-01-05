@@ -58,7 +58,6 @@ public:
 	void updateUIOnDamage(const float& initialHealth, const  float& currentHealth)
 	{
 		m_startTime = *m_state->getPausableClock();
-
 		//reduces fill size, so that the red background appears
 		m_proportionalWidth = currentHealth * m_width / initialHealth;
 		setActive(true);	
