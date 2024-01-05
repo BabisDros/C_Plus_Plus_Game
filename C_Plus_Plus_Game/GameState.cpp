@@ -41,6 +41,8 @@ void GameState::draw()
 	
 }
 
+
+
 void GameState::update(float dt)
 {
 	if (dt > 200) return;	//? it been too long since last frame
@@ -86,6 +88,11 @@ GameState::~GameState()
 	{
 		delete m_current_level;
 	}
+}
+
+void GameState::handleStates()
+{
+
 }
 
 void GameState::showFPS()

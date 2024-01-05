@@ -48,6 +48,7 @@ public:
 	float getCanvasWidth() { return m_canvas_width; }
 	float getCanvasHeight() { return m_canvas_height; }
 
+	void handleStates();
 	void showFPS();
 	void nextLevel();
 
