@@ -1,18 +1,18 @@
 #pragma once
 #include <sgg/graphics.h>
-#include "box.h"
-#include "GameObject.h"
+#include "CollisionObject.h"
+
 #include "GameState.h"
 #include "Level.h"
 #include "IDestructible.h"
 /// <summary>
 /// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
 /// </summary>
-class DamageBox:public GameObject, public Box
+class DamageBox:public CollisionObject
 {
 public:	
 	DamageBox() { init(); };
-	DamageBox(float x, float y, float w, float h) :Box(x, y, w, h) 
+	DamageBox(float x, float y, float w, float h) :CollisionObject(x, y, w, h)
 	{
 		//best to initialize object when created
 		init(); 
@@ -25,6 +25,7 @@ public:
 		m_width = w;
 		m_height = h;
 	}
+	int damage = 0;
 	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
 	void init() override;

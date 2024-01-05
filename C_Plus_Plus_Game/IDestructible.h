@@ -30,6 +30,7 @@ public:
                 healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
             }
         }
+
         else
         {
             destroy();

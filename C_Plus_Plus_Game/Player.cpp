@@ -43,7 +43,7 @@ void Player::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->m_test_enemy);
-	//checkCollision(m_state->getLevel()->getDynamicObjects());
+	checkCollision(m_state->getLevel()->getDynamicObjects());
 	damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 

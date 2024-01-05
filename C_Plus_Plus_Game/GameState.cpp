@@ -34,9 +34,9 @@ void GameState::draw()
 	if (!m_current_level) return;
 
 	m_current_level->draw();
-	if (m_currentState ==States:: Menu)
+	if (m_currentState == Menu)
 	{
-		UIManager::getInstance()->draw();
+		//UIManager::getInstance()->draw();
 	}
 	
 }
@@ -157,5 +157,5 @@ std::string GameState::getFullDataPath(const std::string& data)
 }
 
 
-
+States GameState::m_currentState = Menu;
 GameState* GameState::s_unique_instance = nullptr;

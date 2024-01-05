@@ -2,11 +2,8 @@
 #include "GameObject.h"
 #include <sgg/graphics.h>
 #include <list>
-#include "box.h"
 #include <map>
 #include <tuple>
-#include "LevelBox.h"
-#include "CrateDestructible.h"
 #include "Enemy.h"
 
 class Level : public GameObject
@@ -17,7 +14,7 @@ class Level : public GameObject
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	//seperate list for destructibles to improve performance. TODO:use a binary search to find elements and then remove destructed
-	std::list<GameObject*> m_dynamic_objects;
+	std::list<CollisionObject*> m_dynamic_objects;
 	std::vector<LevelBox*> m_blocks;
 
 
@@ -41,7 +38,7 @@ public:
 
 	std::vector<LevelBox*> getBlocks() const;
 
-	std::list<GameObject*> getDynamicObjects() const;
+	std::list<CollisionObject*> getDynamicObjects() const;
 
 
 	template <typename Container>

@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="box.h" />
+    <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="CrateDestructible.h" />
     <ClInclude Include="DamageBox.h" />
     <ClInclude Include="HealthUI.h" />
