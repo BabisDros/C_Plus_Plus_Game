@@ -13,6 +13,12 @@ void Enemy::init()
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("temp_enemy2.png"));
 
 	m_initialHealth = m_currentHealth = 100;
+
+	graphics::Brush slash;
+	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
+	m_projectile.setBrush(slash);
+
+	m_projectile.m_parentDirection = &m_lookingDirection;
 }
 
 void Enemy::draw()
@@ -27,6 +33,7 @@ void Enemy::draw()
 	{
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}
+	m_projectile.draw();
 }
 
 void Enemy::update(float dt)
@@ -35,6 +42,7 @@ void Enemy::update(float dt)
 //	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
 //	checkCollision(temp);
 	movement(dt);
+	attack(dt);
 }
 
 void Enemy::destroy()
@@ -59,6 +67,7 @@ void Enemy::movement(float dt)
 		case 3:
 			movementStaticY(delta_time);
 			break;
+			
 	}
 }
 
@@ -69,7 +78,7 @@ void Enemy::movementStaticX(float dt)
 		m_lookingDirection *= -1;
 		m_vx = 0;
 	}
-	m_mirrored = m_lookingDirection == 1;
+	m_mirrored = m_lookingDirection == -1;
 	m_vx = std::min(m_max_velocity, m_vx + dt * m_lookingDirection * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	m_pos_x += dt * m_vx;
@@ -88,10 +97,10 @@ void Enemy::movementStaticY(float dt)
 {
 	if (fabs(m_pos_y - m_homebase_y + dt * m_vy) > m_movement_range_y)
 	{
-		m_lookingDirection *= -1;
+		m_direction_y *= -1;
 		m_vy = 0;
 	}
-	m_vy = std::min(m_max_velocity, m_vy + dt * m_lookingDirection * m_accel_vertical);
+	m_vy = std::min(m_max_velocity, m_vy + dt * m_direction_y * m_accel_vertical);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	m_pos_y += dt * m_vy;
 
@@ -99,7 +108,7 @@ void Enemy::movementStaticY(float dt)
 	{
 		if (intersect(*itr))
 		{
-			m_lookingDirection *= -1;
+			m_direction_y *= -1;
 			break;
 		}
 	}
@@ -129,3 +138,45 @@ void Enemy::movementDynamic(float dt)
 	if (!canFollow || fabs(m_pos_x - m_homebase_x + move) > m_movement_range_x)  m_vx = 0;	// If it will get him outside of territory, stop
 	m_pos_x += dt * m_vx;
 }
+
+void Enemy::attack(float delta_time)
+{
+	float dt = delta_time / 1000.f;
+	if (m_rangedAttack) rangedAttack(dt);
+}
+
+void Enemy::rangedAttack(float dt)
+{
+	m_projectile.update(dt);
+	if (!m_throwProjectile.isRunning())
+	{
+		m_projectile.setActive(true);
+		m_throwProjectile.setStartTime(*m_state->getPausableClock());
+		m_projectile.setPosition(m_pos_x, m_pos_y, 0.8f, 0.8f);
+		m_projectile_direction = m_lookingDirection;
+	}
+
+	if (m_throwProjectile.isRunning())
+	{
+		float elapsedTime = *m_state->getPausableClock() - m_throwProjectile.getStartTime();
+		if (elapsedTime < m_throwProjectile.getDuration())
+		{
+			float move = m_projectile_direction;
+			m_projectile_vx = std::min(m_projectile_max_velocity, m_projectile_vx + dt * move * m_projectile_accel_horizontal);
+			m_projectile_vx = std::max(-m_projectile_max_velocity, m_projectile_vx);
+			float distance = dt * m_projectile_vx;
+			m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, 0.8f, 0.8f);
+		}
+		else if (m_projectile.isActive())
+		{
+			m_projectile.setActive(false);
+		}
+
+		if (elapsedTime >= m_throwProjectile.getCooldown())
+		{
+			m_throwProjectile.setStartTime(0.f);
+		}
+	}
+}
+
+

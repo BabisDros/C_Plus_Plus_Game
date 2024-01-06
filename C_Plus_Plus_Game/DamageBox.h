@@ -7,14 +7,20 @@
 /// </summary>
 class DamageBox:public CollisionObject
 {
+	void commonInit()
+	{
+		init(); 
+		canBeMirrored = true;
+	}
+	
 public:	
-	DamageBox() { init(); };
+	DamageBox() { commonInit(); }
 	DamageBox(float x, float y, float w, float h) :CollisionObject(x, y, w, h)
 	{
 		//best to initialize object when created
-		init(); 
+		commonInit();
 	}
-
+	DamageBox(bool canBecomeMirrored) { canBeMirrored = canBecomeMirrored; }
 	void setPosition(float x, float y, float w, float h)
 	{
 		m_pos_x = x;
@@ -25,6 +31,7 @@ public:
 	int m_damage = 0;
 	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
+	bool canBeMirrored;
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
