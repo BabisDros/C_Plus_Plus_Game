@@ -28,7 +28,7 @@ class Player :public IDestructible, public Entity
 	void slash(float dt);
 	void takeDamage(const int& damage) override;
 public:
-	Player(std::string name,float initialHealth) : Entity(name)
+	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
 		setInitialHealthValues(initialHealth);
 		m_width = 0.5f;

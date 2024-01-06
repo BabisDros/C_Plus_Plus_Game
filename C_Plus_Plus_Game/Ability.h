@@ -1,18 +1,31 @@
 #pragma once
+
 /** \param cooldown, duration, startTime, speed=0
 */
 class  Ability
 {
 private:
-	float m_cooldown;
-	float m_duration;
-	float m_startTime;
-	float m_speed;
+	float m_cooldown=0;
+	float m_duration=0;
+	float m_startTime=0;
+	float m_speed=0;
 public:
 
 	Ability(float cooldown, float duration, float startTime, float speed=0)
 		:m_cooldown(cooldown), m_duration(duration), m_startTime(startTime), m_speed(speed) {};
 
+	float getElapsedTime()
+	{
+		return *GameState::getInstance()->getPausableClock() - m_startTime;
+	}
+
+	void resetIfCooldownExpired()
+	{
+		if (getElapsedTime() >= getCooldown())
+		{
+			setStartTime(0.f);
+		}
+	}
 	void setStartTime(float time)
 	{
 		m_startTime = time;

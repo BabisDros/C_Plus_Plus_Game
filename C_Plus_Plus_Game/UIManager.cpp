@@ -4,6 +4,7 @@
 //#include "Player.h"
 #include <iostream>
 #include "CallbackManager.h"
+#include "player.h"
 UIManager* UIManager::s_unique_instance = nullptr;
 
 void UIManager::init()
@@ -11,7 +12,7 @@ void UIManager::init()
 	m_state = GameState::getInstance();
 	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
 
-	CallbackManager::getInstance()->m_playerIsDamaged.addActionCallbackTwoInt(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playerIsDamaged.addTwoIntActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 
@@ -39,6 +40,7 @@ void UIManager::drawPlayerHealth()
 
 void UIManager::drawPause()	//! make it better than a greyed out screen
 {
+	//draw canvas
 	graphics::Brush paused_brush;
 	paused_brush.fill_opacity = 0.75f;
 	paused_brush.outline_opacity = 0.f;
@@ -46,7 +48,8 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
 		m_state->getCanvasHeight(), paused_brush);
-
+	
+	//draw text
 	std::string str = "Paused";
 	graphics::Brush textBrush;
 	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
@@ -56,15 +59,6 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValue, m_state->getCanvasHeight() / 2, 1.f, str, textBrush);
 }
 
-void UIManager::drawText()
-{
-	//SETCOLOR(healthTxt.outline_color, 1, 0.1f, 0);
-	//healthTxt.fill_opacity = 1.f;
-	//healthTxt.outline_opacity = 1.0f;
-	//playerHealthStr = std::to_string(m_state->getPlayer()->getHealth());
-	//float centeringValue = playerHealthStr.size() / 25.f;//centering offset value for 0.2 size font
-	//graphics::drawText(0 - centeringValue, 0, 0.2f, playerHealthStr, healthTxt);
-}
 
 void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& currentHealth)
 {
@@ -76,8 +70,6 @@ void UIManager::drawMenu()
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
 		m_state->getCanvasHeight(), m_menu);
 }
-
-
 
 UIManager* UIManager::getInstance()
 {
