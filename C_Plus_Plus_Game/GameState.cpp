@@ -47,10 +47,11 @@ void GameState::update(float dt)
 	{
 		m_current_level->update(dt);
 		m_pausableClock += graphics::getDeltaTime()/1000;
+		m_currentState = States::InGame;
 	}
 	else
 	{
-		m_current_level->pausedDraw();	//? Make paused window
+		m_currentState=States::Paused;	//? Make paused window
 	}
 	
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
@@ -91,9 +92,9 @@ void GameState::handleStates()
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_L))
 		{
-			LevelManager::getInstance()->loadingFile = true;
+			LevelManager::getInstance()->m_loadingFile = true;
 			LevelManager::getInstance()->loadSaveFile();
-			LevelManager::getInstance()->loadingFile = false;
+			LevelManager::getInstance()->m_loadingFile = false;
 			m_currentState = States::InGame;
 		}
 	}

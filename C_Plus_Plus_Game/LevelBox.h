@@ -8,10 +8,10 @@ class LevelBox :public CollisionObject
 {
 protected:
 	const std::string* m_texture;
-	bool& isDestructible;
+	bool& m_isDestructible;
 public:
 	LevelBox(float x, float y, float w, float h, const std::string* texture, bool destructible)
-		:CollisionObject(x, y, w, h), m_texture(texture), isDestructible(destructible) { init(); }
+		:CollisionObject(x, y, w, h), m_texture(texture), m_isDestructible(destructible) { init(); }
 
 	void init() override
 	{
@@ -38,6 +38,6 @@ public:
 
 	bool& getIsDestructible() const
 	{
-		return isDestructible;
+		return m_isDestructible;
 	}
 };

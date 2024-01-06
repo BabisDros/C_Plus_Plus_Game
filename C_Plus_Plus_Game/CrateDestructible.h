@@ -10,12 +10,12 @@ public:
 	{
 		init();
 		setInitialHealthValues(initialHealth);
-		healthUi->setPosition(x,y);
+		m_healthUi->setPosition(x,y);
 	}
 	~CrateDestructible() 
 	{
-		if (healthUi)
-			delete healthUi;
+		if (m_healthUi)
+			delete m_healthUi;
 	}
 	void init() override;
 	void draw() override;

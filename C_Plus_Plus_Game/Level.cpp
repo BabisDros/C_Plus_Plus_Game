@@ -33,11 +33,6 @@ void Level::draw()
 	/* background is moving */
 	graphics::drawRect(offset_x, offset_y, w / 0.5f, h, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
 
-	//? order of draw() matters, if overllaping last goes on top
-	if (m_state->getPlayer()->isActive()) //? draws player
-	{
-		m_state->getPlayer()->draw();
-	}
 /* Not used currently
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->draw();*/
@@ -49,8 +44,11 @@ void Level::draw()
 
 	for (auto p_gob : m_dynamic_objects)
 		if (p_gob) p_gob->draw();
-	
-	if (m_state->m_paused) pausedDraw();
+	//? order of draw() matters, if overllaping last goes on top
+	if (m_state->getPlayer()->isActive()) //? draws player
+	{
+		m_state->getPlayer()->draw();
+	}
 }
 
 void Level::update(float dt)
@@ -70,30 +68,10 @@ void Level::update(float dt)
 	GameObject::update(dt);
 }
 
-Level::Level(const std::string& name) : GameObject(name)
-{
-}
+Level::Level(const std::string& name) : GameObject(name) {}
 
 
-void Level::pausedDraw()	//! make it better than a greyed out screen
-{
-	graphics::Brush paused_brush;
-	paused_brush.fill_opacity = 0.75f;
-	paused_brush.outline_opacity = 0.f;
-	SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
 
-	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), 
-		m_state->getCanvasHeight(), paused_brush);
-
-	std::string str = "Paused";
-	graphics::Brush debug_textBrush;
-	//SETCOLOR(debug_nameBrush.fill_color, 1, 0.3f, 0);
-	SETCOLOR(debug_textBrush.outline_color, 1, 0.1f, 0);
-	debug_textBrush.fill_opacity = 1.f;
-	debug_textBrush.outline_opacity = 1.0f;
-	float centeringValue = str.size() / 4.f;//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawText(m_state->getCanvasWidth()/2 - centeringValue, m_state->getCanvasHeight()/2, 1.f, str, debug_textBrush);
-}
 
 void Level::read()
 {
