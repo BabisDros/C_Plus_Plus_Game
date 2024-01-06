@@ -145,6 +145,7 @@
     <ClCompile Include="DamageBox.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -161,6 +162,8 @@
     <ClInclude Include="CrateDestructible.h" />
     <ClInclude Include="DamageBox.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="CstmCallback.h" />
+    <ClInclude Include="CallbackManager.h" />
     <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HealthUIMoving.h" />

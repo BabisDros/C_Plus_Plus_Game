@@ -5,8 +5,8 @@
 class IDestructible
 {
 public:
-    HealthUIMoving* healthUi;
-    IDestructible() :healthUi(new HealthUIMoving()) {};
+    HealthUIMoving* m_healthUi;
+    IDestructible() :m_healthUi(new HealthUIMoving()) {};
     ~IDestructible() {}
 
     void setInitialHealthValues(const int& health)
@@ -26,11 +26,11 @@ public:
         if (m_currentHealth > 0)
         {
             float pausableClock = *GameState::getInstance()->getPausableClock();
-            if (pausableClock - damageTakenTimestamp > invincibilityDuration)
+            if (pausableClock - m_damageTakenTimestamp > m_invincibilityDuration)
             {
-                damageTakenTimestamp = pausableClock;
+                m_damageTakenTimestamp = pausableClock;
                 m_currentHealth -= damage;
-                healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
+                m_healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
             }
         }
 
@@ -49,6 +49,6 @@ protected:
     int m_currentHealth = 0;
 
     //duration when the object can take anymore damage. Take damage once per hit
-    float invincibilityDuration = 0.5f;
-    float damageTakenTimestamp=0.0f;
+    float m_invincibilityDuration = 0.5f;
+    float m_damageTakenTimestamp=0.0f;
 };

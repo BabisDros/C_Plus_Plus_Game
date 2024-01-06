@@ -11,7 +11,9 @@ class Level : public GameObject
 
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
-	//seperate list for destructibles to improve performance. TODO:use a binary search to find elements and then remove destructed
+
+	/*/Seperate list for destructibles to improve performance. 
+	TODO: use a binary search to find elements and then remove destructed*/
 	std::list<CollisionObject*> m_dynamic_objects;
 	std::vector<LevelBox*> m_blocks;
 

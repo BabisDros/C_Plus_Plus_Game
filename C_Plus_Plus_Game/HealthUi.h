@@ -46,7 +46,7 @@ public:
 		m_height = height;
 	}
 
-	void updateUIOnDamage(const float& initialHealth, const  float& currentHealth)
+	void updateUIOnDamage(const int& initialHealth, const  int& currentHealth)
 	{
 		m_startTime = *m_state->getPausableClock();
 		//reduces fill size, so that the red background appears

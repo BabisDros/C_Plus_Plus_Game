@@ -22,7 +22,7 @@ public:
 		m_width = w;
 		m_height = h;
 	}
-	int damage = 0;
+	int m_damage = 0;
 	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
 	void init() override;

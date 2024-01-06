@@ -43,7 +43,8 @@ void DamageBox::checkForCollisions()
 		//all gameobjects in DynamicObjects considered destructible
 		IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);
 		
-		//all objects will be setActive(false) when health is 0. TODO if performance improvement needed: could delete them, and shorten the list
+		/*all objects will be setActive(false) when health is 0. 
+		TODO: if performance improvement needed : could delete them, and shorten the list*/
 		if (intersect(*gameobj) && destructiblePtr)
 		{		
 			destructiblePtr->takeDamage(10);

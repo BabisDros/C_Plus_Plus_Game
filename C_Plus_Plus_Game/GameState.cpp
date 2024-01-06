@@ -92,9 +92,9 @@ void GameState::handleStates()
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_L))
 		{
-			LevelManager::getInstance()->loadingFile = true;
+			LevelManager::getInstance()->m_loadingFile = true;
 			LevelManager::getInstance()->loadSaveFile();
-			LevelManager::getInstance()->loadingFile = false;
+			LevelManager::getInstance()->m_loadingFile = false;
 			m_currentState = States::InGame;
 		}
 	}

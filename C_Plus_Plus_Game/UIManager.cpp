@@ -3,13 +3,15 @@
 #include "Gamestate.h"
 //#include "Player.h"
 #include <iostream>
-
+#include "CallbackManager.h"
 UIManager* UIManager::s_unique_instance = nullptr;
 
 void UIManager::init()
 {
 	m_state = GameState::getInstance();
-	setCustomBrushProperties(&menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));	
+	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
+
+	CallbackManager::getInstance()->m_playerIsDamaged.addActionCallbackTwoInt(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 
@@ -31,7 +33,7 @@ void UIManager::draw()
 
 void UIManager::drawPlayerHealth()
 {
-	playerHealthUI->draw();
+	m_playerHealthUI->draw();
 }
 
 
@@ -64,15 +66,15 @@ void UIManager::drawText()
 	//graphics::drawText(0 - centeringValue, 0, 0.2f, playerHealthStr, healthTxt);
 }
 
-void UIManager::onPlayerHealthChanged()
+void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& currentHealth)
 {
-	playerHealthUI->updateUIOnDamage(20,10);
+	m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
 }
 
 void UIManager::drawMenu()
 {
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
-		m_state->getCanvasHeight(), menu);
+		m_state->getCanvasHeight(), m_menu);
 }
 
 
