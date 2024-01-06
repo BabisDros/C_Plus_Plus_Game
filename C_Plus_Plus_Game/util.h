@@ -1,5 +1,6 @@
 #pragma once
 #include <sgg/graphics.h>
+#include <iostream>//TODO: for debugging. remove
 #define SETCOLOR(c, r, g, b) {c[0] = r; c[1] = g; c[2] = b;}
 
 static void setCustomBrushProperties(graphics::Brush* brush, float fillOpacity, float outlineOpacity, std::string texture="")
@@ -28,4 +29,15 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 	debug_textBrush.outline_opacity = 1.0f;
 	float centeringValue = idStr.size() / 25.f;//centering offset value for 0.2 size font
 	graphics::drawText(centerX- centeringValue, centerY, 0.2f, idStr, debug_textBrush);
+}
+
+static float calcCentering×ForTextSize(const size_t& stringSize, const float& targetFontSize)
+{
+	float value = float(stringSize) * targetFontSize* 0.25f;
+	return  value;
+}
+
+static float calcCenteringYForTextSize(const float& targetFontSize)
+{
+	return targetFontSize * 0.35f;
 }

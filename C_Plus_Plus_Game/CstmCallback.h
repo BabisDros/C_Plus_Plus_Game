@@ -9,17 +9,17 @@ class CstmCallback
 {
 protected:
 	bool m_action_occured = false;
-	std::vector<std::function<void(const int&, const int&)>>m_actionCallbacks;
+	std::vector<std::function<void(const int&, const int&)>>m_twoIntActionCallbacks;
 
 public:
-	void addActionCallbackTwoInt (std::function<void(const int&, const int&)> cb)
+	void addTwoIntActionCallback(std::function<void(const int&, const int&)> cb)
 	{
-		m_actionCallbacks.push_back(cb);
+		m_twoIntActionCallbacks.push_back(cb);
 	}
 
 	void trigger(int val1,int val2)
 	{
-		for (const auto& callB : m_actionCallbacks)
+		for (const auto& callB : m_twoIntActionCallbacks)
 			callB(val1, val2);	
 	}
 };

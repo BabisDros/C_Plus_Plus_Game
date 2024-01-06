@@ -5,8 +5,8 @@
 class IDestructible
 {
 public:
-    HealthUIMoving* m_healthUi;
-    IDestructible() :m_healthUi(new HealthUIMoving()) {};
+    HealthUIMoving* m_healthUi = nullptr;
+    IDestructible(bool createHealthUI = true) : m_healthUi(createHealthUI ? new HealthUIMoving() : nullptr) { }
     ~IDestructible() {}
 
     void setInitialHealthValues(const int& health)
@@ -30,7 +30,8 @@ public:
             {
                 m_damageTakenTimestamp = pausableClock;
                 m_currentHealth -= damage;
-                m_healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
+                if (m_healthUi)
+                    m_healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
             }
         }
 

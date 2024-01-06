@@ -17,6 +17,8 @@ void Player::init()
 	m_damageBox.setBrush(slash);
 
 	m_damageBox.m_parentDirection = &m_lookingDirection;
+	//trigger callbackmanager to display health value
+	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 }
 
@@ -117,9 +119,8 @@ float Player::jump()
 	}
 	
 	if (m_jumpAbility.isRunning())
-	{
-		float elapsedTime = *m_state->getPausableClock() - m_jumpAbility.getStartTime();
-		if (elapsedTime >= m_jumpAbility.getCooldown())
+	{	
+		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
 		{
 			m_jumpAbility.setStartTime(0.f);
 		}
@@ -158,18 +159,14 @@ void Player::dash(float delta_time)
 	}	
 	
 	if (m_dashAbility.isRunning())
-	{
-		float elapsedTime = *m_state->getPausableClock() - m_dashAbility.getStartTime();
+	{	
 		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
-		if (elapsedTime < m_dashAbility.getDuration())
+		if (m_dashAbility.getElapsedTime() < m_dashAbility.getDuration())
 		{
 			m_vx = m_dashAbility.getSpeed() * m_lookingDirection;
 			m_pos_x += delta_time * m_vx;
 		}
-		if (elapsedTime >= m_dashAbility.getCooldown())
-		{
-			m_dashAbility.setStartTime(0.f) ;
-		}
+		m_dashAbility.resetIfCooldownExpired();
 	}
 }
 
@@ -182,8 +179,7 @@ void Player::slash(float delta_time)
 	}
 	if (m_slashAbility.isRunning())
 	{
-		float elapsedTime = *m_state->getPausableClock() - m_slashAbility.getStartTime();
-		if (elapsedTime < m_slashAbility.getDuration())
+		if (m_slashAbility.getElapsedTime() < m_slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction
 			float lookingDirOffset = 0.5f * m_lookingDirection;
@@ -196,10 +192,7 @@ void Player::slash(float delta_time)
 			m_damageBox.setActive(false);
 		}
 
-		if (elapsedTime >= m_slashAbility.getCooldown())
-		{
-			m_slashAbility.setStartTime(0.f);
-		}	
+		m_slashAbility.resetIfCooldownExpired();
 	}
 }
 
