@@ -24,7 +24,7 @@ public:
 			graphics::drawRect(calculatedPosX, calculatedPosY, m_width, m_height, m_brush);
 			graphics::drawRect(calculatedPosX - positionCorrection, calculatedPosY, m_proportionalWidth, m_height, m_fillBrush);
 			
-			float centeringValueX = calcCentering×ForTextSize( m_healthTxt.size(), m_fontSize);	
+			float centeringValueX = calcCenteringXForTextSize( m_healthTxt.size(), m_fontSize);
 			float centeringValueY = calcCenteringYForTextSize(m_fontSize);
 			graphics::drawText(calculatedPosX - centeringValueX, calculatedPosY+ centeringValueY, m_fontSize, m_healthTxt, m_valueBrush);
 
