@@ -8,6 +8,10 @@
 
 void Enemy::init()
 {
+	if (m_stick_to_wall = 2) m_pos_x += (1 - m_width) * 0.5f;	// 0.5 is based on level zoom
+	if (m_stick_to_wall = 3) m_pos_y += (1 - m_height);
+
+	//if (m_movement_type = 0) { m_movement_range_x = m_movement_range_x = 0; }
 	m_homebase_x = m_pos_x;
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
@@ -25,7 +29,7 @@ void Enemy::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 	//! -0.5f MUST be gone
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 2.0f, 2.0f, m_brush);
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
 
@@ -67,6 +71,15 @@ void Enemy::movement(float dt)
 		case 3:
 			movementStaticY(delta_time);
 			break;
+	}
+	if (m_canJump)
+	{
+		m_vy -= jump();
+		m_vy = std::min(m_max_velocity_jump, m_vy);
+		m_vy = std::max(-m_max_velocity_jump, m_vy);
+
+		m_vy += delta_time * m_gravity;
+		m_pos_y += delta_time * m_vy;
 	}
 }
 
@@ -177,4 +190,21 @@ void Enemy::rangedAttack(float dt)
 	}
 }
 
+float Enemy::jump()
+{
+	float accel = 0;
+	if (m_vy == 0.0f && !m_jumpAbility.isRunning())
+	{
+		m_jumpAbility.setStartTime(*m_state->getPausableClock());
+		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+	}
 
+	if (m_jumpAbility.isRunning())
+	{
+		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
+		{
+			m_jumpAbility.setStartTime(0.f);
+		}
+	}
+	return accel;
+}

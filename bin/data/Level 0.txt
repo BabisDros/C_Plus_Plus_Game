@@ -114,13 +114,13 @@ Enemy
 		texture: temp_enemy2.png
 		health: 10
 		ranged: 1
-		body_damage:
+		body_damage: 0
 		jumping: 0
 		looking: 1
-		territory_x: 1
-		territory_y: 1
-		movement: 1
-		stick_to_wall:
+		territory_x: 3
+		territory_y: 3
+		movement: 2
+		stick_to_wall: 0
 	}
 
 }
@@ -130,16 +130,36 @@ Enemy
 	O
 	{
 		width: 1
-		height: 1
+		height: 0.5
 		texture: temp_enemy2.png
 		health: 10
 		ranged: 1
 		body_damage:
 		jumping: 0
-		looking: 1
+		looking: -1
 		territory_x: 1
 		territory_y: 2
 		movement: 3
+		stick_to_wall:
+	}
+
+}
+
+Enemy
+{
+	S
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping: 0
+		looking: -1
+		territory_x:
+		territory_y:
+		movement:
 		stick_to_wall:
 	}
 
@@ -155,7 +175,7 @@ E                     A A                       |
                A                     A          |
   V                         O       A    D      |
                           AAAAA   AAA         Z |
-     P         FFF       A                     A|
+     P         FFF  S    A                     A|
 C                                               |AA
 $ 
 $
@@ -200,3 +220,23 @@ A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
 P: Player, 
+
+Enemy
+{
+	S
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping: 0
+		looking: -1
+		territory_x: 
+		territory_y: 
+		movement: 0
+		stick_to_wall:
+	}
+
+}
