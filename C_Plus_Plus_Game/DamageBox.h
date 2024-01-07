@@ -25,11 +25,11 @@ public:
 	int m_damage = 0;
 	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
-	bool canBeMirrored=true;
+	bool canBeMirrored = true;
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	void setBrush(const graphics::Brush& brush) {	m_brush = brush; }
+	void setBrush(const graphics::Brush& brush);
 	void checkForCollisions();
 };
 

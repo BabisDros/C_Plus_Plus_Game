@@ -12,14 +12,6 @@ protected:
 	std::vector<std::function<void(const int&, const int&)>>m_twoIntActionCallbacks;
 
 public:
-	void addTwoIntActionCallback(std::function<void(const int&, const int&)> cb)
-	{
-		m_twoIntActionCallbacks.push_back(cb);
-	}
-
-	void trigger(int val1,int val2)
-	{
-		for (const auto& callB : m_twoIntActionCallbacks)
-			callB(val1, val2);	
-	}
+	void addTwoIntActionCallback(std::function<void(const int&, const int&)> cb);
+	void trigger(int val1, int val2);
 };

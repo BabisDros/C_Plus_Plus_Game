@@ -36,6 +36,11 @@ void DamageBox::update(float dt)
 	}
 }
 
+void DamageBox::setBrush(const graphics::Brush& brush)
+{
+	m_brush = brush;
+}
+
 void DamageBox::checkForCollisions()
 {
 	for (auto& gameobj:  m_state->getLevel()->getDynamicObjects())
