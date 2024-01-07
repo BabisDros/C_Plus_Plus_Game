@@ -53,33 +53,6 @@ Terrain
 }
 Terrain
 {
-	T
-	{
-		width: 5
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-Terrain
-{
-	E
-	{
-		width: 1
-		height: 9
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
-Terrain
-{
 	F
 	{
 		width: 1
@@ -141,7 +114,7 @@ Enemy
 		texture: stalagmite4Y.png
 		health: 10
 		ranged: 0
-		body_damage:
+		body_damage: 1
 		jumping:
 		looking: 1
 		stick_to_wall: 3
@@ -172,25 +145,6 @@ Enemy
 
 }
 
-Enemy
-{
-	S
-	{
-		width: 1
-		height: 0.5
-		texture: stalagmite4.png
-		health: 10
-		ranged: 0
-		body_damage:
-		jumping: 0
-		looking: -1
-		territory_x:
-		territory_y:
-		movement:
-		stick_to_wall:
-	}
-
-}
 Level
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
 E                     A A                       |
@@ -202,7 +156,7 @@ E                     A A                       |
                A                     A          |
   V            D            O       A           |
                           AAAAA   AAA         Z |
-     P  S SS   FFF       A                     A|
+     P  S SS   FFF       A       Α             A|
 C                                               |AA
 $ 
 $
