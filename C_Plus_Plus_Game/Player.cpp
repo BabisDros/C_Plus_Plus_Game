@@ -19,7 +19,6 @@ void Player::init()
 	m_damageBox.m_parentDirection = &m_lookingDirection;
 	//trigger callbackmanager to display health value
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-//	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 }
 
 void Player::draw()

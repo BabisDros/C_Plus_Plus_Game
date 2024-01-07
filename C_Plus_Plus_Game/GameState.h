@@ -6,7 +6,9 @@ enum States
 {
 	Menu,
 	InGame,
-	Paused
+	Paused,
+	Dead,
+	Win
 };
 
 class GameState
