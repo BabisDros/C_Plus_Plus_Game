@@ -109,7 +109,7 @@ Enemy
 {
 	V
 	{
-		width: 1
+		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
 		health: 10
@@ -119,7 +119,7 @@ Enemy
 		looking: 1
 		territory_x: 1
 		territory_y: 1
-		movement: 1
+		movement: 3
 		stick_to_wall:
 	}
 
@@ -135,11 +135,31 @@ Enemy
 		health: 10
 		ranged: 1
 		body_damage:
-		jumping: 0
-		looking: 1
+		jumping: 1
+		looking: -1
 		territory_x: 1
 		territory_y: 2
-		movement: 3
+		movement: 2
+		stick_to_wall:
+	}
+
+}
+
+Enemy
+{
+	S
+	{
+		width: 1
+		height: 1
+		texture: stalagmite4.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping:
+		looking: 1
+		territory_x:
+		territory_y:
+		movement: 
 		stick_to_wall:
 	}
 
@@ -151,7 +171,7 @@ E                     A A                       |
                     A   A  AAA           D      |
                    A    A  A      B             |
                   A     A  AAAA                 |
-                 A      AAAA     A              |AAA
+                 A    S AAAA     A              |AAA
                A                     A          |
   V                         O       A    D      |
                           AAAAA   AAA         Z |
