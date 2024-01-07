@@ -8,9 +8,12 @@
 
 void Enemy::init()
 {
+	//if (m_stick_to_wall == 2) m_pos_x += (1 - m_width) * 0.5f;
+	if (m_stick_to_wall == 3) m_pos_y += (1 - m_height) * 0.5f;	// Currently only done for either top or bottom
+
 	m_homebase_x = m_pos_x;
 	m_homebase_y = m_pos_y;
-	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("temp_enemy2.png"));
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
 	m_initialHealth = m_currentHealth = 100;
 
@@ -23,9 +26,14 @@ void Enemy::init()
 
 void Enemy::draw()
 {
-	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
+	
+	float angle = 0;
+	if (m_stick_to_wall == 1) angle = 180.f;
+	graphics::setOrientation(angle);
+
+	if (m_mirrored) graphics::setScale(-1.f, 1.f); //mirrors image
 	//! -0.5f MUST be gone
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 2.0f, 2.0f, m_brush);
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
 
@@ -67,7 +75,15 @@ void Enemy::movement(float dt)
 		case 3:
 			movementStaticY(delta_time);
 			break;
-			
+	}
+	if (m_canJump)
+	{
+		m_vy -= jump();
+		m_vy = std::min(m_max_velocity_jump, m_vy);
+		m_vy = std::max(-m_max_velocity_jump, m_vy);
+
+		m_vy += delta_time * m_gravity;
+		m_pos_y += delta_time * m_vy;
 	}
 }
 
@@ -122,16 +138,17 @@ void Enemy::movementDynamic(float dt)
 	bool canFollow = true;
 	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
 	{
-		m_mirrored = false;
+		m_lookingDirection = -1;
 		move = -1;
 	}
 	else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f > m_pos_x + m_width / 2.f)
 	{
-		m_mirrored = true;
+		m_lookingDirection = 1;
 		move = 1;
 	}
 	else canFollow = false;
 
+	m_mirrored = m_lookingDirection == -1;
 	m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	move = dt * m_vx;
@@ -177,4 +194,21 @@ void Enemy::rangedAttack(float dt)
 	}
 }
 
+float Enemy::jump()
+{
+	float accel = 0;
+	if (m_vy == 0.0f && !m_jumpAbility.isRunning())
+	{
+		m_jumpAbility.setStartTime(*m_state->getPausableClock());
+		accel = m_accel_vertical * 2.f;//? not delta_time! Burst [Papaioannou comment]
+	}
 
+	if (m_jumpAbility.isRunning())
+	{
+		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
+		{
+			m_jumpAbility.setStartTime(0.f);
+		}
+	}
+	return accel;
+}

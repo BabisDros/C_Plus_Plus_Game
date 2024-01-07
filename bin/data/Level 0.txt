@@ -38,14 +38,15 @@ Terrain
 	}
 
 }
+
 Terrain
 {
-	D
+	E: Left wall
 	{
 		width: 1
-		height: 2
-		texture: temp_player2.png
-		destructible: 1
+		height: 7
+		texture: crate.png
+		destructible:
 		health:
 		level_end: 
 	}
@@ -53,7 +54,7 @@ Terrain
 }
 Terrain
 {
-	Z
+	Z: End goal
 	{
 		width: 1
 		height: 1
@@ -64,33 +65,6 @@ Terrain
 	}
 
 }
-Terrain
-{
-	T
-	{
-		width: 5
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-Terrain
-{
-	E
-	{
-		width: 1
-		height: 9
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
 Terrain
 {
 	F
@@ -109,27 +83,133 @@ Enemy
 {
 	V
 	{
-		width:
-		height:
-		texture:
-		health:
-		territory_x:
-		territory_y:
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 3
 	}
 
 }
+
+Enemy
+{
+	O: jumping enemy in "tunnel:
+	{
+		width: 0.75
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage:
+		jumping: 1
+		looking: -1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 2
+		movement: 2
+	}
+
+}
+Enemy
+{
+	V: first enemy on left
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 3
+	}
+
+}
+
+Enemy
+{
+	S: bottom spikes
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: 10
+		ranged: 0
+		body_damage: 1
+		jumping:
+		looking: 1
+		stick_to_wall: 3
+		territory_x:
+		territory_y:
+		movement: 
+	}
+
+}
+
+Enemy
+{
+	D: bottom spikes
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping:
+		looking: 1
+		stick_to_wall: 1
+		territory_x:
+		territory_y:
+		movement: 
+	}
+
+}
+
+Enemy
+{
+	Q: Melle enemy
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 0
+		body_damage: 1
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 1
+	}
+
+}
+
 Level
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
 E                     A A                       |
                      A  A                       |
-                    A   A  AAA           D      |
-                   A    A  A      B             |
+                    A   A  AAA        Q     Z   |
+                   A    A  A      B  AAA  AAA   |
                   A     A  AAAA                 |
                  A      AAAA     A              |AAA
                A                     A          |
-  V                         V       A    D      |
-                          AAAAA   AAA         Z |
-     P         FFF       A                     A|
+  V            D            O       A           |
+                          AAAAA   AAA           |
+     P  S SS   FFF       A       A             A|
 C                                               |AA
 $ 
 $
@@ -153,12 +233,18 @@ Enemy
 {
 	tag
 	{
-		width:
-		height:
-		texture:
-		health:
-		territory_x:
+		width: 
+		height: 
+		texture: 
+		health: 
+		ranged: 
+		body_damage:
+		jumping: 
+		looking: 
+		territory_x: 
 		territory_y:
+		movement:	{1: dynamic | 2: staticX | 3: staticY}
+		stick_to_wall:	{1: up | 2: right | 3: down | 4: left} (for spikes)
 	}
 
 }
@@ -168,3 +254,4 @@ A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
 P: Player, 
+DO ONLY TOP AND BOTTOM SPIKES

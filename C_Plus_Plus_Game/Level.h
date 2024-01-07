@@ -33,8 +33,14 @@ class Level : public GameObject
 		"height",
 		"texture",
 		"health",
+		"ranged",
+		"body_damage",
+		"jumping",
+		"looking",
+		"stick_to_wall",
 		"territory_x",
-		"territory_y" };
+		"territory_y",
+		"movement"};
 	
 	char m_level_end_tag;
 	LevelBox *m_level_end;
