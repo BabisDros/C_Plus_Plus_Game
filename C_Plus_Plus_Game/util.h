@@ -31,7 +31,7 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 	graphics::drawText(centerX- centeringValue, centerY, 0.2f, idStr, debug_textBrush);
 }
 
-static float calcCentering×ForTextSize(const size_t& stringSize, const float& targetFontSize)
+static float calcCenteringXForTextSize(const size_t& stringSize, const float& targetFontSize)
 {
 	float value = float(stringSize) * targetFontSize* 0.25f;
 	return  value;
