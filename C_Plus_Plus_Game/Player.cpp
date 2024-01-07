@@ -14,12 +14,14 @@ void Player::init()
 
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
-	m_damageBox.setBrush(slash);
-
-	m_damageBox.m_parentDirection = &m_lookingDirection;
+	
+	m_slashWeapon.setBrush(slash);
+	m_slashWeapon.setParentIsPlayer(true);
+	m_slashWeapon.setParentDirection(m_lookingDirection);
 	//trigger callbackmanager to display health value
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 }
+
 
 void Player::draw()
 {
@@ -33,14 +35,14 @@ void Player::draw()
 	{
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
-	m_damageBox.draw();
+	m_slashWeapon.draw();
 }
 
 void Player::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
-	checkCollision(m_state->getLevel()->getDynamicObjects());
-	m_damageBox.update(dt);
+	checkCollision(m_state->getLevel()->getDestructibleObjects());
+	m_slashWeapon.update(dt);
 	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
@@ -170,7 +172,7 @@ void Player::slash(float delta_time)
 {
 	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_slashAbility.isRunning())
 	{	
-		m_damageBox.setActive(true);
+		m_slashWeapon.setActive(true);
 		m_slashAbility.setStartTime(*m_state->getPausableClock());
 	}
 	if (m_slashAbility.isRunning())
@@ -180,11 +182,11 @@ void Player::slash(float delta_time)
 			//extra offset (0.5f) corrected with the player's direction
 			float lookingDirOffset = 0.5f * m_lookingDirection;
 			//slash damagebox follows player
-			m_damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
+			m_slashWeapon.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
 		}
-		else if(m_damageBox.isActive())
+		else if(m_slashWeapon.isActive())
 		{			
-			m_damageBox.setActive(false);
+			m_slashWeapon.setActive(false);
 		}
 
 		m_slashAbility.resetIfCooldownExpired();
