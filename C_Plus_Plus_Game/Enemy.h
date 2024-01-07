@@ -6,7 +6,7 @@
 
 class Enemy :public IDestructible, public Entity
 {
-	DamageBox m_projectile;
+	DamageBox m_projectile = DamageBox(10);
 	Ability m_throwProjectile = Ability(5.f, 2.f, 0.f);
 	Ability m_jumpAbility = Ability(2.f, 0.0f, 0.0f);
 	const float m_gravity = 10.f;
@@ -51,7 +51,7 @@ public:
 		m_healthUi->setPosition(pos_x, pos_y);
 		m_lookingDirection = looking;
 		m_mirrored = m_lookingDirection == -1;
-		if (ranged) m_projectile = DamageBox(false);
+		if (ranged) m_projectile = DamageBox(10, false);
 	}
 	Enemy(std::string name, float pos_x, float pos_y, float width, float height, const std::string* texture, int hp, 
 		bool ranged, bool body_damage, bool jumping, float looking, int stick_to_wall, float territory_x, float territory_y, float movement)
