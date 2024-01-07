@@ -67,7 +67,8 @@ void Player::update(float dt)
 	dash(delta_time);
 	slash(delta_time);
 	tempTimer += (10.f * delta_time);
-	m_brush.texture = sprites.at((int) (tempTimer) % sprites.size());
+	//keep time of starting new animation, use difference. Guaranteed to start from first frame
+	m_brush.texture = sprites.at((int) (10 * *GameState::getInstance()->getPausableClock()) % sprites.size());
 }
 
 void Player::destroy()

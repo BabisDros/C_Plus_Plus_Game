@@ -20,6 +20,6 @@ void MusicManager::init()
 
 void MusicManager::playMusic()
 {
-	graphics::playMusic("music\\01. Enter Hallownest.mp3", 0.15);
+	graphics::playMusic("music\\01. Enter Hallownest.mp3", 0.05);
 	m_playing_music = true;
 }
