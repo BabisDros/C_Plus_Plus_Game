@@ -109,12 +109,38 @@ Enemy
 {
 	V
 	{
-		width:
-		height:
-		texture:
-		health:
-		territory_x:
-		territory_y:
+		width: 1
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage:
+		jumping: 0
+		looking: 1
+		territory_x: 1
+		territory_y: 1
+		movement: 1
+		stick_to_wall:
+	}
+
+}
+
+Enemy
+{
+	O
+	{
+		width: 1
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage:
+		jumping: 0
+		looking: 1
+		territory_x: 1
+		territory_y: 2
+		movement: 3
+		stick_to_wall:
 	}
 
 }
@@ -127,7 +153,7 @@ E                     A A                       |
                   A     A  AAAA                 |
                  A      AAAA     A              |AAA
                A                     A          |
-  V                         V       A    D      |
+  V                         O       A    D      |
                           AAAAA   AAA         Z |
      P         FFF       A                     A|
 C                                               |AA
@@ -153,12 +179,18 @@ Enemy
 {
 	tag
 	{
-		width:
-		height:
-		texture:
-		health:
-		territory_x:
+		width: 
+		height: 
+		texture: 
+		health: 
+		ranged: 
+		body_damage:
+		jumping: 
+		looking: 
+		territory_x: 
 		territory_y:
+		movement:	{1: dynamic | 2: staticX | 3: staticY}
+		stick_to_wall:	{1: up | 2: right | 3: down | 4: left} (for spikes)
 	}
 
 }

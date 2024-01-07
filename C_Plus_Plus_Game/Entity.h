@@ -9,9 +9,12 @@ class Entity :public CollisionObject
 public:
 	template <typename Container>
 	void checkCollision(Container myContainer);
+	Entity(){}
 	Entity(std::string name) : CollisionObject(name) {}
+	Entity(std::string name, float pos_x, float pos_y, float width, float height) : CollisionObject(name, pos_x, pos_y, width, height) {}
 	virtual void movement(float dt)=0;
 
+	const std::string* m_texture;
 protected:
 	bool m_mirrored = false;
 	float m_vx = 0.f;

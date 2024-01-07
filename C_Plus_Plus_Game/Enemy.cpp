@@ -10,7 +10,7 @@ void Enemy::init()
 {
 	m_homebase_x = m_pos_x;
 	m_homebase_y = m_pos_y;
-	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("temp_enemy2.png"));
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
 	m_initialHealth = m_currentHealth = 100;
 

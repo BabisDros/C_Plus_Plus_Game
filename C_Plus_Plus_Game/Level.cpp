@@ -142,8 +142,27 @@ void Level::read()
 							{
 								if (itr->first == ch)
 								{
-									m_dynamic_objects.push_back(new Enemy("", x + 1/2.0f, y+ 1/2.0f));//+ 1/2 of width/height
-									break;
+									bool jumping = itr->second[6] == "1";
+									bool ranged = itr->second[4] == "1";
+									bool body_damage = itr->second[5] == "1";
+									int stick_wall;
+									if ((itr->second)[11] == "") stick_wall = 0;
+									else stick_wall = std::stoi((itr->second)[11]);
+
+									if (itr->second[9] != "")	// It has a movement value
+									{
+										m_dynamic_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
+											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
+										ranged, body_damage, jumping, std::stof((itr->second)[7]), std::stof((itr->second)[8]), std::stof((itr->second)[9]), std::stoi((itr->second)[10]), stick_wall)); // + territory_x/y, movement_type
+										break;
+									}
+									else
+									{
+										m_dynamic_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
+											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
+											ranged, body_damage, jumping, std::stof((itr->second)[7])));
+										break;
+									}
 								}
 							}
 						}
