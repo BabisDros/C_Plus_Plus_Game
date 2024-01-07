@@ -1,5 +1,11 @@
 #include "Particle.h"
 #include "GameState.h"
+#include "util.h"
+
+Particle::Particle(float red, float green, float blue, float posX, float posY, float width, float height)
+{
+	SETCOLOR(m_brush.fill_color, red, green, blue);
+}
 
 void Particle::init()
 {

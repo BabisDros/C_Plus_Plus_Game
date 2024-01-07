@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <sgg/graphics.h>
 #include "HealthUIFixed.h"
 class UIManager
 {

@@ -1,5 +1,6 @@
 #include "HealthUi.h"
-
+#include "Util.h"
+#include "GameState.h"
 void HealthUI::init()
 {
 	SETCOLOR(m_brush.fill_color, 1.0, 0.0, 0.0);//background red

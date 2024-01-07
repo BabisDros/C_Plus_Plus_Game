@@ -1,5 +1,6 @@
 #pragma once
 #include "CrateDestructible.h"
+#include "util.h"
 
 void CrateDestructible ::init() 
 {

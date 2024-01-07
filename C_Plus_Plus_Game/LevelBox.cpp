@@ -1,4 +1,6 @@
 #include "LevelBox.h"
+#include "util.h"
+#include "Gamestate.h"
 
 void LevelBox::init()
 {

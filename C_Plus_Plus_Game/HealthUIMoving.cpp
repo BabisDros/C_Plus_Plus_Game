@@ -1,5 +1,6 @@
 #include "HealthUIMoving.h"
-
+#include "util.h"
+#include "GameState.h"
 void HealthUIMoving::init()
 {
 	setActive(false);

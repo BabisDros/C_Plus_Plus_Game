@@ -1,5 +1,5 @@
 #pragma once
-#include <sgg/graphics.h>
+
 #include "CollisionObject.h"
 
 /// <summary>

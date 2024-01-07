@@ -1,4 +1,6 @@
 #include "HealthUIFixed.h"
+#include "util.h"
+#include "GameState.h"
 
 void HealthUIFixed::init()
 {

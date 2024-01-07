@@ -1,7 +1,4 @@
 #pragma once
-#include <string>
-#include "util.h"
-#include "Gamestate.h"
 #include "CollisionObject.h"
 
 class LevelBox :public CollisionObject
