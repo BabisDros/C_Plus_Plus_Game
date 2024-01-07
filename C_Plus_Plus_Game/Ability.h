@@ -14,42 +14,13 @@ public:
 	Ability(float cooldown, float duration, float startTime, float speed=0)
 		:m_cooldown(cooldown), m_duration(duration), m_startTime(startTime), m_speed(speed) {};
 
-	float getElapsedTime()
-	{
-		return *GameState::getInstance()->getPausableClock() - m_startTime;
-	}
-
-	void resetIfCooldownExpired()
-	{
-		if (getElapsedTime() >= getCooldown())
-		{
-			setStartTime(0.f);
-		}
-	}
-	void setStartTime(float time)
-	{
-		m_startTime = time;
-	}
-	float getStartTime()const
-	{
-		return m_startTime ;
-	}
-	float getDuration()const
-	{
-		return m_duration;
-	}
-	float getCooldown()const
-	{
-		return m_cooldown;
-	}
-	float getSpeed()const
-	{
-		return m_speed;
-	}
-
-	bool isRunning()const
-	{
-		return m_startTime != 0;
-	}
+	float getElapsedTime();
+	void resetIfCooldownExpired();
+	void setStartTime(float time);
+	float getStartTime()const;
+	float getDuration()const;
+	float getCooldown()const;
+	float getSpeed()const;
+	bool isRunning()const;
 };
 

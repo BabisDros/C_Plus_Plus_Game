@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "sgg/graphics.h"
-#include "util.h"
+
 class Particle:public GameObject
 {
 	graphics::Brush m_brush;
@@ -20,8 +19,8 @@ class Particle:public GameObject
 	float m_oscilationReduceStep = 0.0f;
 
 public:
-	Particle(float red, float green, float blue, float posX, float posY, float width, float height) { SETCOLOR(m_brush.fill_color, red, green, blue); };
-	
+	Particle(float red, float green, float blue, float posX, float posY, float width, float height);
+
 	const bool isAlive() const;
 	void init() override;
 	void draw() override;

@@ -141,13 +141,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ability.cpp" />
     <ClCompile Include="CrateDestructible.cpp" />
+    <ClCompile Include="CstmCallback.cpp" />
     <ClCompile Include="DamageBox.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="HealthUi.cpp" />
+    <ClCompile Include="HealthUIFixed.cpp" />
+    <ClCompile Include="HealthUIMoving.cpp" />
+    <ClCompile Include="IDestructible.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelBox.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Particle.cpp" />
