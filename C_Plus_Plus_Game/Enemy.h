@@ -42,8 +42,8 @@ public:
 		m_pos_y = pos_y;
 	}
 	Enemy(std::string name, float pos_x, float pos_y, float width, float height, const std::string* texture, int hp, 
-		bool ranged, bool body_damage, bool jumping, float looking)
-		: Entity(name, pos_x, pos_y, width, height), m_rangedAttack(ranged), m_body_damage(body_damage), m_canJump(jumping)
+		bool ranged, bool body_damage, bool jumping, float looking, int stick_to_wall)
+		: Entity(name, pos_x, pos_y, width, height), m_rangedAttack(ranged), m_body_damage(body_damage), m_canJump(jumping), m_stick_to_wall(stick_to_wall)
 	{
 		m_texture = texture;
 		init();
@@ -54,13 +54,12 @@ public:
 		if (ranged) m_projectile = DamageBox(false);
 	}
 	Enemy(std::string name, float pos_x, float pos_y, float width, float height, const std::string* texture, int hp, 
-		bool ranged, bool body_damage, bool jumping, float looking, float territory_x, float territory_y, float movement, int stick_to_wall)
-		: Enemy(name, pos_x, pos_y, width, height, texture, hp, ranged, body_damage, jumping, looking)
+		bool ranged, bool body_damage, bool jumping, float looking, int stick_to_wall, float territory_x, float territory_y, float movement)
+		: Enemy(name, pos_x, pos_y, width, height, texture, hp, ranged, body_damage, jumping, looking, stick_to_wall)
 	{
 		m_movement_range_x = territory_x;
 		m_movement_range_y = territory_y;
 		m_movement_type = movement;
-		m_stick_to_wall = stick_to_wall;
 	}
 
 
