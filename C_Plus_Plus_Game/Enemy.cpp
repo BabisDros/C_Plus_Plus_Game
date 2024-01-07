@@ -158,8 +158,8 @@ void Enemy::rangedAttack(float dt)
 
 	if (m_throwProjectile.isRunning())
 	{
-		float elapsedTime = *m_state->getPausableClock() - m_throwProjectile.getStartTime();
-		if (elapsedTime < m_throwProjectile.getDuration())
+	
+		if (m_throwProjectile.getElapsedTime() < m_throwProjectile.getDuration())
 		{
 			float move = m_projectile_direction;
 			m_projectile_vx = std::min(m_projectile_max_velocity, m_projectile_vx + dt * move * m_projectile_accel_horizontal);
@@ -171,11 +171,9 @@ void Enemy::rangedAttack(float dt)
 		{
 			m_projectile.setActive(false);
 		}
-
-		if (elapsedTime >= m_throwProjectile.getCooldown())
-		{
-			m_throwProjectile.setStartTime(0.f);
-		}
+	
+		m_throwProjectile.resetIfCooldownExpired();
+		
 	}
 }
 

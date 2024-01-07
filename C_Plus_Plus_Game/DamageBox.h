@@ -21,14 +21,14 @@ public:
 		commonInit();
 	}
 	DamageBox(bool canBecomeMirrored) { canBeMirrored = canBecomeMirrored; }
-	void setPosition(float x, float y, float w, float h)
+	void setPosition(float x, float y, float width, float height)
 	{
 		m_pos_x = x;
 		m_pos_y = y;
-		m_width = w;
-		m_height = h;
+		m_width = width;
+		m_height = height ;
 	}
-	int damage = 0;
+	int m_damage = 0;
 	//gets Parent's Looking direction:Left:-1,Right:1
 	int* m_parentDirection = 0;
 	bool canBeMirrored;

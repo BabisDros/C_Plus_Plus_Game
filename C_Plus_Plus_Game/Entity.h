@@ -10,7 +10,7 @@ public:
 	template <typename Container>
 	void checkCollision(Container myContainer);
 	Entity(std::string name) : CollisionObject(name) {}
-	virtual void movement(float dt);
+	virtual void movement(float dt)=0;
 
 protected:
 	bool m_mirrored = false;

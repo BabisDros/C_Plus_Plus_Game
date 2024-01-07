@@ -11,7 +11,7 @@ void CrateDestructible::draw()
 {
 	//call base class
 	LevelBox::draw();
-	healthUi->draw();
+	m_healthUi->draw();
 }
 
 void CrateDestructible::destroy()

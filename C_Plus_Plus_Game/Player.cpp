@@ -4,7 +4,7 @@
 #include "util.h"
 #include <iostream>
 #include "Level.h"
-
+#include "CallbackManager.h"
 void Player::init()
 {
 	m_pos_x = m_state->getLevel()->m_player_start_x;
@@ -14,9 +14,11 @@ void Player::init()
 
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
-	damageBox.setBrush(slash);
+	m_damageBox.setBrush(slash);
 
-	damageBox.m_parentDirection = &m_lookingDirection;
+	m_damageBox.m_parentDirection = &m_lookingDirection;
+	//trigger callbackmanager to display health value
+	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 }
 
@@ -32,14 +34,14 @@ void Player::draw()
 	{
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
-	damageBox.draw();
+	m_damageBox.draw();
 }
 
 void Player::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDynamicObjects());
-	damageBox.update(dt);
+	m_damageBox.update(dt);
 	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
@@ -110,18 +112,17 @@ void Player::movement(float delta_time)
 float Player::jump()
 {
 	float accel = 0;
-	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !jumpAbility.isRunning())
+	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !m_jumpAbility.isRunning())
 	{
-		jumpAbility.setStartTime(*m_state->getPausableClock());
+		m_jumpAbility.setStartTime(*m_state->getPausableClock());
 		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
 	}
 	
-	if (jumpAbility.isRunning())
-	{
-		float elapsedTime = *m_state->getPausableClock() - jumpAbility.getStartTime();
-		if (elapsedTime >= jumpAbility.getCooldown())
+	if (m_jumpAbility.isRunning())
+	{	
+		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
 		{
-			jumpAbility.setStartTime(0.f);
+			m_jumpAbility.setStartTime(0.f);
 		}
 	}
 	return accel;
@@ -152,54 +153,56 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && !dashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_dashAbility.isRunning())
 	{
-		dashAbility.setStartTime(*m_state->getPausableClock());
+		m_dashAbility.setStartTime(*m_state->getPausableClock());
 	}	
 	
-	if (dashAbility.isRunning())
-	{
-		float elapsedTime = *m_state->getPausableClock() - dashAbility.getStartTime();
+	if (m_dashAbility.isRunning())
+	{	
 		//dash has certain duration, otherwise character teleports to another position and creates bugs like passing through objects
-		if (elapsedTime < dashAbility.getDuration())
+		if (m_dashAbility.getElapsedTime() < m_dashAbility.getDuration())
 		{
-			m_vx = dashAbility.getSpeed() * m_lookingDirection;
+			m_vx = m_dashAbility.getSpeed() * m_lookingDirection;
 			m_pos_x += delta_time * m_vx;
 		}
-		if (elapsedTime >= dashAbility.getCooldown())
-		{
-			dashAbility.setStartTime(0.f) ;
-		}
+		m_dashAbility.resetIfCooldownExpired();
 	}
 }
 
 void Player::slash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !slashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_slashAbility.isRunning())
 	{	
-		damageBox.setActive(true);
-		slashAbility.setStartTime(*m_state->getPausableClock());
+		m_damageBox.setActive(true);
+		m_slashAbility.setStartTime(*m_state->getPausableClock());
 	}
-	if (slashAbility.isRunning())
+	if (m_slashAbility.isRunning())
 	{
-		float elapsedTime = *m_state->getPausableClock() - slashAbility.getStartTime();
-		if (elapsedTime < slashAbility.getDuration())
+		if (m_slashAbility.getElapsedTime() < m_slashAbility.getDuration())
 		{
 			//extra offset corrected with the player's direction
 			float lookingDirOffset = 0.5f * m_lookingDirection;
 			//slash damagebox follows player
-			damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
+			m_damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
+			takeDamage(10);//TODO: Delete. It is for checking if CallbackManager works
 		}
-		else if(damageBox.isActive())
+		else if(m_damageBox.isActive())
 		{			
-			damageBox.setActive(false);
+			m_damageBox.setActive(false);
 		}
 
-		if (elapsedTime >= slashAbility.getCooldown())
-		{
-			slashAbility.setStartTime(0.f);
-		}	
+		m_slashAbility.resetIfCooldownExpired();
 	}
+}
+
+void Player::takeDamage(const int& damage)
+{
+	//call base class to update health
+	IDestructible::takeDamage(damage);
+
+	//trigger
+	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 }
 
 

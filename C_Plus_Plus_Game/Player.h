@@ -8,10 +8,10 @@
 
 class Player :public IDestructible, public Entity
 {
-	DamageBox damageBox;
-	Ability dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
-	Ability slashAbility = Ability(1.0f, 0.1f, 0.0f);
-	Ability jumpAbility = Ability(0.3f, 0.0f, 0.0f);
+	DamageBox m_damageBox;
+	Ability m_dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
+	Ability m_slashAbility = Ability(1.0f, 0.1f, 0.0f);
+	Ability m_jumpAbility = Ability(0.3f, 0.0f, 0.0f);
 
 	const float m_gravity = 10.f;
 	const float m_accel_vertical = 300.f;
@@ -26,9 +26,9 @@ class Player :public IDestructible, public Entity
 	void fly(float dt);
 	void dash(float dt);
 	void slash(float dt);
-	
+	void takeDamage(const int& damage) override;
 public:
-	Player(std::string name,float initialHealth) : Entity(name)
+	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
 		setInitialHealthValues(initialHealth);
 		m_width = 0.5f;
