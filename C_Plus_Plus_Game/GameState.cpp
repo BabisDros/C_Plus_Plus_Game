@@ -31,8 +31,6 @@ void GameState::draw()
 	UIManager::getInstance()->draw();
 }
 
-
-
 void GameState::update(float dt)
 {
 	if (dt > 200) return;	//? it been too long since last frame

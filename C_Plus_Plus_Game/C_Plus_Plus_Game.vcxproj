@@ -150,6 +150,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="LevelBox.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="UIManager.h" />
