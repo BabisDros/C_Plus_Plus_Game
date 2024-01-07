@@ -22,6 +22,8 @@ class Player :public IDestructible, public Entity
 	bool m_dev_fly_active = false;
 	bool m_dev_fly_held = false;
 
+	std::vector<std::string> sprites;
+	float tempTimer = 0;
 	float jump();
 	void fly(float dt);
 	void dash(float dt);
