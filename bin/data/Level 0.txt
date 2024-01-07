@@ -38,9 +38,23 @@ Terrain
 	}
 
 }
+
 Terrain
 {
-	Z
+	E: Left wall
+	{
+		width: 1
+		height: 7
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	Z: End goal
 	{
 		width: 1
 		height: 1
@@ -87,7 +101,7 @@ Enemy
 
 Enemy
 {
-	O
+	O: jumping enemy in "tunnel:
 	{
 		width: 0.75
 		height: 1
@@ -104,10 +118,29 @@ Enemy
 	}
 
 }
+Enemy
+{
+	V: first enemy on left
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 3
+	}
+
+}
 
 Enemy
 {
-	S
+	S: bottom spikes
 	{
 		width: 1
 		height: 0.5
@@ -127,7 +160,7 @@ Enemy
 
 Enemy
 {
-	D
+	D: bottom spikes
 	{
 		width: 1
 		height: 0.5
@@ -145,18 +178,38 @@ Enemy
 
 }
 
+Enemy
+{
+	Q: Melle enemy
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 10
+		ranged: 0
+		body_damage: 1
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 1
+	}
+
+}
+
 Level
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
 E                     A A                       |
                      A  A                       |
-                    A   A  AAA                  |
-                   A    A  A      B             |
+                    A   A  AAA        Q     Z   |
+                   A    A  A      B  AAA  AAA   |
                   A     A  AAAA                 |
                  A      AAAA     A              |AAA
                A                     A          |
   V            D            O       A           |
-                          AAAAA   AAA         Z |
-     P  S SS   FFF       A       Α             A|
+                          AAAAA   AAA           |
+     P  S SS   FFF       A       A             A|
 C                                               |AA
 $ 
 $
