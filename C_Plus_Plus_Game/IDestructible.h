@@ -9,46 +9,18 @@ public:
     IDestructible(bool createHealthUI = true) : m_healthUi(createHealthUI ? new HealthUIMoving() : nullptr) { }
     ~IDestructible() {}
 
-    void setInitialHealthValues(const int& health)
-    { 
-        m_initialHealth = health;
-        m_currentHealth = health;
-    }
-    void setHealth(const int& health)
-    {
-        m_currentHealth = health;
-    }
-    int getHealth() const { return m_currentHealth; };
-    virtual void resetHealth() { m_currentHealth = m_initialHealth; };
-
-    virtual void takeDamage(const int& damage) 
-    {
-        if (m_currentHealth > 0)
-        {
-            float pausableClock = *GameState::getInstance()->getPausableClock();
-            if (pausableClock - m_damageTakenTimestamp > m_invincibilityDuration)
-            {
-                m_damageTakenTimestamp = pausableClock;
-                m_currentHealth -= damage;
-                if (m_healthUi)
-                    m_healthUi->updateUIOnDamage( m_initialHealth, m_currentHealth);
-            }
-        }
-
-        else
-        {
-            destroy();
-        }
-    }
-
-    virtual bool isAlive() const { return m_currentHealth > 0; };
+    virtual void setInitialHealthValues(const int& health);
+    virtual void setHealth(const int& health);
+    virtual int getHealth() const;
+    virtual void resetHealth();
+    virtual void takeDamage(const int& damage);
+    virtual bool isAlive() const;
     //Object is not destroyed but setActive false
     virtual void destroy() = 0;
     virtual void instantiateParticles() = 0;
 protected:
     int m_initialHealth = 0;
     int m_currentHealth = 0;
-
     //duration when the object can take anymore damage. Take damage once per hit
     float m_invincibilityDuration = 0.5f;
     float m_damageTakenTimestamp=0.0f;

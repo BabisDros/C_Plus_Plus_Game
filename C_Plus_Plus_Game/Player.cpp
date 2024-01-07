@@ -19,7 +19,6 @@ void Player::init()
 	m_damageBox.m_parentDirection = &m_lookingDirection;
 	//trigger callbackmanager to display health value
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-//	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 }
 
 void Player::draw()
@@ -115,15 +114,12 @@ float Player::jump()
 	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
-		accel= m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
 	}
 	
 	if (m_jumpAbility.isRunning())
 	{	
-		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
-		{
-			m_jumpAbility.setStartTime(0.f);
-		}
+		m_jumpAbility.resetIfCooldownExpired();
 	}
 	return accel;
 }
@@ -181,11 +177,10 @@ void Player::slash(float delta_time)
 	{
 		if (m_slashAbility.getElapsedTime() < m_slashAbility.getDuration())
 		{
-			//extra offset corrected with the player's direction
+			//extra offset (0.5f) corrected with the player's direction
 			float lookingDirOffset = 0.5f * m_lookingDirection;
 			//slash damagebox follows player
 			m_damageBox.setPosition(m_pos_x + lookingDirOffset, m_pos_y , 0.8f, 0.8f);
-			takeDamage(10);//TODO: Delete. It is for checking if CallbackManager works
 		}
 		else if(m_damageBox.isActive())
 		{			
