@@ -8,10 +8,9 @@
 
 void Enemy::init()
 {
-	if (m_stick_to_wall = 2) m_pos_x += (1 - m_width) * 0.5f;	// 0.5 is based on level zoom
-	if (m_stick_to_wall = 3) m_pos_y += (1 - m_height);
+	//if (m_stick_to_wall == 2) m_pos_x += (1 - m_width) * 0.5f;
+	if (m_stick_to_wall == 3) m_pos_y += (1 - m_height) * 0.5f;	// Currently only done for either top or bottom
 
-	//if (m_movement_type = 0) { m_movement_range_x = m_movement_range_x = 0; }
 	m_homebase_x = m_pos_x;
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
@@ -27,7 +26,12 @@ void Enemy::init()
 
 void Enemy::draw()
 {
-	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
+	
+	float angle = 0;
+	if (m_stick_to_wall == 1) angle = 180.f;
+	graphics::setOrientation(angle);
+
+	if (m_mirrored) graphics::setScale(-1.f, 1.f); //mirrors image
 	//! -0.5f MUST be gone
 	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
 
@@ -196,7 +200,7 @@ float Enemy::jump()
 	if (m_vy == 0.0f && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
-		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+		accel = m_accel_vertical * 2.f;//? not delta_time! Burst [Papaioannou comment]
 	}
 
 	if (m_jumpAbility.isRunning())

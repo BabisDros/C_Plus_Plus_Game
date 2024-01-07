@@ -40,19 +40,6 @@ Terrain
 }
 Terrain
 {
-	D
-	{
-		width: 1
-		height: 2
-		texture: temp_player2.png
-		destructible: 1
-		health:
-		level_end: 
-	}
-
-}
-Terrain
-{
 	Z
 	{
 		width: 1
@@ -109,7 +96,7 @@ Enemy
 {
 	V
 	{
-		width: 1
+		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
 		health: 10
@@ -117,10 +104,10 @@ Enemy
 		body_damage: 0
 		jumping: 0
 		looking: 1
-		territory_x: 3
-		territory_y: 3
-		movement: 2
-		stick_to_wall: 0
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 3
 	}
 
 }
@@ -135,12 +122,53 @@ Enemy
 		health: 10
 		ranged: 1
 		body_damage:
-		jumping: 0
+		jumping: 1
 		looking: -1
+		stick_to_wall:
 		territory_x: 1
 		territory_y: 2
-		movement: 3
-		stick_to_wall:
+		movement: 2
+
+	}
+
+}
+
+Enemy
+{
+	S
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping:
+		looking: 1
+		stick_to_wall: 3
+		territory_x:
+		territory_y:
+		movement: 
+	}
+
+}
+
+Enemy
+{
+	D
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: 10
+		ranged: 0
+		body_damage:
+		jumping:
+		looking: 1
+		stick_to_wall: 1
+		territory_x:
+		territory_y:
+		movement: 
 	}
 
 }
@@ -168,14 +196,14 @@ Level
 AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
 E                     A A                       |
                      A  A                       |
-                    A   A  AAA           D      |
+                    A   A  AAA                  |
                    A    A  A      B             |
                   A     A  AAAA                 |
                  A      AAAA     A              |AAA
                A                     A          |
-  V                         O       A    D      |
+  V            D            O       A           |
                           AAAAA   AAA         Z |
-     P         FFF  S    A                     A|
+     P  S SS   FFF       A                     A|
 C                                               |AA
 $ 
 $
@@ -220,23 +248,4 @@ A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
 P: Player, 
-
-Enemy
-{
-	S
-	{
-		width: 1
-		height: 0.5
-		texture: stalagmite4.png
-		health: 10
-		ranged: 0
-		body_damage:
-		jumping: 0
-		looking: -1
-		territory_x: 
-		territory_y: 
-		movement: 0
-		stick_to_wall:
-	}
-
-}
+DO ONLY TOP AND BOTTOM SPIKES
