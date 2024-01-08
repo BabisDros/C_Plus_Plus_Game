@@ -15,13 +15,12 @@ void Enemy::init()
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
-	m_initialHealth = m_currentHealth = 100;
+	setInitialHealthValues(100);
 
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
 	m_projectile.setBrush(slash);
-
-	m_projectile.m_parentDirection = &m_lookingDirection;
+	m_projectile.setParentDirection(m_lookingDirection);
 }
 
 void Enemy::draw()
@@ -174,8 +173,7 @@ void Enemy::rangedAttack(float dt)
 	}
 
 	if (m_throwProjectile.isRunning())
-	{
-	
+	{	
 		if (m_throwProjectile.getElapsedTime() < m_throwProjectile.getDuration())
 		{
 			float move = m_projectile_direction;
@@ -189,8 +187,7 @@ void Enemy::rangedAttack(float dt)
 			m_projectile.setActive(false);
 		}
 	
-		m_throwProjectile.resetIfCooldownExpired();
-		
+		m_throwProjectile.resetIfCooldownExpired();		
 	}
 }
 

@@ -18,7 +18,7 @@ void Level::init()
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
 
-	for (auto p_gob : m_dynamic_objects)
+	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
 
 }
@@ -42,7 +42,7 @@ void Level::draw()
 		m_blocks[i]->draw();
 	}
 
-	for (auto p_gob : m_dynamic_objects)
+	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->draw();
 	//? order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) //? draws player
@@ -63,7 +63,7 @@ void Level::update(float dt)
 		m_state->getPlayer()->update(dt);
 	}
 
-	for (auto p_gob : m_dynamic_objects)
+	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->update(dt);
 	GameObject::update(dt);
 }
@@ -121,7 +121,7 @@ void Level::read()
 								destructible = (itr->second)[3] == "1";
 								if (destructible)
 								{
-									m_dynamic_objects.push_back(new CrateDestructible(30,x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+									m_destructible_objects.push_back(new CrateDestructible(30,x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
 										&(itr->second)[2], destructible));
 									tag_found = true;
 									break;
@@ -151,14 +151,14 @@ void Level::read()
 
 									if (itr->second[9] != "")	// It has a movement value
 									{
-										m_dynamic_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
+										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
 										ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall, std::stof((itr->second)[9]), std::stof((itr->second)[10]), std::stoi((itr->second)[11]))); // + territory_x/y, movement_type
 										break;
 									}
 									else
 									{
-										m_dynamic_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
+										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
 											ranged, body_damage, jumping, std::stof((itr->second)[7]), std::stof((itr->second)[8])));
 										break;
@@ -264,9 +264,9 @@ std::vector<LevelBox*> Level::getBlocks() const
 {
 	return m_blocks;
 }
-std::list<CollisionObject*> Level::getDynamicObjects() const
+std::list<CollisionObject*> Level::getDestructibleObjects() const
 {
-	return m_dynamic_objects;
+	return m_destructible_objects;
 }
 
 template <typename Container>
@@ -284,7 +284,7 @@ void Level::destroyGameObjects(Container& myContainer)
 Level::~Level()
 {
 	destroyGameObjects(m_static_objects);
-	destroyGameObjects(m_dynamic_objects);
+	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 }
 

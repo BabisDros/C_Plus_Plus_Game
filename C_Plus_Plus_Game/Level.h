@@ -14,7 +14,7 @@ class Level : public GameObject
 
 	/*/Seperate list for destructibles to improve performance. 
 	TODO: use a binary search to find elements and then remove destructed*/
-	std::list<CollisionObject*> m_dynamic_objects;
+	std::list<CollisionObject*> m_destructible_objects;
 	std::vector<LevelBox*> m_blocks;
 
 
@@ -63,7 +63,7 @@ public:
 
 	std::vector<LevelBox*> getBlocks() const;
 
-	std::list<CollisionObject*> getDynamicObjects() const;
+	std::list<CollisionObject*> getDestructibleObjects() const;
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);

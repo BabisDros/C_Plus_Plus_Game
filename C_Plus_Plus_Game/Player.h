@@ -8,7 +8,7 @@
 
 class Player :public IDestructible, public Entity
 {
-	DamageBox m_damageBox;
+	DamageBox m_slashWeapon = DamageBox(10);
 	Ability m_dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
 	Ability m_slashAbility = Ability(1.0f, 0.1f, 0.0f);
 	Ability m_jumpAbility = Ability(0.3f, 0.0f, 0.0f);

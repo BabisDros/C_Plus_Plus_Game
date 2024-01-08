@@ -4,7 +4,6 @@
 class GameObject
 {
 	static int m_next_id;
-
 protected:
 	class GameState* m_state;
 	int m_id = 0;

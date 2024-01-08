@@ -1,41 +1,30 @@
 #pragma once
-#include <sgg/graphics.h>
 #include "CollisionObject.h"
-
+#include <map>
 /// <summary>
 /// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
 /// </summary>
 class DamageBox:public CollisionObject
 {
-	void commonInit()
-	{
-		init(); 
-		canBeMirrored = true;
-	}
-	
+	//Parent's Looking direction:Left:-1,Right:1
+	int m_parentDirection = 0;
+	bool m_parentIsPlayer = false;
+	bool m_canBeMirrored ;
+	int m_damageToInflict = 0;
 public:	
-	DamageBox() { commonInit(); }
-	DamageBox(float x, float y, float w, float h) :CollisionObject(x, y, w, h)
-	{
-		//best to initialize object when created
-		commonInit();
-	}
-	DamageBox(bool canBecomeMirrored) { canBeMirrored = canBecomeMirrored; }
-	void setPosition(float x, float y, float width, float height)
-	{
-		m_pos_x = x;
-		m_pos_y = y;
-		m_width = width;
-		m_height = height ;
-	}
-	int m_damage = 0;
-	//gets Parent's Looking direction:Left:-1,Right:1
-	int* m_parentDirection = 0;
-	bool canBeMirrored;
+	DamageBox(int damage, bool canBecomeMirrored = true) : m_canBeMirrored(canBecomeMirrored),m_damageToInflict(damage)
+	{ init(); };
+	
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	void setBrush(const graphics::Brush& brush) {	m_brush = brush; }
-	void checkForCollisions();
+	void setParentIsPlayer(bool isPlayer);
+	void setBrush(const graphics::Brush& brush);
+	void checkForCollisions(const std::list<CollisionObject*> containerToScan);
+	void checkForCollisions(CollisionObject* player);
+	void setDamageToInflict(int damage);
+	
+	void setParentDirection(const int& direction);
+	void setPosition(float x, float y, float width, float height);
 };
 
