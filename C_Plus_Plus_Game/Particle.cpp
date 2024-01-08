@@ -2,15 +2,19 @@
 #include "GameState.h"
 #include "util.h"
 
-Particle::Particle(float posX, float posY, float width, float height, float life, float maxVelocity, float red, float green, float blue)
-{
+Particle::Particle(float posX, float posY, float width, float height, float lifetime, std::string texture, float maxVelocity, float acceleration,
+	float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue):
+	m_initialPosX(posX), m_currentPosX(posX),
+	m_initialPosY(posY), m_currentPosY(posY),
+	m_initialWidth(width), m_currentWidth(width),
+	m_initialHeight(height), m_currentHeight(height),
+	m_lifetime(lifetime), m_currentLife(lifetime),
+	m_maxVelocity(maxVelocity),m_acceleration(acceleration),
+	m_gravity(gravity),
+	m_oscillationFrequency(oscillationFrequency),
+	m_oscillationAmplitude(oscillationAmplitude)
+{		
 	SETCOLOR(m_brush.fill_color, red, green, blue);
-	m_initialPosX = m_currentPosX = posX;
-	m_initialPosY = m_currentPosY = posY;
-	m_initialWidth = m_currentWidth = width;
-	m_initialHeight = m_currentHeight = height;
-	m_lifetime = m_currentLife = life;
-	m_maxVelocity = maxVelocity;
 	init();
 }
 
@@ -18,7 +22,6 @@ void Particle::init()
 {
 	m_state = GameState::getInstance();
 	setActive(false);
-
 }
 
 void Particle::draw()
@@ -95,6 +98,6 @@ void Particle::setPosition(float x, float y, float width, float height)
 void Particle::oscilateInXAxis(const float& deltaTime)
 {
 	// Current life is to reduce oscilation near death of particle
-	float oscillation = std::sin(oscillationFrequency * m_currentLife) * oscillationAmplitude;
+	float oscillation = std::sin(m_oscillationFrequency * m_currentLife) * m_oscillationAmplitude;
 	m_currentPosX += oscillation * deltaTime;
 }
