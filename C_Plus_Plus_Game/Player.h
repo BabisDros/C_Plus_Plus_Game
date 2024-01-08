@@ -10,7 +10,7 @@
 class Player :public IDestructible, public Entity
 {
 	DamageBox m_slashWeapon = DamageBox(10);
-	Particle part = Particle(1,1,1,m_pos_x,m_pos_x,1,1,3);
+	Particle* part = nullptr;
 	Ability m_dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
 	Ability m_slashAbility = Ability(1.0f, 0.1f, 0.0f);
 	Ability m_jumpAbility = Ability(0.3f, 0.0f, 0.0f);

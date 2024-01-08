@@ -2,44 +2,47 @@
 #include "GameState.h"
 #include "util.h"
 
-Particle::Particle(float posX, float posY, float width, float height, float life, float red, float green, float blue)
+Particle::Particle(float posX, float posY, float width, float height, float life, float maxVelocity, float red, float green, float blue)
 {
 	SETCOLOR(m_brush.fill_color, red, green, blue);
-	m_initialPosX = posX;
-	m_initialPosY = posY;
-	m_initialWidth = width;
-	m_initialHeight = height;
+	m_initialPosX = m_currentPosX = posX;
+	m_initialPosY = m_currentPosY = posY;
+	m_initialWidth = m_currentWidth = width;
+	m_initialHeight = m_currentHeight = height;
 	m_lifetime = m_currentLife = life;
-	
+	m_maxVelocity = maxVelocity;
 	init();
 }
 
 void Particle::init()
 {
 	m_state = GameState::getInstance();
-}
-
-void calcStep()
-{
+	setActive(false);
 
 }
+
 void Particle::draw()
 {
 	graphics::drawRect(m_currentPosX + m_state->m_global_offset_x, m_currentPosY + m_state->m_global_offset_y, m_currentWidth, m_currentHeight, m_brush);
+
+	if (m_state->m_debugging)
+	{
+		debugDraw(m_initialPosX + m_state->m_global_offset_x, m_initialPosY + m_state->m_global_offset_y, m_initialWidth, m_initialHeight, m_id);
+	}
 }
 
 void Particle::update(float dt)
 {
-	if (isAlive())
+	if (isActive() && isAlive())
 	{
 		float deltaTime = dt / 1000.0f;
 		fade(deltaTime);
 		move(deltaTime);
 		reduceWidth(deltaTime);
+		reduceHeight(deltaTime);
 		reduceLife(deltaTime);
 		oscilateInXAxis(deltaTime);
-	}
-	
+	}	
 }
 
 
@@ -56,22 +59,21 @@ void Particle::fade(const float& deltaTime)
 
 void Particle::move(const float& deltaTime)
 {	
-	m_velocity = std::min(m_maxVelocity, m_velocity + deltaTime * m_acceleration);
+	m_velocity = std::min(m_maxVelocity, m_velocity + deltaTime*m_gravity * m_acceleration);
 	m_velocity = std::max(-m_maxVelocity, m_velocity);
-
-	m_velocity += deltaTime * m_gravity;
-	m_currentPosX += deltaTime * m_velocity;
+	//std::cout << "MAX velocity " << m_maxVelocity<< "velocity " << m_velocity << std::endl;
+	m_currentPosY += deltaTime * m_velocity;
 }
 
 
 void Particle::reduceWidth(const float& deltaTime)
 {
-	m_currentWidth = m_initialWidth / m_lifetime * deltaTime;
+	m_currentWidth -= m_initialWidth / m_lifetime * deltaTime;
 }
 
 void Particle::reduceHeight(const float& deltaTime)
 {
-	m_currentHeight = m_initialHeight / m_lifetime * deltaTime;
+	m_currentHeight -= m_initialHeight / m_lifetime * deltaTime;
 }
 
 void Particle::reduceLife(const float& deltaTime)
@@ -79,7 +81,20 @@ void Particle::reduceLife(const float& deltaTime)
 	m_currentLife -= deltaTime;
 }
 
+void Particle::setPosition(float x, float y, float width, float height)
+{
+	if (!isActive())
+	{
+		m_initialPosX = x;
+		m_initialPosY = y;
+		m_initialWidth = width;
+		m_initialHeight = height;
+	}
+}
+
 void Particle::oscilateInXAxis(const float& deltaTime)
 {
-
+	// Current life is to reduce oscilation near death of particle
+	float oscillation = std::sin(oscillationFrequency * m_currentLife) * oscillationAmplitude;
+	m_currentPosX += oscillation * deltaTime;
 }

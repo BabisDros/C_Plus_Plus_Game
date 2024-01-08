@@ -44,7 +44,11 @@ void Player::draw()
 	}	
 	m_slashWeapon.draw();
 
-	part.draw();
+	if(part)
+	{
+		part->draw();
+	}
+	
 }
 
 void Player::update(float dt)
@@ -72,6 +76,13 @@ void Player::update(float dt)
 	tempTimer += (10.f * delta_time);
 	//keep time of starting new animation, use difference. Guaranteed to start from first frame
 	m_brush.texture = sprites.at((int) (10 * *GameState::getInstance()->getPausableClock()) % sprites.size());
+
+	if (part)
+	{
+		part->update(dt);
+	}
+
+	
 }
 
 void Player::destroy()
@@ -213,9 +224,19 @@ void Player::takeDamage(const int& damage)
 
 	//trigger
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	part = Particle(1, 1, 1, m_pos_x, m_pos_x, 1, 1, 3);
+
+	if (!part)
+	{
+		part=new Particle(m_pos_x, m_pos_y, 1, 1, 3.f);
+		part->setActive(true);
+	}
+	else if (part && !part->isAlive())
+	{
+		delete part;
+		part = new Particle(m_pos_x, m_pos_y, 1, 1, 3.f);
+		part->setActive(true);
+	}
 	
-	part.setActive(true);
 }
 
 
