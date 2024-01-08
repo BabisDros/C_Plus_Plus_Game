@@ -179,7 +179,19 @@ Enemy
 }
 
 Level
-AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
+                                                |
+                                                |
+                                                |
+                                                |
+                                                |
+                                                |
+                                                |
+                                                |
+                                                |
+                              A                 |
+                             A                  |
+                            A                   |
+AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
 E                     A A                       |
                      A  A                       |
                     A   A  AAA        Q     Z   |
@@ -229,7 +241,7 @@ Enemy
 
 }
 $ Info that are not read from program
-48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2])
+48*24 ([CanvasWidth * images stretch] * [CanvasWidth/2])
 A: Basic crate
 |: Edge of Level
 C: floor, needs new texture

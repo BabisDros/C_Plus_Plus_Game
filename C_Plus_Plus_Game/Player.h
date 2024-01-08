@@ -6,6 +6,15 @@
 #include "Ability.h"
 #include "Entity.h"
 
+enum AnimationSequence
+{
+	Idle,
+	Running,
+	Attacking,
+	Jumping
+};
+
+
 class Player :public IDestructible, public Entity
 {
 	DamageBox m_slashWeapon = DamageBox(10);
@@ -22,18 +31,26 @@ class Player :public IDestructible, public Entity
 	bool m_dev_fly_active = false;
 	bool m_dev_fly_held = false;
 
-	std::vector<std::string> sprites;
-	float tempTimer = 0;
+	std::vector<std::string> m_sprites_running;
+	std::vector<std::string> m_sprites_idle;
+	std::vector<std::string> m_sprites_attacking;
+	std::vector<std::string> m_sprites_jumping;
+	std::vector<std::string>* m_sprites_ptr;
 	float jump();
 	void fly(float dt);
 	void dash(float dt);
 	void slash(float dt);
 	void takeDamage(const int& damage) override;
+
+	static AnimationSequence m_animation;
+	float m_animation_timer = *GameState::getInstance()->getPausableClock();
+//	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);
 public:
 	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
 		setInitialHealthValues(initialHealth);
-		m_width = 0.5f;
+		m_height = 1.25;
+		m_width = 0.75f;
 	}
 	void init() override;
 	void draw() override;
@@ -42,6 +59,7 @@ public:
 	void movement(float dt) override;
 	void destroy() override;
 	void instantiateParticles() override;
+	void pickAnimation();
 	
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
