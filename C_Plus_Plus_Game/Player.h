@@ -9,9 +9,10 @@
 enum AnimationSequence
 {
 	Idle,
-	Running,
+	Walking,
 	Attacking,
-	Jumping
+	Jumping,
+	Dashing
 };
 
 
@@ -31,10 +32,11 @@ class Player :public IDestructible, public Entity
 	bool m_dev_fly_active = false;
 	bool m_dev_fly_held = false;
 
-	std::vector<std::string> m_sprites_running;
+	std::vector<std::string> m_sprites_walking;
 	std::vector<std::string> m_sprites_idle;
 	std::vector<std::string> m_sprites_attacking;
 	std::vector<std::string> m_sprites_jumping;
+	std::vector<std::string> m_sprites_dashing;
 	std::vector<std::string>* m_sprites_ptr;
 	float jump();
 	void fly(float dt);
@@ -42,9 +44,12 @@ class Player :public IDestructible, public Entity
 	void slash(float dt);
 	void takeDamage(const int& damage) override;
 
+	bool m_allow_animation_change;
 	static AnimationSequence m_animation;
 	float m_animation_timer = *GameState::getInstance()->getPausableClock();
-//	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);
+	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);
+	Ability m_attackAnimation = Ability(0.3f, 0.0f, 0.0f);
+	Ability m_dashAnimation = Ability(0.2f, 0.0f, 0.0f);
 public:
 	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{

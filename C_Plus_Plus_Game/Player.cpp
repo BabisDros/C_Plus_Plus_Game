@@ -25,15 +25,15 @@ void Player::init()
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Run")))
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Walk")))
 	{
-		m_sprites_running.push_back(entry.path().u8string());
+		m_sprites_walking.push_back(entry.path().u8string());
 	}
 	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Idle")))
 	{
 		m_sprites_idle.push_back(entry.path().u8string());
 	}
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Attack_A")))
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Attack_B")))
 	{
 		m_sprites_attacking.push_back(entry.path().u8string());
 	}
@@ -41,7 +41,11 @@ void Player::init()
 	{
 		m_sprites_jumping.push_back(entry.path().u8string());
 	}
-//	m_animation = Running;
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Run")))
+	{
+		m_sprites_dashing.push_back(entry.path().u8string());
+	}
+
 }
 
 void Player::draw()
@@ -61,8 +65,18 @@ void Player::draw()
 
 void Player::update(float dt)
 {
+	if (m_jumpAnimation.isRunning()) m_jumpAnimation.resetIfCooldownExpired();
+	if (m_attackAnimation.isRunning()) m_attackAnimation.resetIfCooldownExpired();
+	if (m_dashAnimation.isRunning()) m_dashAnimation.resetIfCooldownExpired();
+	if (!m_jumpAnimation.isRunning() && !m_attackAnimation.isRunning() && !m_dashAnimation.isRunning())
+	{
+		m_allow_animation_change = true;
+	}
+
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
+
+	m_slashWeapon.setParentDirection(m_lookingDirection);
 	m_slashWeapon.update(dt);
 	float delta_time = dt / 1000.0f;
 
@@ -84,7 +98,7 @@ void Player::update(float dt)
 
 	pickAnimation();
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;
-	m_brush.texture = (*m_sprites_ptr).at((int)(10 * dif) % (*m_sprites_ptr).size());
+	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 
 }
 
@@ -103,9 +117,9 @@ void Player::pickAnimation()
 	{
 		m_sprites_ptr = &m_sprites_idle;
 	}
-	else if (m_animation == Running)
+	else if (m_animation == Walking)
 	{
-		m_sprites_ptr = &m_sprites_running;
+		m_sprites_ptr = &m_sprites_walking;
 	}
 	else if (m_animation == Attacking)
 	{
@@ -114,6 +128,10 @@ void Player::pickAnimation()
 	else if (m_animation == Jumping)
 	{
 		m_sprites_ptr = &m_sprites_jumping;
+	}
+	else if (m_animation == Dashing)
+	{
+		m_sprites_ptr = &m_sprites_dashing;
 	}
 }
 
@@ -140,14 +158,20 @@ void Player::movement(float delta_time)
 	{
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 		m_vx = std::max(-m_max_velocity, m_vx);
-		if (m_animation != Running) m_animation_timer = *GameState::getInstance()->getPausableClock();
-		m_animation = Running;
+		if (m_allow_animation_change)
+		{ 
+			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
+			m_animation = Walking;
+		}
 	}
 	else
 	{
 		m_vx = 0.f;
-		if (m_animation != Idle) m_animation_timer = *GameState::getInstance()->getPausableClock();
-		m_animation = Idle;
+		if (m_allow_animation_change)
+		{
+			if (m_animation != Idle) m_animation_timer = *GameState::getInstance()->getPausableClock();
+			m_animation = Idle;
+		}
 	}
 //	if (m_jumpAnimation.isRunning()) m_animation = Jumping;
 	m_pos_x += delta_time * m_vx;
@@ -167,16 +191,18 @@ float Player::jump()
 	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
-//		m_jumpAnimation.setStartTime(*m_state->getPausableClock());
 		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
-//		m_animation = Jumping;
+		m_jumpAnimation.setStartTime(*m_state->getPausableClock());
+		m_animation = Jumping;
+		m_animation_timer = *GameState::getInstance()->getPausableClock();
+		m_allow_animation_change = false;
 	}
 	
 	if (m_jumpAbility.isRunning())
 	{	
 		m_jumpAbility.resetIfCooldownExpired();
 	}
-//	if (m_jumpAnimation.isRunning()) m_jumpAnimation.resetIfCooldownExpired();
+
 	return accel;
 }
 
@@ -208,6 +234,10 @@ void Player::dash(float delta_time)
 	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_dashAbility.isRunning())
 	{
 		m_dashAbility.setStartTime(*m_state->getPausableClock());
+		m_dashAnimation.setStartTime(*m_state->getPausableClock());
+		m_animation = Dashing;
+		m_animation_timer = *GameState::getInstance()->getPausableClock();
+		m_allow_animation_change = false;
 	}	
 	
 	if (m_dashAbility.isRunning())
@@ -228,6 +258,10 @@ void Player::slash(float delta_time)
 	{	
 		m_slashWeapon.setActive(true);
 		m_slashAbility.setStartTime(*m_state->getPausableClock());
+		m_attackAnimation.setStartTime(*m_state->getPausableClock());
+		m_animation = Attacking;
+		m_animation_timer = *GameState::getInstance()->getPausableClock();
+		m_allow_animation_change = false;
 	}
 	if (m_slashAbility.isRunning())
 	{
