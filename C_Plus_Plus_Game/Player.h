@@ -50,6 +50,11 @@ class Player :public IDestructible, public Entity
 	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);
 	Ability m_attackAnimation = Ability(0.3f, 0.0f, 0.0f);
 	Ability m_dashAnimation = Ability(0.2f, 0.0f, 0.0f);
+
+	bool m_being_pushed;
+	float m_being_pushed_timer;
+	float m_pushed_x;
+	float m_pushed_y;
 public:
 	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
@@ -65,6 +70,9 @@ public:
 	void destroy() override;
 	void instantiateParticles() override;
 	void pickAnimation();
+	
+	void setPushed(float x, float y);
+	void getPushed(float dt);
 	
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);

@@ -14,19 +14,6 @@ Terrain
 
 Terrain
 {
-	B
-	{
-		width: 2
-		height: 1
-		texture: temp_player2.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-Terrain
-{
 	C: Floor
 	{
 		width: 48
@@ -187,22 +174,22 @@ Level
                                                 |
                                                 |
                                                 |
-                                                |
                               A                 |
                              A                  |
                             A                   |
 AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
 E                     A A                       |
-                     A  A                       |
-                    A   A  AAA        Q     Z   |
-                   A    A  A      B  AAA  AAA   |
+                     A                          |
+                A          AAA        Q     Z   |
+                   A    A  A         AAA  AAA   |
                   A     A  AAAA                 |
-                 A      AAAA     A              |AAA
+                 A      AAAA     A              |
+                                      A         |
                A                     A          |
   V            D            O       A           |
                           AAAAA   AAA           |
      P  S SS   FFF       A       A             A|
-C                                               |AA
+C                                               |
 $ 
 $
 Templates

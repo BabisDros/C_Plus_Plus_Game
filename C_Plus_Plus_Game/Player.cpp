@@ -97,7 +97,7 @@ void Player::update(float dt)
 	slash(delta_time);
 
 	pickAnimation();
-	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;
+	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
 	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 
 }
@@ -135,6 +135,32 @@ void Player::pickAnimation()
 	}
 }
 
+void Player::setPushed(float x, float y)
+{
+	if (x > m_pos_x) m_pushed_x = -1;
+	else m_pushed_x = 1;
+	if (y > m_pos_y) m_pushed_y = -1;
+	else m_pushed_y = 1;	// get pushed in oposite direction of intersection
+	
+	m_being_pushed_timer = *GameState::getInstance()->getPausableClock();
+	m_being_pushed = true;
+}
+
+void Player::getPushed(float delta_time)
+{
+	if (*GameState::getInstance()->getPausableClock() - m_being_pushed_timer > 0.2f)
+	{
+		m_being_pushed = false;
+	}
+	else
+	{
+		m_vx = m_max_velocity/ 2.f * m_pushed_x;
+		m_vy = m_max_velocity / 2.f * m_pushed_y;
+		m_pos_x += delta_time * m_vx;
+		m_pos_y += delta_time * m_vx;
+	}
+}
+
 void Player::movement(float delta_time)
 {
 	float move = 0;
@@ -152,7 +178,7 @@ void Player::movement(float delta_time)
 		m_lookingDirection = 1;
 	}
 
-	if ((move > 1 && m_vx < 0) || (move < 1 && m_vx > 0)) m_vx = 0; // guaranteed to reset speed when changing direction
+//	if ((move > 1 && m_vx < 0) || (move < 1 && m_vx > 0)) m_vx = 0; // guaranteed to reset speed when changing direction
 
 	if (graphics::getKeyState(graphics::SCANCODE_D) ^ graphics::getKeyState(graphics::SCANCODE_A)) //? insta stop
 	{
@@ -183,6 +209,8 @@ void Player::movement(float delta_time)
 	
 	m_vy += delta_time * m_gravity;	
 	m_pos_y += delta_time * m_vy;
+
+	if (m_being_pushed) getPushed(delta_time);
 }
 
 float Player::jump()
