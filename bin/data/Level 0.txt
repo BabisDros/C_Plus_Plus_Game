@@ -81,26 +81,6 @@ Terrain
 
 Enemy
 {
-	V
-	{
-		width: 0.5
-		height: 1
-		texture: temp_enemy2.png
-		health: 10
-		ranged: 1
-		body_damage: 0
-		jumping: 0
-		looking: 1
-		stick_to_wall:
-		territory_x: 1
-		territory_y: 1
-		movement: 3
-	}
-
-}
-
-Enemy
-{
 	O: jumping enemy in "tunnel:
 	{
 		width: 0.75
@@ -146,7 +126,7 @@ Enemy
 		height: 0.5
 		texture: stalagmite4Y.png
 		health: 10
-		ranged: 0
+		ranged: 
 		body_damage: 1
 		jumping:
 		looking: 1
@@ -167,7 +147,7 @@ Enemy
 		texture: stalagmite4Y.png
 		health: 10
 		ranged: 0
-		body_damage:
+		body_damage: 1
 		jumping:
 		looking: 1
 		stick_to_wall: 1
@@ -180,7 +160,7 @@ Enemy
 
 Enemy
 {
-	Q: Melle enemy
+	Q: Melee enemy
 	{
 		width: 0.5
 		height: 1
