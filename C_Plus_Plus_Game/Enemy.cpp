@@ -21,6 +21,8 @@ void Enemy::init()
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
 	m_projectile.setBrush(slash);
 	m_projectile.setParentDirection(m_lookingDirection);
+	if (m_body_damage) m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
+	m_bodyDamage.setActive(true);
 }
 
 void Enemy::draw()
@@ -159,6 +161,11 @@ void Enemy::attack(float delta_time)
 {
 	float dt = delta_time / 1000.f;
 	if (m_rangedAttack) rangedAttack(dt);
+	if (m_body_damage) 
+	{
+		m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
+		m_bodyDamage.update(dt);
+	}
 }
 
 void Enemy::rangedAttack(float dt)

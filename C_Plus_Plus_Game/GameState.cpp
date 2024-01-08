@@ -1,4 +1,5 @@
 #pragma once
+#include "MusicManager.h"
 #include "LevelManager.h"
 #include "UIManager.h"
 #include "GameState.h"
@@ -17,6 +18,7 @@ void GameState::init()
 {	
 	UIManager::getInstance()->init();
 	LevelManager::getInstance()->init();
+	MusicManager::getInstance()->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
@@ -56,6 +58,7 @@ void GameState::update(float dt)
 	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
 	if (goNextLevel) LevelManager::getInstance()->nextLevel();
+	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
 
 GameState* GameState::getInstance()

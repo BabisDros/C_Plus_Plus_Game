@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Level.h"
 #include "CallbackManager.h"
+#include <filesystem> // to read sprites for animation 
 void Player::init()
 {
 	m_pos_x = m_state->getLevel()->m_player_start_x;
@@ -20,8 +21,14 @@ void Player::init()
 	m_slashWeapon.setParentDirection(m_lookingDirection);
 	//trigger callbackmanager to display health value
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-}
+//	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Run")))
+	{
+		sprites.push_back(entry.path().u8string());
+	}
+
+}
 
 void Player::draw()
 {
@@ -62,6 +69,9 @@ void Player::update(float dt)
 
 	dash(delta_time);
 	slash(delta_time);
+	tempTimer += (10.f * delta_time);
+	//keep time of starting new animation, use difference. Guaranteed to start from first frame
+	m_brush.texture = sprites.at((int) (10 * *GameState::getInstance()->getPausableClock()) % sprites.size());
 }
 
 void Player::destroy()
@@ -90,11 +100,12 @@ void Player::movement(float delta_time)
 		m_lookingDirection = 1;
 	}
 
+	if ((move > 1 && m_vx < 0) || move < 1 && m_vx > 0) m_vx = 0; // guaranteed to reset speed when changing direction
+
 	if (graphics::getKeyState(graphics::SCANCODE_D) ^ graphics::getKeyState(graphics::SCANCODE_A)) //? insta stop
 	{
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
-		m_vx = std::max(-m_max_velocity, m_vx);
-		//m_vx -= 0.2f * m_vx / (0.1f + fabs(m_vx)); //? slow down
+		m_vx = std::max(-m_max_velocity, m_vx);	
 	}
 	else
 	{
