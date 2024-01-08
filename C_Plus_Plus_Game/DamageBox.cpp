@@ -92,6 +92,7 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 	if (intersect(*player) && destructiblePtr)
 	{
 		destructiblePtr->takeDamage(m_damageToInflict);
+		pushPlayer();
 	}
 	
 }
@@ -99,6 +100,11 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 void DamageBox::setDamageToInflict(int damage)
 {
 	m_damageToInflict = damage;
+}
+
+void DamageBox::pushPlayer()
+{
+	m_state->getPlayer()->setPushed(m_pos_x, m_pos_y);
 }
 
 
