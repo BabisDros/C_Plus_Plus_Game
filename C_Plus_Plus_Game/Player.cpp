@@ -36,6 +36,8 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
 	m_slashWeapon.draw();
+
+	part.draw();
 }
 
 void Player::update(float dt)
@@ -200,6 +202,9 @@ void Player::takeDamage(const int& damage)
 
 	//trigger
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	part = Particle(1, 1, 1, m_pos_x, m_pos_x, 1, 1, 3);
+	
+	part.setActive(true);
 }
 
 

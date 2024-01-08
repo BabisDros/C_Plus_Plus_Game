@@ -1,14 +1,18 @@
 #pragma once
 #include "GameObject.h"
-
+//parameters:(float red, float green, float blue, float posX, float posY, float width, float height,float life)
 class Particle:public GameObject
 {
 	graphics::Brush m_brush;
 	
-	float m_pos_x = 0.0f;
-	float m_pos_y = 0.0f;
-	float m_width = 0.0f;
-	float m_height = 0.0f;
+	float m_initialPosX = 0.0f;
+	float m_initialPosY = 0.0f;
+	float m_initialWidth = 0.0f;
+	float m_initialHeight = 0.0f;
+	float m_currentPosX = 0.0f;
+	float m_currentPosY = 0.0f;
+	float m_currentWidth = 0.0f;
+	float m_currentHeight = 0.0f;
 	float m_velocity = 0.0f;
 	float m_maxVelocity = 0.0f;
 	float m_acceleration= 0.0f;
@@ -19,7 +23,7 @@ class Particle:public GameObject
 	float m_oscilationReduceStep = 0.0f;
 
 public:
-	Particle(float red, float green, float blue, float posX, float posY, float width, float height);
+	Particle(float posX, float posY, float width, float height, float life, float red=1, float green=1, float blue=1 );
 
 	const bool isAlive() const;
 	void init() override;
@@ -28,7 +32,8 @@ public:
 	//all properties will run during lifetime
 	void fade(const float& deltaTime);
 	void move(const float& deltaTime);
-	void reduceSize(const float& deltaTime);
+	void reduceWidth(const float& deltaTime);
+	void reduceHeight(const float& deltaTime);
 	void reduceLife(const float& deltaTime);
 	void oscilateInXAxis(const float& deltaTime);
 };

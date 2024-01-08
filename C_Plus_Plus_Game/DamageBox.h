@@ -22,8 +22,7 @@ public:
 	void setBrush(const graphics::Brush& brush);
 	void checkForCollisions(const std::list<CollisionObject*> containerToScan);
 	void checkForCollisions(CollisionObject* player);
-	void setDamageToInflict(int damage);
-	
+	void setDamageToInflict(int damage);	
 	void setParentDirection(const int& direction);
 	void setPosition(float x, float y, float width, float height);
 };
