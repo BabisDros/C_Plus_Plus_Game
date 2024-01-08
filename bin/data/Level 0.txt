@@ -92,7 +92,7 @@ Enemy
 		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 30
 		ranged: 1
 		body_damage: 0
 		jumping: 0
@@ -112,7 +112,7 @@ Enemy
 		width: 1
 		height: 0.5
 		texture: stalagmite4Y.png
-		health: 10
+		health: -1
 		ranged: 
 		body_damage: 1
 		jumping:
@@ -127,12 +127,12 @@ Enemy
 
 Enemy
 {
-	D: bottom spikes
+	D: top spikes
 	{
 		width: 1
 		height: 0.5
 		texture: stalagmite4Y.png
-		health: 10
+		health: -1
 		ranged: 0
 		body_damage: 1
 		jumping:
@@ -152,7 +152,7 @@ Enemy
 		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 30
 		ranged: 0
 		body_damage: 1
 		jumping: 0

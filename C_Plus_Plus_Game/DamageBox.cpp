@@ -70,7 +70,7 @@ void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerTo
 		
 		/*all objects will be setActive(false) when health is 0. 
 		TODO: if performance improvement needed : could delete them, and shorten the list*/
-		if (intersect(*gameobj) && destructiblePtr)
+		if (intersect(*gameobj) && destructiblePtr && gameobj->m_can_die)
 		{		
 			destructiblePtr->takeDamage(m_damageToInflict);
 		}

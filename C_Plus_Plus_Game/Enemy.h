@@ -36,6 +36,7 @@ class Enemy :public IDestructible, public Entity
 	float m_projectile_direction; //looking left value: -1 | looking right value: 1
 
 	float jump();
+
 public:
 	//	Enemy(std::string name, float width, float height, std::string& texture) : Entity(name) {}
 	Enemy(std::string name, float pos_x, float pos_y) : Entity(name) {
@@ -48,8 +49,13 @@ public:
 	{
 		m_texture = texture;
 		init();
-		setInitialHealthValues(hp);
-		m_healthUi->setPosition(pos_x, pos_y);
+		if (hp > 0) 
+		{
+			setInitialHealthValues(hp);
+			m_healthUi->setPosition(pos_x, pos_y);
+			m_can_die = true;
+		}
+
 		m_lookingDirection = looking;
 		m_mirrored = m_lookingDirection == -1;
 		if (ranged) m_projectile = DamageBox(10, false);
