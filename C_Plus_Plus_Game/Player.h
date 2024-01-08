@@ -78,4 +78,5 @@ protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);
 
+	void readSprites(std::string folder, std::vector<std::string> &myVec);
 };

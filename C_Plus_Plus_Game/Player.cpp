@@ -25,26 +25,11 @@ void Player::init()
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Walk")))
-	{
-		m_sprites_walking.push_back(entry.path().u8string());
-	}
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Idle")))
-	{
-		m_sprites_idle.push_back(entry.path().u8string());
-	}
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Attack_B")))
-	{
-		m_sprites_attacking.push_back(entry.path().u8string());
-	}
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Jump")))
-	{
-		m_sprites_jumping.push_back(entry.path().u8string());
-	}
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath("Character Sprites V2\\Run")))
-	{
-		m_sprites_dashing.push_back(entry.path().u8string());
-	}
+	readSprites("Character Sprites V2\\Walk", m_sprites_walking);
+	readSprites("Character Sprites V2\\Idle", m_sprites_idle);
+	readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
+	readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
+	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
 
 }
 
@@ -362,5 +347,13 @@ void Player::cameraOffsetY(float multiplier1, float multiplier2)
 	else if (m_pos_y > m_state->getCanvasHeight() * (multiplier2 + 0.5f))
 	{
 		m_state->m_global_offset_y = -m_state->getCanvasHeight() * 0.5f;
+	}
+}
+
+void Player::readSprites(std::string folder, std::vector<std::string> &myVec)
+{
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath(folder)))
+	{
+		myVec.push_back(entry.path().u8string());
 	}
 }
