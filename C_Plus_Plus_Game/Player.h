@@ -47,7 +47,7 @@ class Player :public IDestructible, public Entity
 	bool m_allow_animation_change;
 	static AnimationSequence m_animation;
 	float m_animation_timer = *GameState::getInstance()->getPausableClock();
-	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);
+	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);	// Making use of their pausable clocks to play the animations
 	Ability m_attackAnimation = Ability(0.3f, 0.0f, 0.0f);
 	Ability m_dashAnimation = Ability(0.2f, 0.0f, 0.0f);
 
@@ -59,8 +59,8 @@ public:
 	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
 		setInitialHealthValues(initialHealth);
-		m_height = 1.25;
-		m_width = 0.75f;
+		m_height = 1.f;
+		m_width = 0.65f;
 	}
 	void init() override;
 	void draw() override;

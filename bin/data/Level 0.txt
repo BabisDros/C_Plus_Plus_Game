@@ -99,7 +99,7 @@ Enemy
 		looking: 1
 		stick_to_wall:
 		territory_x: 1
-		territory_y: 1
+		territory_y: 2
 		movement: 3
 	}
 
@@ -180,11 +180,11 @@ Level
 AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
 E                     A A                       |
                      A                          |
-                A          AAA        Q     Z   |
-                   A    A  A         AAA  AAA   |
-                  A     A  AAAA                 |
-                 A      AAAA     A              |
-                                      A         |
+ A      AA   A  A                     Q     Z   |
+  AA   A                A  A S    A  AAA  AAA   |
+    A      V      AΑ    A  AAAA                 |
+     A    AAA    A      AAAA     A              |
+         A                            A         |
                A                     A          |
   V            D            O       A           |
                           AAAAA   AAA           |

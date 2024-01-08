@@ -31,6 +31,7 @@ void IDestructible::takeDamage(const int& damage)
             m_currentHealth -= damage;
             if (m_healthUi)
                 m_healthUi->updateUIOnDamage(m_initialHealth, m_currentHealth);
+            if (m_currentHealth <= 0) destroy();
         }
     }
 

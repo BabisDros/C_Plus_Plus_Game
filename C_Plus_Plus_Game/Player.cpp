@@ -37,7 +37,7 @@ void Player::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
 																						//! -0.5f MUST be gone
-	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.4f, 1.4f, m_brush);
+	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.4f, 1.2f, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
 
@@ -75,7 +75,7 @@ void Player::update(float dt)
 		m_pos_y = m_state->getLevel()->m_player_start_y;
 	}
 
-	cameraOffsetX(0.4f, 0.6f);		//! Preferably make it a single function {with array, enum?}, only if it isn't complex
+	cameraOffsetX(0.4f, 0.6f);
 	cameraOffsetY(0.4f, 0.6f);
 
 	dash(delta_time);
@@ -139,8 +139,8 @@ void Player::getPushed(float delta_time)
 	}
 	else
 	{
-		m_vx = m_max_velocity/ 2.f * m_pushed_x;
-		m_vy = m_max_velocity / 2.f * m_pushed_y;
+		m_vx = m_max_velocity / 4.f * m_pushed_x;
+		m_vy = m_max_velocity / 5.f * m_pushed_y;
 		m_pos_x += delta_time * m_vx;
 		m_pos_y += delta_time * m_vx;
 	}
