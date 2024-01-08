@@ -5,6 +5,7 @@
 class CollisionObject:public GameObject, public Box 
 {
 public:
+	bool m_can_die = false;
 	CollisionObject() {};
 	CollisionObject(float x, float y, float w, float h) : Box(x, y, w, h) {};
 	CollisionObject(std::string name) : GameObject(name) {};

@@ -15,8 +15,6 @@ void Enemy::init()
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
-	setInitialHealthValues(100);
-
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
 	m_projectile.setBrush(slash);
@@ -43,6 +41,7 @@ void Enemy::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}
 	m_projectile.draw();
+	m_healthUi->draw();
 }
 
 void Enemy::update(float dt)
@@ -56,6 +55,7 @@ void Enemy::update(float dt)
 
 void Enemy::destroy()
 {
+	setActive(false);
 }
 
 void Enemy::instantiateParticles()

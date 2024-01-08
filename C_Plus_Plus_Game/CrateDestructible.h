@@ -11,6 +11,7 @@ public:
 		init();
 		setInitialHealthValues(initialHealth);
 		m_healthUi->setPosition(x,y);
+		m_can_die = true;
 	}
 	~CrateDestructible() 
 	{
