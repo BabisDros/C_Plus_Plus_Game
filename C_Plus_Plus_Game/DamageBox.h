@@ -23,6 +23,7 @@ public:
 	void checkForCollisions(const std::list<CollisionObject*> containerToScan);
 	void checkForCollisions(CollisionObject* player);
 	void setDamageToInflict(int damage);
+	void pushPlayer();
 	
 	void setParentDirection(const int& direction);
 	void setPosition(float x, float y, float width, float height);
