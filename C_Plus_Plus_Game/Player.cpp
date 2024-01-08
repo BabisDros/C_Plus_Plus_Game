@@ -150,13 +150,13 @@ void Player::movement(float delta_time)
 {
 	float move = 0;
 
-	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
 	{
 		move = -1.0f;
 		m_mirrored = true;
 		m_lookingDirection = -1;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_D))
+	if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
 		move = 1.0f;
 		m_mirrored = false;
@@ -165,7 +165,7 @@ void Player::movement(float delta_time)
 
 //	if ((move > 1 && m_vx < 0) || (move < 1 && m_vx > 0)) m_vx = 0; // guaranteed to reset speed when changing direction
 
-	if (graphics::getKeyState(graphics::SCANCODE_D) ^ graphics::getKeyState(graphics::SCANCODE_A)) //? insta stop
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT) ^ graphics::getKeyState(graphics::SCANCODE_RIGHT)) //? insta stop
 	{
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 		m_vx = std::max(-m_max_velocity, m_vx);
@@ -201,7 +201,7 @@ void Player::movement(float delta_time)
 float Player::jump()
 {
 	float accel = 0;
-	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !m_jumpAbility.isRunning())
+	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_UP) && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
 		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
@@ -222,21 +222,21 @@ float Player::jump()
 void Player::fly(float delta_time)
 {
 	const float velocity = 10.0f;
-	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
 	{
 		m_pos_x -= velocity * delta_time;
 		m_mirrored = true;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_D))
+	if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
 		m_pos_x += velocity * delta_time;
 		m_mirrored = false;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_W))
+	if (graphics::getKeyState(graphics::SCANCODE_UP))
 	{
 		m_pos_y -= velocity * delta_time;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_S))
+	if (graphics::getKeyState(graphics::SCANCODE_DOWN))
 	{
 		m_pos_y += velocity * delta_time;
 	}
@@ -244,7 +244,7 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_dashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_Z) && !m_dashAbility.isRunning())
 	{
 		m_dashAbility.setStartTime(*m_state->getPausableClock());
 		m_dashAnimation.setStartTime(*m_state->getPausableClock());
