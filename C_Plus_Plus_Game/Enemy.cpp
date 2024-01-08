@@ -51,7 +51,6 @@ void Enemy::update(float dt)
 //	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
 //	checkCollision(temp);
 	movement(dt);
-	if (m_body_damage) m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
 	attack(dt);
 }
 
@@ -162,7 +161,11 @@ void Enemy::attack(float delta_time)
 {
 	float dt = delta_time / 1000.f;
 	if (m_rangedAttack) rangedAttack(dt);
-	if (m_body_damage) m_bodyDamage.update(dt);
+	if (m_body_damage) 
+	{
+		m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
+		m_bodyDamage.update(dt);
+	}
 }
 
 void Enemy::rangedAttack(float dt)
