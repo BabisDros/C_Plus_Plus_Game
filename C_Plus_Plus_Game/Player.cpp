@@ -93,7 +93,11 @@ void Player::update(float dt)
 	if (part)
 	{
 		part->update(dt);
+		part->followParentGameobject(m_pos_x, m_pos_y);
+
 	}
+
+	
 }
 
 void Player::destroy()
@@ -313,14 +317,14 @@ void Player::takeDamage(const int& damage)
 
 	if (!part)
 	{
-		part=new Particle(m_pos_x, m_pos_y, 1, 1, 3.f);
-		part->setActive(true);
+		part = new ParticleSystem(3, 10, m_pos_x, m_pos_y, 0.2f, 0.2f, 2, m_state->getFullAssetPath("blood.png"),10.f,2.f,5.f,5.f,0.4f);
 	}
-	else if (part && !part->isAlive())
+	else if (part && !part->isRunning())
 	{
+		
 		delete part;
-		part = new Particle(m_pos_x, m_pos_y, 1, 1, 3.f);
-		part->setActive(true);
+		part =new ParticleSystem(3, 10, m_pos_x, m_pos_y, 0.2f, 0.2f, 2, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 1.f, 5.f, 0.4f);
+
 	}
 	
 }

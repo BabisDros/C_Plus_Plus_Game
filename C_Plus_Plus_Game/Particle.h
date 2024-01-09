@@ -37,7 +37,7 @@ public:
 	//all properties will run during lifetime
 	void fade(const float& deltaTime);
 	void move(const float& deltaTime);
-	void setPosition(float x, float y, float width, float height);
+	void setPosition(float x, float y);
 	void reduceWidth(const float& deltaTime);
 	void reduceHeight(const float& deltaTime);
 	void reduceLife(const float& deltaTime);

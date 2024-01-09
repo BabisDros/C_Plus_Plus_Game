@@ -1,13 +1,15 @@
 #include "ParticleSystem.h"
 #include <ctime>
-ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float height, float lifetime, std::string texture, float maxVelocity,
+#include <iostream>//TODO:debug
+
+ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue ):
     m_emissionRate(emissionRate),
     m_maxParticles(maxParticles),
     m_posX(posX),
     m_posY(posY),
     m_width(width),
-    m_height(height),
+    m_particleSize(particleSize),
     m_lifetime(lifetime),
     m_texture(texture),  
     m_maxVelocity(maxVelocity),
@@ -15,42 +17,91 @@ ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, f
     m_gravity(gravity),
     m_oscillationFrequency(oscillationFrequency),
     m_oscillationAmplitude(oscillationAmplitude),
-    red(red),
-    green(green),
-    blue(blue)
+    m_red(red),
+    m_green(green),
+    m_blue(blue),
+    m_currentLife(lifetime)
 {
-    init();
 }
 
 ParticleSystem::~ParticleSystem()
 {
+    std::cout << "delete";
     for (Particle* particle : m_particles)
     {
         delete particle;
     }
+    m_particles.clear();
 }
 
-void ParticleSystem::init()
+void ParticleSystem::draw()
 {
-    //create particles in random position of the width of particle system
-    //seed based on time
-    srand(static_cast<unsigned int>(std::time(0)));
-    float firstNumber = 0.5f;
-    float widthOfRange = m_width;
-    
-
-    for (int i = 0; i < m_maxParticles; i++)
+    if (m_currentLife > 0)
     {
-        float randomPositionX = firstNumber + rand() / widthOfRange;
-        m_particles.push_back(new Particle(randomPositionX, m_posY, m_width, m_height, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity,
-            m_oscillationFrequency, m_oscillationAmplitude, red, green, blue));
+        for (auto& particle : m_particles)
+        {
+            particle->draw();
+        }
     }
+   
 }
+
 
 void ParticleSystem::update(float dt)
 {
-    for (auto& particle : m_particles)
+   
+    if (m_currentLife > 0)
     {
-        particle->update(dt);
+        
+        //create particles in random position of the width of particle system
+   //seed based on time
+        srand(static_cast<unsigned int>(std::time(0)));
+        float firstNumber = 1;
+        int lastNumber =10;
+
+        float randomPositionX = 0;
+        // Spawn new particles based on emission rate
+        m_emissionTimer += dt/1000;
+        while (m_emissionTimer > 1.0f / m_emissionRate)
+        {
+            
+            //populate m_particles list with particles with random x position.
+            randomPositionX =std::min(m_posX+m_width,m_posX+(firstNumber + rand()% lastNumber)/100);
+            m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity,
+                m_oscillationFrequency, m_oscillationAmplitude, m_red, m_green, m_blue));
+
+            // Reset the emission timer
+            m_emissionTimer -= 1.0f / m_emissionRate;
+        }
+        // Update the system's life
+        m_currentLife -= dt/1000;
+        // Update existing particles
+        for (auto& particle : m_particles)
+        {
+            particle->setPosition(m_posX, m_posY);
+            particle->update(dt);
+        }
+    }  
+   
+}
+
+bool ParticleSystem::isRunning() const
+{
+    if (m_currentLife <= 0)
+    {
+        return false;
     }
+
+    else if (m_currentLife < m_lifetime)
+    {
+        return true;
+    }
+
+    else return false;
+}
+
+void ParticleSystem::followParentGameobject(float x, float y)
+{
+    m_posX = x;
+    m_posY = y;
 }

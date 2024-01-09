@@ -15,13 +15,14 @@ Particle::Particle(float posX, float posY, float width, float height, float life
 	m_oscillationAmplitude(oscillationAmplitude)
 {		
 	SETCOLOR(m_brush.fill_color, red, green, blue);
+	m_brush.outline_opacity = 0;
+	m_brush.texture = texture;
 	init();
 }
 
 void Particle::init()
 {
 	m_state = GameState::getInstance();
-	setActive(false);
 }
 
 void Particle::draw()
@@ -36,7 +37,7 @@ void Particle::draw()
 
 void Particle::update(float dt)
 {
-	if (isActive() && isAlive())
+	if (isAlive())
 	{
 		float deltaTime = dt / 1000.0f;
 		fade(deltaTime);
@@ -84,15 +85,10 @@ void Particle::reduceLife(const float& deltaTime)
 	m_currentLife -= deltaTime;
 }
 
-void Particle::setPosition(float x, float y, float width, float height)
+void Particle::setPosition(float x, float y)
 {
-	if (!isActive())
-	{
-		m_initialPosX = x;
-		m_initialPosY = y;
-		m_initialWidth = width;
-		m_initialHeight = height;
-	}
+	m_initialPosX = x;
+	m_initialPosY = y;
 }
 
 void Particle::oscilateInXAxis(const float& deltaTime)
