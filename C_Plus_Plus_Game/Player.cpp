@@ -317,13 +317,13 @@ void Player::takeDamage(const int& damage)
 
 	if (!part)
 	{
-		part = new ParticleSystem(3, 10, m_pos_x, m_pos_y, 0.2f, 0.2f, 2, m_state->getFullAssetPath("blood.png"),10.f,2.f,5.f,5.f,0.4f);
+		part = new ParticleSystem(8, 10, m_pos_x, m_pos_y, 1.f, 0.25f, 0.5f, m_state->getFullAssetPath("blood.png"),10.f,2.f,5.f,5.f,0.4f);
 	}
 	else if (part && !part->isRunning())
 	{
 		
 		delete part;
-		part =new ParticleSystem(3, 10, m_pos_x, m_pos_y, 0.2f, 0.2f, 2, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 1.f, 5.f, 0.4f);
+		part =new ParticleSystem(8, 10, m_pos_x, m_pos_y, 1.f, 0.25f, 0.5f, m_state->getFullAssetPath("blood.png"), 10.f,2.f, 5.f, 5.f, 0.4f);
 
 	}
 	

@@ -31,7 +31,6 @@ ParticleSystem::~ParticleSystem()
     {
         delete particle;
     }
-    m_particles.clear();
 }
 
 void ParticleSystem::draw()
@@ -43,7 +42,6 @@ void ParticleSystem::draw()
             particle->draw();
         }
     }
-   
 }
 
 
@@ -51,24 +49,23 @@ void ParticleSystem::update(float dt)
 {
    
     if (m_currentLife > 0)
-    {
-        
+    {      
         //create particles in random position of the width of particle system
-   //seed based on time
+        //seed based on time
         srand(static_cast<unsigned int>(std::time(0)));
-        float firstNumber = 1;
-        int lastNumber =10;
+        float firstNumber = -5;
+        int lastNumber =5;
 
         float randomPositionX = 0;
         // Spawn new particles based on emission rate
         m_emissionTimer += dt/1000;
         while (m_emissionTimer > 1.0f / m_emissionRate)
         {
-            
+            float randomV = (firstNumber + rand() % lastNumber)/100.f ;
             //populate m_particles list with particles with random x position.
-            randomPositionX =std::min(m_posX+m_width,m_posX+(firstNumber + rand()% lastNumber)/100);
-            m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity,
-                m_oscillationFrequency, m_oscillationAmplitude, m_red, m_green, m_blue));
+            randomPositionX =std::min(m_posX+m_width,m_posX+ randomV);
+            m_particles.push_back(new Particle(randomPositionX, m_posY+randomV, m_particleSize, m_particleSize, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity ,
+                m_oscillationFrequency + randomV, m_oscillationAmplitude + randomV, m_red, m_green, m_blue));
 
             // Reset the emission timer
             m_emissionTimer -= 1.0f / m_emissionRate;
