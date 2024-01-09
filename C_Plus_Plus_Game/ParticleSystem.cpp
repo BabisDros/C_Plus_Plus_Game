@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include <ctime>
 ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float height, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue ):
     m_emissionRate(emissionRate),
@@ -31,9 +32,17 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::init()
 {
+    //create particles in random position of the width of particle system
+    //seed based on time
+    srand(static_cast<unsigned int>(std::time(0)));
+    float firstNumber = 0.5f;
+    float widthOfRange = m_width;
+    
+
     for (int i = 0; i < m_maxParticles; i++)
     {
-        m_particles.push_back(new Particle(m_posX, m_posY, m_width, m_height, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity,
+        float randomPositionX = firstNumber + rand() / widthOfRange;
+        m_particles.push_back(new Particle(randomPositionX, m_posY, m_width, m_height, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity,
             m_oscillationFrequency, m_oscillationAmplitude, red, green, blue));
     }
 }
