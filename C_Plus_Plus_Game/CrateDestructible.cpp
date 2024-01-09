@@ -1,6 +1,7 @@
 #pragma once
 #include "CrateDestructible.h"
 #include "util.h"
+#include "GameState.h"
 
 void CrateDestructible ::init() 
 {
@@ -18,6 +19,7 @@ void CrateDestructible::draw()
 void CrateDestructible::destroy()
 {
 	setActive(false);
+	m_state->m_points += 10;
 }
 
 void CrateDestructible::instantiateParticles()

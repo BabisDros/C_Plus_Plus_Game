@@ -41,6 +41,8 @@ public:
 	int m_fps = 0;
 	int m_time = 0; // used for fps counting purposes
 
+	float m_points;
+
 	void init();
 	void draw();
 	void update(float dt);
