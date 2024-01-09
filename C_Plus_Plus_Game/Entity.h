@@ -20,12 +20,12 @@ protected:
 	float m_vx = 0.f;
 	float m_vy = 0.f;
 	int m_lookingDirection = 1; //looking left value: -1 | looking right value: 1
+	bool m_collidingDown;
 };
 
 template<typename Container>
 inline void Entity::checkCollision(Container myContainer)
 {
-	
 	for (auto& block : myContainer)
 	{
 		if (block->isActive())
@@ -42,24 +42,24 @@ inline void Entity::checkCollision(Container myContainer)
 			}
 		}		
 	}
-
+	
 	for (auto& block : myContainer)
 	{
 		if (block->isActive())
 		{
-			if (intersectTypeY(*block))
+			if (intersectTypeY(*block) && intersect(*block))
 			{
 				float offset;
 				if (offset = intersectY(*block))	//? Does not go in if 0
 				{
 					m_pos_y += offset;
-					if (offset > 0)
+					if (offset < 0)
 					{
-						//			m_collidingUp = true;	//Probably not needed cause of cooldown
+									m_collidingDown = true;	//Probably not needed cause of cooldown
 					}
 					else
 					{
-						//			m_collidingUp = false;
+						//			m_collidingDown = false;
 					}
 					//? add sound event
 					//if (m_vy > 1.0f)

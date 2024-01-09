@@ -57,7 +57,7 @@ void Player::update(float dt)
 	{
 		m_allow_animation_change = true;
 	}
-
+	m_collidingDown = false;
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
 
@@ -85,6 +85,11 @@ void Player::update(float dt)
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
 	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 
+	// sound
+	if (m_collidingDown && m_animation == Walking) 
+	{ 
+		graphics::playSound("music\\Footstep_Dirt_03.mp3", 0.01f);
+	}
 }
 
 void Player::destroy()
@@ -129,6 +134,8 @@ void Player::setPushed(float x, float y)
 	
 	m_being_pushed_timer = *GameState::getInstance()->getPausableClock();
 	m_being_pushed = true;
+	// damage sound
+	graphics::playSound("music\\Body_Flesh_8.wav", 0.04f);
 }
 
 void Player::getPushed(float delta_time)
@@ -192,7 +199,17 @@ void Player::movement(float delta_time)
 	m_vy = std::min(m_max_velocity, m_vy);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	
-	m_vy += delta_time * m_gravity;	
+	if (m_dashAbility.isRunning())	// add gravity if dash is not waiting for cooldown and it isn't in it's duration
+	{ 
+		if(!m_dashAbility.getElapsedTime() < m_dashAbility.getDuration())
+		{ 
+			m_vy += delta_time * m_gravity;
+		}	
+	}
+	else
+	{
+		m_vy += delta_time * m_gravity;
+	}
 	m_pos_y += delta_time * m_vy;
 
 	if (m_being_pushed) getPushed(delta_time);
@@ -267,7 +284,7 @@ void Player::dash(float delta_time)
 
 void Player::slash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_slashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_X) && !m_slashAbility.isRunning())
 	{	
 		m_slashWeapon.setActive(true);
 		m_slashAbility.setStartTime(*m_state->getPausableClock());
@@ -275,6 +292,8 @@ void Player::slash(float delta_time)
 		m_animation = Attacking;
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
 		m_allow_animation_change = false;
+		//sound
+		graphics::playSound("music\\Light_Sword_Swing_3.wav", 0.05f);
 	}
 	if (m_slashAbility.isRunning())
 	{

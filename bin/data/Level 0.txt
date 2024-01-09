@@ -87,7 +87,7 @@ Enemy
 		width: 0.75
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 50
 		ranged: 1
 		body_damage:
 		jumping: 1
@@ -101,7 +101,7 @@ Enemy
 }
 Enemy
 {
-	V: first enemy on left
+	V: flying enemy up/down
 	{
 		width: 0.5
 		height: 1
@@ -166,7 +166,7 @@ Enemy
 		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
-		health: 30
+		health: 40
 		ranged: 0
 		body_damage: 1
 		jumping: 0
@@ -198,7 +198,7 @@ E                     A A         A             |
   AA   A                A  A S    B  BAA  AAA   |
     A      V      AΑ    A  AAAA                 |
      A    AAA    A      AAAA     A              |
-         A                            A         |
+         A    A                       A         |
                A                     A          |
   V            D            O       A           |
                           AAAAA   AAA           |

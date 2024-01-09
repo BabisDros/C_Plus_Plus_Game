@@ -19,8 +19,8 @@ enum AnimationSequence
 class Player :public IDestructible, public Entity
 {
 	DamageBox m_slashWeapon = DamageBox(10);
-	Ability m_dashAbility = Ability(2.0f, 0.1f, 0.0f, 23.f);
-	Ability m_slashAbility = Ability(1.0f, 0.1f, 0.0f);
+	Ability m_dashAbility = Ability(2.0f, 0.2f, 0.0f, 12.f);
+	Ability m_slashAbility = Ability(1.0f, 0.25f, 0.0f);
 	Ability m_jumpAbility = Ability(0.3f, 0.0f, 0.0f);
 
 	const float m_gravity = 10.f;
