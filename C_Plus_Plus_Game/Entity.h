@@ -55,7 +55,7 @@ inline void Entity::checkCollision(Container myContainer)
 					m_pos_y += offset;
 					if (offset < 0)
 					{
-									m_collidingDown = true;	//Probably not needed cause of cooldown
+						m_collidingDown = true;	//Probably not needed cause of cooldown
 					}
 					else
 					{

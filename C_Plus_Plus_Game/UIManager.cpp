@@ -25,6 +25,7 @@ void UIManager::draw()
 	else
 	{
 		drawPlayerHealth();
+		drawScore();
 		if (m_state->getCurrentState() == States::Paused)
 		{
 			drawPause();
@@ -35,6 +36,17 @@ void UIManager::draw()
 void UIManager::drawPlayerHealth()
 {
 	m_playerHealthUI->draw();
+}
+
+void UIManager::drawScore()
+{
+	std::string str = "Score: " + std::to_string((int)m_state->m_points);
+	graphics::Brush textBrush;
+	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
+	textBrush.fill_opacity = 0.8f;
+	textBrush.outline_opacity = 1.0f;
+	float centeringValue = str.size() / 2.f - 0.5f;//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth() - centeringValue, 1, 1.f, str, textBrush);
 }
 
 
