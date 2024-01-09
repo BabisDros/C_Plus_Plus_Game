@@ -12,6 +12,7 @@ public:
 	void init();
 	void draw();
 	void drawPlayerHealth();
+	void drawScore();
 	void drawMenu();
 	void drawPause();
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);

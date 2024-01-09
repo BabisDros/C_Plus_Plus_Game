@@ -63,7 +63,7 @@ void Player::update(float dt)
 	{
 		m_allow_animation_change = true;
 	}
-
+	m_collidingDown = false;
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
 
@@ -95,7 +95,12 @@ void Player::update(float dt)
 		part->update(dt);
 		part->followParentGameobject(m_pos_x, m_pos_y);
 
+	// sound
+	if (m_collidingDown && m_animation == Walking) 
+	{ 
+		graphics::playSound("music\\Footstep_Dirt_03.mp3", 0.01f);
 	}
+}
 
 	
 }
@@ -142,6 +147,8 @@ void Player::setPushed(float x, float y)
 	
 	m_being_pushed_timer = *GameState::getInstance()->getPausableClock();
 	m_being_pushed = true;
+	// damage sound
+	graphics::playSound("music\\Body_Flesh_8.wav", 0.04f);
 }
 
 void Player::getPushed(float delta_time)
@@ -163,13 +170,13 @@ void Player::movement(float delta_time)
 {
 	float move = 0;
 
-	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
 	{
 		move = -1.0f;
 		m_mirrored = true;
 		m_lookingDirection = -1;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_D))
+	if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
 		move = 1.0f;
 		m_mirrored = false;
@@ -178,7 +185,7 @@ void Player::movement(float delta_time)
 
 //	if ((move > 1 && m_vx < 0) || (move < 1 && m_vx > 0)) m_vx = 0; // guaranteed to reset speed when changing direction
 
-	if (graphics::getKeyState(graphics::SCANCODE_D) ^ graphics::getKeyState(graphics::SCANCODE_A)) //? insta stop
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT) ^ graphics::getKeyState(graphics::SCANCODE_RIGHT)) //? insta stop
 	{
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 		m_vx = std::max(-m_max_velocity, m_vx);
@@ -205,7 +212,17 @@ void Player::movement(float delta_time)
 	m_vy = std::min(m_max_velocity, m_vy);
 	m_vy = std::max(-m_max_velocity, m_vy);
 	
-	m_vy += delta_time * m_gravity;	
+	if (m_dashAbility.isRunning())	// add gravity if dash is not waiting for cooldown and it isn't in it's duration
+	{ 
+		if(!m_dashAbility.getElapsedTime() < m_dashAbility.getDuration())
+		{ 
+			m_vy += delta_time * m_gravity;
+		}	
+	}
+	else
+	{
+		m_vy += delta_time * m_gravity;
+	}
 	m_pos_y += delta_time * m_vy;
 
 	if (m_being_pushed) getPushed(delta_time);
@@ -214,7 +231,7 @@ void Player::movement(float delta_time)
 float Player::jump()
 {
 	float accel = 0;
-	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_W) && !m_jumpAbility.isRunning())
+	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_UP) && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
 		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
@@ -235,21 +252,21 @@ float Player::jump()
 void Player::fly(float delta_time)
 {
 	const float velocity = 10.0f;
-	if (graphics::getKeyState(graphics::SCANCODE_A))	//? movement
+	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
 	{
 		m_pos_x -= velocity * delta_time;
 		m_mirrored = true;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_D))
+	if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
 		m_pos_x += velocity * delta_time;
 		m_mirrored = false;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_W))
+	if (graphics::getKeyState(graphics::SCANCODE_UP))
 	{
 		m_pos_y -= velocity * delta_time;
 	}
-	if (graphics::getKeyState(graphics::SCANCODE_S))
+	if (graphics::getKeyState(graphics::SCANCODE_DOWN))
 	{
 		m_pos_y += velocity * delta_time;
 	}
@@ -257,7 +274,7 @@ void Player::fly(float delta_time)
 
 void Player::dash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_F) && !m_dashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_Z) && !m_dashAbility.isRunning())
 	{
 		m_dashAbility.setStartTime(*m_state->getPausableClock());
 		m_dashAnimation.setStartTime(*m_state->getPausableClock());
@@ -280,7 +297,7 @@ void Player::dash(float delta_time)
 
 void Player::slash(float delta_time)
 {
-	if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !m_slashAbility.isRunning())
+	if (graphics::getKeyState(graphics::SCANCODE_X) && !m_slashAbility.isRunning())
 	{	
 		m_slashWeapon.setActive(true);
 		m_slashAbility.setStartTime(*m_state->getPausableClock());
@@ -288,6 +305,8 @@ void Player::slash(float delta_time)
 		m_animation = Attacking;
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
 		m_allow_animation_change = false;
+		//sound
+		graphics::playSound("music\\Light_Sword_Swing_3.wav", 0.05f);
 	}
 	if (m_slashAbility.isRunning())
 	{

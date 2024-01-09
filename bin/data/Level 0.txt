@@ -14,6 +14,20 @@ Terrain
 
 Terrain
 {
+	B
+	{
+		width: 1
+		height: 0.5
+		texture: crate.png
+		destructible:
+		health:
+		level_end: 0
+	}
+
+}
+
+Terrain
+{
 	C: Floor
 	{
 		width: 48
@@ -45,7 +59,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: slashFx.png
+		texture: door.png
 		destructible:
 		health:
 		level_end: 1
@@ -73,7 +87,7 @@ Enemy
 		width: 0.75
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 50
 		ranged: 1
 		body_damage:
 		jumping: 1
@@ -87,12 +101,12 @@ Enemy
 }
 Enemy
 {
-	V: first enemy on left
+	V: flying enemy up/down
 	{
 		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 30
 		ranged: 1
 		body_damage: 0
 		jumping: 0
@@ -112,7 +126,7 @@ Enemy
 		width: 1
 		height: 0.5
 		texture: stalagmite4Y.png
-		health: 10
+		health: -1
 		ranged: 
 		body_damage: 1
 		jumping:
@@ -127,12 +141,12 @@ Enemy
 
 Enemy
 {
-	D: bottom spikes
+	D: top spikes
 	{
 		width: 1
 		height: 0.5
 		texture: stalagmite4Y.png
-		health: 10
+		health: -1
 		ranged: 0
 		body_damage: 1
 		jumping:
@@ -152,7 +166,7 @@ Enemy
 		width: 0.5
 		height: 1
 		texture: temp_enemy2.png
-		health: 10
+		health: 40
 		ranged: 0
 		body_damage: 1
 		jumping: 0
@@ -178,13 +192,13 @@ Level
                              A                  |
                             A                   |
 AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
-E                     A A                       |
-                     A                          |
- A      AA   A  A                     Q     Z   |
-  AA   A                A  A S    A  AAA  AAA   |
+E                     A A         A             |
+                    B             A             |
+ A      AA   A  A                 A   Q     Z   |
+  AA   A                A  A S    B  BAA  AAA   |
     A      V      AΑ    A  AAAA                 |
      A    AAA    A      AAAA     A              |
-         A                            A         |
+         A    A                       A         |
                A                     A          |
   V            D            O       A           |
                           AAAAA   AAA           |

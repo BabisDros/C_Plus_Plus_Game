@@ -15,8 +15,6 @@ void Enemy::init()
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
-	setInitialHealthValues(100);
-
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
 	m_projectile.setBrush(slash);
@@ -43,6 +41,7 @@ void Enemy::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}
 	m_projectile.draw();
+	m_healthUi->draw();
 }
 
 void Enemy::update(float dt)
@@ -52,10 +51,13 @@ void Enemy::update(float dt)
 //	checkCollision(temp);
 	movement(dt);
 	attack(dt);
+	m_healthUi->setPosition(m_pos_x, m_pos_y);
 }
 
 void Enemy::destroy()
 {
+	setActive(false);
+	m_state->m_points += 20;
 }
 
 void Enemy::instantiateParticles()
@@ -177,6 +179,10 @@ void Enemy::rangedAttack(float dt)
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
 		m_projectile.setPosition(m_pos_x, m_pos_y, 0.8f, 0.8f);
 		m_projectile_direction = m_lookingDirection;
+		if (fabs(m_state->getPlayer()->m_pos_x - m_pos_x) < 25 && fabs(m_state->getPlayer()->m_pos_y - m_pos_y) < 15) // not too far
+		{
+			graphics::playSound("music\\enemy_projectile.wav", 0.05f);
+		}
 	}
 
 	if (m_throwProjectile.isRunning())

@@ -43,7 +43,7 @@ void Level::draw()
 	}
 
 	for (auto p_gob : m_destructible_objects)
-		if (p_gob) p_gob->draw();
+		if (p_gob->isActive()) p_gob->draw();
 	//? order of draw() matters, if overllaping last goes on top
 	if (m_state->getPlayer()->isActive()) //? draws player
 	{
@@ -56,7 +56,11 @@ void Level::update(float dt)
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
 
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
-	if (m_state->getPlayer()->intersect((*m_level_end))) m_state->goNextLevel = true;	// level finished
+	if (m_state->getPlayer()->intersect((*m_level_end))) 
+	{ 
+		m_state->goNextLevel = true; // level finished
+		m_state->m_points += 100;
+	}	
 
 	if (m_state->getPlayer()->isActive())	
 	{
@@ -64,8 +68,8 @@ void Level::update(float dt)
 	}
 
 	for (auto p_gob : m_destructible_objects)
-		if (p_gob) p_gob->update(dt);
-	GameObject::update(dt);
+		if (p_gob->isActive()) p_gob->update(dt);
+//	GameObject::update(dt);
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
