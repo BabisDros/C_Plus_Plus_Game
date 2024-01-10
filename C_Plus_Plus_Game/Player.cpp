@@ -163,6 +163,11 @@ void Player::getPushed(float delta_time)
 	}
 }
 
+Ability* Player::getDashAbility()
+{
+	return &m_dashAbility;
+}
+
 void Player::movement(float delta_time)
 {
 	float move = 0;

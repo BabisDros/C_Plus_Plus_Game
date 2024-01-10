@@ -75,7 +75,8 @@ public:
 	
 	void setPushed(float x, float y);
 	void getPushed(float dt);
-	
+	Ability* getDashAbility();
+
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);

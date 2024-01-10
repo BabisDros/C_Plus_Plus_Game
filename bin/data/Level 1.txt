@@ -197,7 +197,7 @@ E                     A A         A             |
  F                  B             A             |
  A      AA   A  A                 A   Q         |
   AA   A                A  A S    B  BAA  AAA   |
-    A      V      AΑ    A  AAAA                 |
+    A      V      AA    A  AAAA                 |
      A    AAA    A      AAAA     A              |
          A    A                       A         |
                A                     A          |

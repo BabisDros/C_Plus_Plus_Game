@@ -16,6 +16,7 @@ public:
 	void drawScore();
 	void drawMenu();
 	void drawPause();
+	void drawDashCooldown();
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);
 	void onPointsChanged(const int& points);
 	static UIManager* getInstance();
