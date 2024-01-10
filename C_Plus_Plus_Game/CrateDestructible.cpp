@@ -1,7 +1,7 @@
 #pragma once
 #include "CrateDestructible.h"
 #include "util.h"
-#include "GameState.h"
+#include "CallbackManager.h"
 #include "Level.h"
 #include "HealthPack.h"
 
@@ -40,10 +40,6 @@ void CrateDestructible::destroy()
 		m_state->getLevel()->getDestructibleObjectsPtr()->push_back(new HealthPack(m_pos_x, m_pos_y + m_width/4, m_width/2, m_height/2, &m_health_texture, false)); // should happen once
 		m_state->getLevel()->getDestructibleObjects().back()->init();
 	}
-	m_state->m_points += m_points;
 	if (m_loot == Extra_loot) graphics::playSound("music\\extra_loot.wav", 0.30f);
-}
-
-void CrateDestructible::instantiateParticles()
-{
+	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points);
 }

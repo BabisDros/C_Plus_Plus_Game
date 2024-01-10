@@ -17,7 +17,6 @@ public:
     virtual bool isAlive() const;
     //Object is not destroyed but setActive false
     virtual void destroy() = 0;
-    virtual void instantiateParticles() = 0;
 protected:
     int m_initialHealth = 0;
     int m_currentHealth = 0;

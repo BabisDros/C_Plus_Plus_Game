@@ -12,7 +12,8 @@ void UIManager::init()
 	m_state = GameState::getInstance();
 	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
 
-	CallbackManager::getInstance()->m_playerIsDamaged.addTwoIntActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playerIsDamaged.addTwoArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
 }
 
 
@@ -40,7 +41,7 @@ void UIManager::drawPlayerHealth()
 
 void UIManager::drawScore()
 {
-	std::string str = "Score: " + std::to_string((int)m_state->m_points);
+	std::string str = "Score: " + m_points;
 	graphics::Brush textBrush;
 	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
 	textBrush.fill_opacity = 1.f;
@@ -71,17 +72,23 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValue, m_state->getCanvasHeight() / 2, 1.f, str, textBrush);
 }
 
+void UIManager::drawMenu()
+{
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
+		m_state->getCanvasHeight(), m_menu);
+}
 
 void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& currentHealth)
 {
 	m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
 }
 
-void UIManager::drawMenu()
+void UIManager::onPointsChanged(const int& points)
 {
-	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
-		m_state->getCanvasHeight(), m_menu);
+	m_points = std::to_string((int)points);
 }
+
+
 
 UIManager* UIManager::getInstance()
 {
