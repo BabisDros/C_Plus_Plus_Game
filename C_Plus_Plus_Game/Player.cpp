@@ -330,7 +330,7 @@ void Player::takeDamage(const int& damage)
 
 	//trigger
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	m_bloodParticles->init();	
+	if (damage>0) m_bloodParticles->init();	
 }
 
 
