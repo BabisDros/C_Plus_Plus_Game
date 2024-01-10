@@ -17,7 +17,7 @@ GameState::GameState()
 
 void GameState::init()
 {	
-	CallbackManager::getInstance()->m_pointsChanged.addintActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
 	LevelManager::getInstance()->init();
 	MusicManager::getInstance()->init();

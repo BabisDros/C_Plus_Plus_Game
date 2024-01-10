@@ -10,6 +10,7 @@
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
+#include "ParticleManager.h"
 
 void Level::init()
 {
@@ -21,7 +22,7 @@ void Level::init()
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
-
+	ParticleManager::getInstance()->init();
 }
 
 void Level::draw()
@@ -33,7 +34,7 @@ void Level::draw()
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
 	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
-
+	
 /* Not used currently
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->draw();*/
@@ -46,6 +47,7 @@ void Level::draw()
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob->isActive()) p_gob->draw();
 	//? order of draw() matters, if overllaping last goes on top
+	ParticleManager::getInstance()->draw();
 	if (m_state->getPlayer()->isActive()) //? draws player
 	{
 		m_state->getPlayer()->draw();
@@ -55,7 +57,7 @@ void Level::draw()
 void Level::update(float dt)
 {
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-
+	ParticleManager::getInstance()->update(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 

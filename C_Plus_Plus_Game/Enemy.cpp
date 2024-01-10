@@ -57,8 +57,10 @@ void Enemy::update(float dt)
 
 void Enemy::destroy()
 {
-	setActive(false);
+	
 	CallbackManager::getInstance()->m_pointsChanged.trigger(20);
+	CallbackManager::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
+	setActive(false);
 }
 
 void Enemy::movement(float dt)

@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include "GameState.h"
 #include <ctime>
 #include <iostream>//TODO:debug
 
@@ -28,8 +29,7 @@ ParticleSystem::~ParticleSystem()
 }
 
 void ParticleSystem::init()
-{  
-    
+{      
     if (!isRunning())
     {
         destroyParticles();
@@ -40,15 +40,16 @@ void ParticleSystem::init()
 
 void ParticleSystem::draw()
 {
+   /* std::cout << "draw out" << *m_state->getPausableClock() << std::endl*/;
     if (isRunning())
     {
-        for (auto& particle : m_particles)
+        std::cout << "draw in" << *m_state->getPausableClock() << std::endl;
+        for (Particle*& particle : m_particles)
         {
             particle->draw();
         }
     }
 }
-
 
 void ParticleSystem::update(float dt)
 {
@@ -71,9 +72,9 @@ void ParticleSystem::update(float dt)
                 float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
                 //populate m_particles list with particles with random x position.
                 randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
-                randomPositionX = std::max(m_posX- m_width, m_posX + randomVal);
+                randomPositionX = std::max(m_posX - m_width, m_posX + randomVal);
 
-                std::cout << "m_posX + m_width " << m_posX + m_width << ", m_posX- m_width " << m_posX - m_width << "randomPositionX" << randomPositionX << std::endl;
+                //std::cout << "m_posX + m_width " << m_posX + m_width << ", m_posX- m_width " << m_posX - m_width << "randomPositionX" << randomPositionX << std::endl;
                 m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, 
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
             }
