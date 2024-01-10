@@ -41,6 +41,6 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	bool isRunning() const;
-	void followHolderGameobject(float x, float y);
+	void followGameobject(float x, float y);
 	void destroyParticles();
 };

@@ -10,7 +10,7 @@
 AnimationSequence Player::m_animation = Idle;
 Player::~Player()
 {
-	delete m_bloodParticles;
+	/*delete m_bloodParticles;*/
 }
 void Player::init()
 {
@@ -50,7 +50,7 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
 	m_slashWeapon.draw();	
-	m_bloodParticles->draw();		
+	/*m_bloodParticles->draw();		*/
 }
 
 void Player::update(float dt)
@@ -90,9 +90,9 @@ void Player::update(float dt)
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
 	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 	
-	m_bloodParticles->followHolderGameobject(m_pos_x, m_pos_y);
+	/*m_bloodParticles->followGameobject(m_pos_x, m_pos_y);
 	m_bloodParticles->update(dt);
-	
+	*/
 
 	// sound
 	if (m_collidingDown && m_animation == Walking) 
@@ -191,6 +191,8 @@ void Player::movement(float delta_time)
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
 		}
+
+		
 	}
 	else
 	{
@@ -203,7 +205,7 @@ void Player::movement(float delta_time)
 	}
 //	if (m_jumpAnimation.isRunning()) m_animation = Jumping;
 	m_pos_x += delta_time * m_vx;
-
+	CallbackManager::getInstance()->m_playerMoved.trigger(m_pos_x, m_pos_y);
 	m_vy -= jump();
 
 	m_vy = std::min(m_max_velocity, m_vy);
@@ -328,9 +330,9 @@ void Player::takeDamage(const int& damage)
 	//call base class to update health
 	IDestructible::takeDamage(damage);
 
-	//trigger
+	//triggers the methods with two arguments and with empty
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	m_bloodParticles->init();	
+	CallbackManager::getInstance()->m_playHurtFx.trigger();
 }
 
 

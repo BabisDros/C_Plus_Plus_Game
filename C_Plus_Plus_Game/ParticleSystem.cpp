@@ -70,7 +70,7 @@ void ParticleSystem::update(float dt)
                 float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
                 //populate m_particles list with particles with random x position.
                 randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
-                randomPositionX = std::max(m_posX - m_width, m_posX + randomVal);
+                randomPositionX = std::max(m_posX - m_width, randomPositionX);
 
                 m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, 
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
@@ -95,7 +95,7 @@ bool ParticleSystem::isRunning() const
     return (m_currentLife > 0 && m_currentLife < m_lifetime);
 }
 
-void ParticleSystem::followHolderGameobject(float x, float y)
+void ParticleSystem::followGameobject(float x, float y)
 {
     m_posX = x;
     m_posY = y;
