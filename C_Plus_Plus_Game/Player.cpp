@@ -8,6 +8,10 @@
 #include <filesystem> // to read sprites for animation 
 
 AnimationSequence Player::m_animation = Idle;
+Player::~Player()
+{
+	delete m_bloodParticles;
+}
 void Player::init()
 {
 	m_pos_x = m_state->getLevel()->m_player_start_x;
@@ -45,13 +49,8 @@ void Player::draw()
 	{
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
-	m_slashWeapon.draw();
-
-	if(part)
-	{
-		part->draw();
-	}
-	
+	m_slashWeapon.draw();	
+	m_bloodParticles->draw();		
 }
 
 void Player::update(float dt)
@@ -90,10 +89,10 @@ void Player::update(float dt)
 	pickAnimation();
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
 	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
-	if (part)
-	{
-		part->update(dt);
-		part->followParentGameobject(m_pos_x, m_pos_y);
+	
+	m_bloodParticles->followHolderGameobject(m_pos_x, m_pos_y);
+	m_bloodParticles->update(dt);
+	
 
 	// sound
 	if (m_collidingDown && m_animation == Walking) 
@@ -103,16 +102,14 @@ void Player::update(float dt)
 }
 
 	
-}
+
 
 void Player::destroy()
 {
 	setActive(false);
 }
 
-void Player::instantiateParticles()
-{
-}
+
 
 void Player::pickAnimation()
 {
@@ -333,19 +330,7 @@ void Player::takeDamage(const int& damage)
 
 	//trigger
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-
-	if (!part)
-	{
-		part = new ParticleSystem(8, 10, m_pos_x, m_pos_y, 1.f, 0.25f, 0.5f, m_state->getFullAssetPath("blood.png"),10.f,2.f,5.f,5.f,0.4f);
-	}
-	else if (part && !part->isRunning())
-	{
-		
-		delete part;
-		part =new ParticleSystem(8, 10, m_pos_x, m_pos_y, 1.f, 0.25f, 0.5f, m_state->getFullAssetPath("blood.png"), 10.f,2.f, 5.f, 5.f, 0.4f);
-
-	}
-	
+	m_bloodParticles->init();	
 }
 
 

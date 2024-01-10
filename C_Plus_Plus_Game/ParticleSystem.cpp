@@ -3,7 +3,7 @@
 #include <iostream>//TODO:debug
 
 ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
-    float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue ):
+    float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
     m_emissionRate(emissionRate),
     m_maxParticles(maxParticles),
     m_posX(posX),
@@ -11,7 +11,7 @@ ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, f
     m_width(width),
     m_particleSize(particleSize),
     m_lifetime(lifetime),
-    m_texture(texture),  
+    m_texture(texture),
     m_maxVelocity(maxVelocity),
     m_acceleration(acceleration),
     m_gravity(gravity),
@@ -19,23 +19,28 @@ ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, f
     m_oscillationAmplitude(oscillationAmplitude),
     m_red(red),
     m_green(green),
-    m_blue(blue),
-    m_currentLife(lifetime)
-{
-}
+    m_blue(blue)
+{}
 
 ParticleSystem::~ParticleSystem()
 {
-    std::cout << "delete";
-    for (Particle* particle : m_particles)
+    destroyParticles();
+}
+
+void ParticleSystem::init()
+{  
+    
+    if (!isRunning())
     {
-        delete particle;
-    }
+        destroyParticles();
+        //used to start/reset particle system
+        m_currentLife = m_lifetime;
+    }     
 }
 
 void ParticleSystem::draw()
 {
-    if (m_currentLife > 0)
+    if (isRunning())
     {
         for (auto& particle : m_particles)
         {
@@ -47,58 +52,66 @@ void ParticleSystem::draw()
 
 void ParticleSystem::update(float dt)
 {
-   
     if (m_currentLife > 0)
     {      
+        float deltaTimeSec = dt / 1000;
         //create particles in random position of the width of particle system
         //seed based on time
         srand(static_cast<unsigned int>(std::time(0)));
-        float firstNumber = -5;
-        int lastNumber =5;
+        float firstNumber = -2;
+        int lastNumber =2;
 
         float randomPositionX = 0;
         // Spawn new particles based on emission rate
-        m_emissionTimer += dt/1000;
+        m_emissionTimer += deltaTimeSec;
         while (m_emissionTimer > 1.0f / m_emissionRate)
         {
-            float randomV = (firstNumber + rand() % lastNumber)/100.f ;
-            //populate m_particles list with particles with random x position.
-            randomPositionX =std::min(m_posX+m_width,m_posX+ randomV);
-            m_particles.push_back(new Particle(randomPositionX, m_posY+randomV, m_particleSize, m_particleSize, m_lifetime, m_texture, m_maxVelocity, m_acceleration, m_gravity ,
-                m_oscillationFrequency + randomV, m_oscillationAmplitude + randomV, m_red, m_green, m_blue));
+            if (m_particles.size() < m_maxParticles)
+            {
+                float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
+                //populate m_particles list with particles with random x position.
+                randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
+                randomPositionX = std::max(m_posX- m_width, m_posX + randomVal);
 
+                std::cout << "m_posX + m_width " << m_posX + m_width << ", m_posX- m_width " << m_posX - m_width << "randomPositionX" << randomPositionX << std::endl;
+                m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, 
+                    m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
+            }
+         
             // Reset the emission timer
             m_emissionTimer -= 1.0f / m_emissionRate;
         }
         // Update the system's life
-        m_currentLife -= dt/1000;
+        m_currentLife -= deltaTimeSec;
         // Update existing particles
         for (auto& particle : m_particles)
         {
-            particle->setPosition(m_posX, m_posY);
+            particle->setInitialPosition(m_posX, m_posY);
             particle->update(dt);
         }
     }  
-   
 }
 
 bool ParticleSystem::isRunning() const
 {
-    if (m_currentLife <= 0)
-    {
-        return false;
-    }
-
-    else if (m_currentLife < m_lifetime)
-    {
-        return true;
-    }
-
-    else return false;
+    return (m_currentLife > 0 && m_currentLife < m_lifetime);
 }
 
-void ParticleSystem::followParentGameobject(float x, float y)
+void ParticleSystem::followHolderGameobject(float x, float y)
 {
     m_posX = x;
     m_posY = y;
+}
+
+void ParticleSystem::destroyParticles()
+{
+    if (m_particles.size() > 0)
+    {
+        for (Particle* particle : m_particles)
+        {
+            delete particle;
+        }
+
+        m_particles.clear();
+    }  
 }

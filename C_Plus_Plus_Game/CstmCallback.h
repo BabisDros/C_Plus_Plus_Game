@@ -10,8 +10,12 @@ class CstmCallback
 protected:
 	bool m_action_occured = false;
 	std::vector<std::function<void(const int&, const int&)>>m_twoIntActionCallbacks;
+	std::vector<std::function<void(const int&)>>m_intActionCallbacks;
 
 public:
 	void addTwoIntActionCallback(std::function<void(const int&, const int&)> cb);
+	void addintActionCallback(std::function<void(const int&)> cb);
+
 	void trigger(int val1, int val2);
+	void trigger(int val1);
 };

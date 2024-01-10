@@ -77,7 +77,6 @@ public:
 
 	void movement(float dt) override;
 	void destroy() override;
-	void instantiateParticles() override;
 
 	void movementStaticX(float dt);
 	void movementStaticY(float dt);

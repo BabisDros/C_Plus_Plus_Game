@@ -9,6 +9,7 @@
 #include "LevelBox.h"
 #include "CrateDestructible.h"
 #include "box.h"
+#include "CallbackManager.h"
 
 void Level::init()
 {
@@ -59,7 +60,7 @@ void Level::update(float dt)
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
 		m_state->goNextLevel = true; // level finished
-		m_state->m_points += 100;
+		CallbackManager::getInstance()->m_pointsChanged.trigger(100);
 	}	
 
 	if (m_state->getPlayer()->isActive())	

@@ -85,7 +85,7 @@ void Particle::reduceLife(const float& deltaTime)
 	m_currentLife -= deltaTime;
 }
 
-void Particle::setPosition(float x, float y)
+void Particle::setInitialPosition(float x, float y)
 {
 	m_initialPosX = x;
 	m_initialPosY = y;

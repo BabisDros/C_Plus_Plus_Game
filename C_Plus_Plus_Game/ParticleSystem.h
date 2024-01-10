@@ -36,8 +36,10 @@ public:
 	ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture = "", float maxVelocity = 1.5f, float acceleration = 1.0f,
 		float gravity = 1, float oscillationFrequency = 5.0f, float oscillationAmplitude = 0.4f, float red = 1.0f, float green = 1.0f, float blue = 1.0f);
 	~ParticleSystem();
+	void init() override;
 	void draw() override;
 	void update(float dt) override;
 	bool isRunning() const;
-	void followParentGameobject(float x, float y);
+	void followHolderGameobject(float x, float y);
+	void destroyParticles();
 };

@@ -55,7 +55,7 @@ public:
 
 	void handleStates();
 	void showFPS();
-
+	void onPointsCollected(int points);
 	States& getCurrentState();
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 

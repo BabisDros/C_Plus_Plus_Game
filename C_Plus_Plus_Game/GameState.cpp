@@ -3,6 +3,7 @@
 #include "LevelManager.h"
 #include "UIManager.h"
 #include "GameState.h"
+#include "CallbackManager.h"
 #include "Level.h"
 #include "Player.h"
 #include <thread>
@@ -16,6 +17,7 @@ GameState::GameState()
 
 void GameState::init()
 {	
+	CallbackManager::getInstance()->m_pointsChanged.addintActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
 	LevelManager::getInstance()->init();
 	MusicManager::getInstance()->init();
@@ -117,6 +119,11 @@ void GameState::showFPS()
 	{
 		m_fps++;
 	}
+}
+
+void GameState::onPointsCollected(int points)
+{
+	m_points = +points;
 }
 
 States& GameState::getCurrentState()

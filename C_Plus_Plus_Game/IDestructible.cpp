@@ -35,9 +35,9 @@ void IDestructible::takeDamage(const int& damage)
         }
     }
 
-    else
+    else  if (isAlive())
     {
-        if (isAlive()) destroy();
+        destroy();
     }
 }
 
