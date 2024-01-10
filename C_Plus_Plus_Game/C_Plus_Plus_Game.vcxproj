@@ -143,7 +143,6 @@
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="CrateDestructible.cpp" />
-    <ClCompile Include="CstmCallback.cpp" />
     <ClCompile Include="DamageBox.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="CallbackManager.cpp" />

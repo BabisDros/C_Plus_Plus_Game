@@ -9,9 +9,9 @@ class ParticleSystem:public GameObject
 	graphics::Brush m_brush;	
 	std::vector<Particle*> m_particles;
 	
-	//number of particles emmited
-	int m_emissionRate = 1;
-	int m_maxParticles = 1;	
+	//number of particles emmited per second
+	int m_emissionRate = 0;
+	int m_maxParticles = 0;	
 	float m_posX = 0.0f;
 	float m_posY = 0.0f;
 	//the width from which the particles will appear in random position.
@@ -21,7 +21,7 @@ class ParticleSystem:public GameObject
 	std::string m_texture = "";
 	float m_maxVelocity = 0.0f;
 	float m_acceleration = 0.5f;
-	//set negative gravity to pull up object. Positive to pull down
+	//set negative gravity to pull up object | Positive to pull down | 0 for stationary
 	float m_gravity = 0;
 	float m_oscillationFrequency = 0.f;
 	float m_oscillationAmplitude = 0.f;

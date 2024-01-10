@@ -27,7 +27,6 @@ void Particle::init()
 
 void Particle::draw()
 {
-	std::cout << "draw particle called" << *m_state->getPausableClock() << std::endl;
 	graphics::drawRect(m_currentPosX + m_state->m_global_offset_x, m_currentPosY + m_state->m_global_offset_y, m_currentWidth, m_currentHeight, m_brush);
 
 	if (m_state->m_debugging)

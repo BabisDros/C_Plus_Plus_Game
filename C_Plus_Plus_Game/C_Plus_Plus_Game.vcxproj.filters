@@ -78,9 +78,6 @@
     <ClCompile Include="Ability.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CstmCallback.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IDestructible.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

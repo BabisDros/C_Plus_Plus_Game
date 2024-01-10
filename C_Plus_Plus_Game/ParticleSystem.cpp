@@ -1,7 +1,6 @@
 #include "ParticleSystem.h"
 #include "GameState.h"
 #include <ctime>
-#include <iostream>//TODO:debug
 
 ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
@@ -40,10 +39,8 @@ void ParticleSystem::init()
 
 void ParticleSystem::draw()
 {
-   /* std::cout << "draw out" << *m_state->getPausableClock() << std::endl*/;
     if (isRunning())
     {
-        std::cout << "draw in" << *m_state->getPausableClock() << std::endl;
         for (Particle*& particle : m_particles)
         {
             particle->draw();
@@ -63,7 +60,7 @@ void ParticleSystem::update(float dt)
         int lastNumber =2;
 
         float randomPositionX = 0;
-        // Spawn new particles based on emission rate
+        // Spawn new particles based on emission rate. Particles per second
         m_emissionTimer += deltaTimeSec;
         while (m_emissionTimer > 1.0f / m_emissionRate)
         {
@@ -74,7 +71,6 @@ void ParticleSystem::update(float dt)
                 randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
                 randomPositionX = std::max(m_posX - m_width, m_posX + randomVal);
 
-                //std::cout << "m_posX + m_width " << m_posX + m_width << ", m_posX- m_width " << m_posX - m_width << "randomPositionX" << randomPositionX << std::endl;
                 m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, 
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
             }
@@ -84,7 +80,7 @@ void ParticleSystem::update(float dt)
         }
         // Update the system's life
         m_currentLife -= deltaTimeSec;
-        // Update existing particles
+
         for (auto& particle : m_particles)
         {
             particle->setInitialPosition(m_posX, m_posY);

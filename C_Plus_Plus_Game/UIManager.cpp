@@ -14,7 +14,6 @@ void UIManager::init()
 
 	CallbackManager::getInstance()->m_playerIsDamaged.addTwoArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
-
 }
 
 
