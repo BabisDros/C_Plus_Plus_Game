@@ -12,7 +12,8 @@ public:
 	static ParticleManager* getInstance();
 	void init();
 	void draw();
-	void update(float dt);
+	void threadUpdate(float dt);
 	void onEnemyDied(const float posX, const float posY);
+	void onPlayerMoved(const float posX, const float posY);
 	void onPlayerHurt();
 };

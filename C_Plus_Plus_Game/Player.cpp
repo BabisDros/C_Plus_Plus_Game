@@ -191,6 +191,8 @@ void Player::movement(float delta_time)
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
 		}
+
+		
 	}
 	else
 	{
@@ -203,7 +205,7 @@ void Player::movement(float delta_time)
 	}
 //	if (m_jumpAnimation.isRunning()) m_animation = Jumping;
 	m_pos_x += delta_time * m_vx;
-
+	CallbackManager::getInstance()->m_playerMoved.trigger(m_pos_x, m_pos_y);
 	m_vy -= jump();
 
 	m_vy = std::min(m_max_velocity, m_vy);
@@ -330,9 +332,7 @@ void Player::takeDamage(const int& damage)
 
 	//triggers the methods with two arguments and with empty
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	CallbackManager::getInstance()->m_playerIsDamaged.trigger();
-
-	//m_bloodParticles->init();	
+	CallbackManager::getInstance()->m_playHurtFx.trigger();
 }
 
 
