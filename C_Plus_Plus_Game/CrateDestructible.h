@@ -22,5 +22,4 @@ public:
 	void draw() override;
 
 	void destroy() override;
-	void instantiateParticles() override;
 };

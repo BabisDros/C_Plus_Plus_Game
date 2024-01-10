@@ -1,0 +1,15 @@
+#pragma once
+#include "ParticleSystem.h"
+
+class ParticleManager
+{
+	static ParticleManager* s_unique_instance;
+	class GameState* m_state;
+	ParticleSystem* m_enemyKilledFx = nullptr;
+public:
+	static ParticleManager* getInstance();
+	void init();
+	void draw();
+	void update(float dt);
+	void onEnemyDied(const float posX, const float posY);
+};

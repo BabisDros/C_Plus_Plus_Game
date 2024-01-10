@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
+#include "CallbackManager.h"
 
 void Enemy::init()
 {
@@ -56,12 +57,10 @@ void Enemy::update(float dt)
 
 void Enemy::destroy()
 {
+	
+	CallbackManager::getInstance()->m_pointsChanged.trigger(20);
+	CallbackManager::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
 	setActive(false);
-	m_state->m_points += 20;
-}
-
-void Enemy::instantiateParticles()
-{
 }
 
 void Enemy::movement(float dt)

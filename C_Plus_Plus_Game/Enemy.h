@@ -3,7 +3,7 @@
 #include "IDestructible.h"
 #include "DamageBox.h"
 #include "Ability.h"
-
+#include "ParticleSystem.h"
 class Enemy :public IDestructible, public Entity
 {
 	DamageBox m_bodyDamage = DamageBox(10);
@@ -77,7 +77,6 @@ public:
 
 	void movement(float dt) override;
 	void destroy() override;
-	void instantiateParticles() override;
 
 	void movementStaticX(float dt);
 	void movementStaticY(float dt);
