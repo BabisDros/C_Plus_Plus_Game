@@ -8,7 +8,6 @@ class Level : public GameObject
 {
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
-
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 
@@ -64,6 +63,7 @@ public:
 	std::vector<LevelBox*> getBlocks() const;
 
 	std::list<CollisionObject*> getDestructibleObjects() const;
+	std::list<CollisionObject*>* getDestructibleObjectsPtr();
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);

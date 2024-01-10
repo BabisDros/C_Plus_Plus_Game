@@ -108,10 +108,7 @@ void GameState::showFPS()
 	{
 		std::cout << m_fps << std::endl;
 		m_fps = 0;
-		while (currentTime > m_time)
-		{
-			m_time++;
-		}
+		++m_time;
 	}
 	else
 	{

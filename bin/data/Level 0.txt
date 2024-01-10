@@ -68,13 +68,13 @@ Terrain
 }
 Terrain
 {
-	F
+	F: breakable
 	{
 		width: 1
 		height: 1
 		texture: crate.png
 		destructible: 1
-		health:
+		health: 30
 		level_end: 
 	}
 
@@ -190,17 +190,17 @@ Level
                                                 |
                               A                 |
                              A                  |
-                            A                   |
+ F                          A                   |
 AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
 E                     A A         A             |
-                    B             A             |
+ F                  B             A             |
  A      AA   A  A                 A   Q     Z   |
   AA   A                A  A S    B  BAA  AAA   |
     A      V      AΑ    A  AAAA                 |
      A    AAA    A      AAAA     A              |
          A    A                       A         |
                A                     A          |
-  V            D            O       A           |
+  V            D            O     F A           |
                           AAAAA   AAA           |
      P  S SS   FFF       A       A             A|
 C                                               |

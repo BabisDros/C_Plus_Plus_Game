@@ -79,6 +79,8 @@ Level::Level(const std::string& name) : GameObject(name) {}
 
 void Level::read()
 {
+	srand((unsigned)time(NULL));
+
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line, title;
 	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
@@ -126,8 +128,14 @@ void Level::read()
 								destructible = (itr->second)[3] == "1";
 								if (destructible)
 								{
-									m_destructible_objects.push_back(new CrateDestructible(30,x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
-										&(itr->second)[2], destructible));
+									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, double points
+									Loot loot;
+									if (number < 40) loot = Nothing;
+									else if (number < 80) loot = Extra_loot;
+									else loot = Health_pack;
+
+									m_destructible_objects.push_back(new CrateDestructible(std::stof((itr->second)[4]),x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+										&(itr->second)[2], destructible, loot));
 									tag_found = true;
 									break;
 								}
@@ -272,6 +280,11 @@ std::vector<LevelBox*> Level::getBlocks() const
 std::list<CollisionObject*> Level::getDestructibleObjects() const
 {
 	return m_destructible_objects;
+}
+
+std::list<CollisionObject*>* Level::getDestructibleObjectsPtr()
+{
+	return &m_destructible_objects;
 }
 
 template <typename Container>

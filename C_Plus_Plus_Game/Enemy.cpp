@@ -57,7 +57,7 @@ void Enemy::update(float dt)
 void Enemy::destroy()
 {
 	setActive(false);
-	m_state->m_points += 20;
+	m_state->m_points += m_points;
 }
 
 void Enemy::instantiateParticles()

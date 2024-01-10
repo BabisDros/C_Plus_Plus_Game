@@ -16,15 +16,16 @@ Terrain
 {
 	B
 	{
-		width: 2
-		height: 1
-		texture: temp_player2.png
+		width: 1
+		height: 0.5
+		texture: crate.png
 		destructible:
 		health:
-		level_end: 
+		level_end: 0
 	}
 
 }
+
 Terrain
 {
 	C: Floor
@@ -38,14 +39,15 @@ Terrain
 	}
 
 }
+
 Terrain
 {
-	D
+	E: Left wall
 	{
 		width: 1
-		height: 2
-		texture: temp_player2.png
-		destructible: 1
+		height: 7
+		texture: crate.png
+		destructible:
 		health:
 		level_end: 
 	}
@@ -53,11 +55,11 @@ Terrain
 }
 Terrain
 {
-	Z
+	Z: End goal
 	{
 		width: 1
 		height: 1
-		texture: slashFx.png
+		texture: door.png
 		destructible:
 		health:
 		level_end: 1
@@ -66,58 +68,143 @@ Terrain
 }
 Terrain
 {
-	T
-	{
-		width: 5
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-Terrain
-{
-	E
-	{
-		width: 1
-		height: 9
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
-Terrain
-{
-	F
+	F: breakable
 	{
 		width: 1
 		height: 1
 		texture: crate.png
 		destructible: 1
-		health:
+		health: 30
 		level_end: 
 	}
 
 }
 
+Enemy
+{
+	O: jumping enemy in "tunnel:
+	{
+		width: 0.75
+		height: 1
+		texture: temp_enemy2.png
+		health: 50
+		ranged: 1
+		body_damage:
+		jumping: 1
+		looking: -1
+		stick_to_wall:
+		territory_x: 1.5
+		territory_y: 2
+		movement: 2
+	}
+
+}
+Enemy
+{
+	V: flying enemy up/down
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 30
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 2
+		movement: 3
+	}
+
+}
+
+Enemy
+{
+	S: bottom spikes
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: -1
+		ranged: 
+		body_damage: 1
+		jumping:
+		looking: 1
+		stick_to_wall: 3
+		territory_x:
+		territory_y:
+		movement: 
+	}
+
+}
+
+Enemy
+{
+	D: top spikes
+	{
+		width: 1
+		height: 0.5
+		texture: stalagmite4Y.png
+		health: -1
+		ranged: 0
+		body_damage: 1
+		jumping:
+		looking: 1
+		stick_to_wall: 1
+		territory_x:
+		territory_y:
+		movement: 
+	}
+
+}
+
+Enemy
+{
+	Q: Melee enemy
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 40
+		ranged: 0
+		body_damage: 1
+		jumping: 0
+		looking: 1
+		stick_to_wall:
+		territory_x: 1
+		territory_y: 1
+		movement: 1
+	}
+
+}
+
+
 Level
-AAAAAAAAAAAAAAAAAAAAA  AAAAAAAAA                |
-                      A A                       |
-                    PA  A                       |
-                    A   A  AAA           D      |
-                   A    A  A     B              |
-                  A     A  AAAA                 |
-                 A      A     AAAA              |AAA
-               B                     A          |
-                                    A    D      |
-                          AAAAA   AAA         Z |
-                                                |
-C                                               |AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|
+                         FFA                    |
+                   O  O FFFA                    |
+    P            BAAAAAAAAA                     |
+  AAAAA   AAA  A   Q                            |
+                 AAAAA AA                       |
+                           B                    |
+                         B                      |
+                      V    B                    |
+                         B                      |
+ F                                              |
+AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
+E                     A A         A             |
+ F                  B             A             |
+ A      AA   A  A                 A   Q         |
+  AA   A                A  A S    B  BAA  AAA   |
+    A      V      AΑ    A  AAAA                 |
+     A    AAA    A      AAAA     A              |
+         A    A                       A         |
+               A                     A          |
+  V            D            O     F A           |
+                          AAAAA   AAA           |
+        S SS   FFF       A    Z  A             A|
+C                                               |
 $ Info that are not read from program
 $
 Templates
