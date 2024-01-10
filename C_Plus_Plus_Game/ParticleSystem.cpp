@@ -95,7 +95,7 @@ bool ParticleSystem::isRunning() const
     return (m_currentLife > 0 && m_currentLife < m_lifetime);
 }
 
-void ParticleSystem::followHolderGameobject(float x, float y)
+void ParticleSystem::followGameobject(float x, float y)
 {
     m_posX = x;
     m_posY = y;

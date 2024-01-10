@@ -19,6 +19,10 @@ void ParticleManager::init()
 
 	m_enemyKilledFx = new ParticleSystem(5, 2, 1, 1, 0.5f, 1.5f, 0.5f, m_state->getFullAssetPath("smoke3.png"), 10.0f, 2.0f, 0.0f, 5.0f, 0.4f, 0.f, 0.f, 0.f);
 	CallbackManager::getInstance()->m_enemyDied.addTwoArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
+	
+	//pos x and y are temporar
+	m_playerBlood= new ParticleSystem(8, 20, 1, 1, 0.1f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
+	CallbackManager::getInstance()->m_playerIsDamaged.addActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
 }
 
 void ParticleManager::draw()
@@ -33,8 +37,13 @@ void ParticleManager::update(float dt)
 
 void ParticleManager::onEnemyDied(const float posX, const float posY)
 {
-	m_enemyKilledFx->followHolderGameobject(posX, posY);
+	m_enemyKilledFx->followGameobject(posX, posY);
 	m_enemyKilledFx->init();
+}
+
+void ParticleManager::onPlayerHurt()
+{
+	m_playerBlood->init();
 }
 
 
