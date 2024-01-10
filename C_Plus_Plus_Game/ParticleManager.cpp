@@ -3,6 +3,7 @@
 #include "GameState.h"
 
 ParticleManager* ParticleManager::s_unique_instance = nullptr;
+//Handles effects with particle systems
 ParticleManager* ParticleManager::getInstance()
 {
 	if (s_unique_instance == nullptr)

@@ -1,7 +1,7 @@
 #include "ParticleSystem.h"
 #include "GameState.h"
 #include <ctime>
-
+//Creates a system of individual particles 
 ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
     m_emissionRate(emissionRate),
@@ -50,6 +50,7 @@ void ParticleSystem::draw()
 
 void ParticleSystem::update(float dt)
 {
+    if (m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
     {      
         float deltaTimeSec = dt / 1000;
