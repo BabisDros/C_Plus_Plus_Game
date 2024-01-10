@@ -20,6 +20,4 @@ public:
 	void draw() override;
 	void update(float dt) override;
 	void destroy() override;
-	void instantiateParticles() override;
-
 };

@@ -31,6 +31,3 @@ void HealthPack::destroy()
 	setActive(false);
 }
 
-void HealthPack::instantiateParticles()
-{
-}
