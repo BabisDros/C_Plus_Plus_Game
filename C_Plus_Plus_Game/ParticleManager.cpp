@@ -2,6 +2,7 @@
 #include "CallbackManager.h"
 #include "GameState.h"
 #include <iostream>
+#include <thread>
 
 ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
@@ -29,7 +30,6 @@ void ParticleManager::init()
 
 void ParticleManager::draw()
 {
-	
 	m_enemyKilledFx->draw();
 	m_playerBlood->draw();
 }
@@ -39,10 +39,10 @@ void ParticleManager::threadUpdate(float dt)
 	m_enemyKilledFx->update(dt);
 	m_playerBlood->update(dt);
 }
+
 //because the enemy dies and stops moving, we can update m_enemyKilledFx position once
 void ParticleManager::onEnemyDied(const float posX, const float posY)
 {
-
 	m_enemyKilledFx->followGameobject(posX, posY);
 	m_enemyKilledFx->init();
 }

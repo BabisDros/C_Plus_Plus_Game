@@ -1,8 +1,11 @@
 #include "ParticleSystem.h"
 #include "GameState.h"
 #include <ctime>
+#include <thread>
+
+
 //Creates a system of individual particles 
-ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
+ParticleSystem::ParticleSystem(unsigned int emissionRate, unsigned int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
     m_emissionRate(emissionRate),
     m_maxParticles(maxParticles),
@@ -31,6 +34,7 @@ void ParticleSystem::init()
 {      
     if (!isRunning())
     {
+        std::lock_guard<std::mutex> lock(particlesMutex);
         destroyParticles();
         //used to start/reset particle system
         m_currentLife = m_lifetime;
@@ -41,6 +45,8 @@ void ParticleSystem::draw()
 {
     if (isRunning())
     {
+        //should lock every m_particles because it is used by both threads
+        std::lock_guard<std::mutex> lock(particlesMutex);
         for (Particle*& particle : m_particles)
         {
             particle->draw();
@@ -81,13 +87,21 @@ void ParticleSystem::update(float dt)
         }
         // Update the system's life
         m_currentLife -= deltaTimeSec;
-
-        for (auto& particle : m_particles)
-        {
-            particle->setInitialPosition(m_posX, m_posY);
-            particle->update(dt);
-        }
+        std::lock_guard<std::mutex> lock(particlesMutex);
+        std::thread updateThread(&ParticleSystem::updateThreadFunction, this, dt);
+        updateThread.join();
     }  
+}
+
+void ParticleSystem::updateThreadFunction(float dt) 
+{   
+    for (auto& particle : m_particles) 
+    {
+        particle->setInitialPosition(m_posX, m_posY);
+        particle->update(dt);
+    }
+   //not needed because it delays thread
+ /*   std::this_thread::sleep_for(std::chrono::milliseconds(5)); */
 }
 
 bool ParticleSystem::isRunning() const
@@ -102,7 +116,7 @@ void ParticleSystem::followGameobject(float x, float y)
 }
 
 void ParticleSystem::destroyParticles()
-{
+{  
     if (m_particles.size() > 0)
     {
         for (Particle* particle : m_particles)

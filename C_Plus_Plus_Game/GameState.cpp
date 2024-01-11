@@ -37,6 +37,7 @@ void GameState::draw()
 
 void GameState::update(float dt)
 {
+	//std::cout << "Thread 2 " << dt << std::endl;
 	if (dt > 200) return;	//? it been too long since last frame
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
