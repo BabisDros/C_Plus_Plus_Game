@@ -1,6 +1,7 @@
 #include "ParticleSystem.h"
 #include "GameState.h"
 #include <ctime>
+#include <thread>
 //Creates a system of individual particles 
 ParticleSystem::ParticleSystem(int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
@@ -82,12 +83,20 @@ void ParticleSystem::update(float dt)
         // Update the system's life
         m_currentLife -= deltaTimeSec;
 
-        for (auto& particle : m_particles)
-        {
-            particle->setInitialPosition(m_posX, m_posY);
-            particle->update(dt);
-        }
+        std::thread updateThread(&ParticleSystem::updateThreadFunction, this, dt);
+        updateThread.join();
     }  
+}
+
+void ParticleSystem::updateThreadFunction(float dt) 
+{   
+    for (auto& particle : m_particles) 
+    {
+        particle->setInitialPosition(m_posX, m_posY);
+        particle->update(dt);
+    }
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(5)); 
 }
 
 bool ParticleSystem::isRunning() const

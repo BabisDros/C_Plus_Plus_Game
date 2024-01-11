@@ -40,6 +40,7 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
+	void updateThreadFunction(float dt);
 	bool isRunning() const;
 	void followGameobject(float x, float y);
 	void destroyParticles();
