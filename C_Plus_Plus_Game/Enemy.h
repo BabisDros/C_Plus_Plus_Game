@@ -36,13 +36,9 @@ class Enemy :public IDestructible, public Entity
 	float m_projectile_direction; //looking left value: -1 | looking right value: 1
 
 	float jump();
-
+	float m_projectile_animation_timer;
 public:
-	//	Enemy(std::string name, float width, float height, std::string& texture) : Entity(name) {}
-	Enemy(std::string name, float pos_x, float pos_y) : Entity(name) {
-		m_pos_x = pos_x;
-		m_pos_y = pos_y;
-	}
+
 	Enemy(std::string name, float pos_x, float pos_y, float width, float height, const std::string* texture, int hp, 
 		bool ranged, bool body_damage, bool jumping, float looking, int stick_to_wall)
 		: Entity(name, pos_x, pos_y, width, height), m_rangedAttack(ranged), m_body_damage(body_damage), m_canJump(jumping), m_stick_to_wall(stick_to_wall)
@@ -55,7 +51,7 @@ public:
 			m_healthUi->setPosition(pos_x, pos_y);
 			m_can_die = true;
 		}
-
+		m_points = 20;
 		m_lookingDirection = looking;
 		m_mirrored = m_lookingDirection == -1;
 		if (ranged) m_projectile = DamageBox(10, false);

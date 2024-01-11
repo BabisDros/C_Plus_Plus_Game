@@ -28,7 +28,8 @@ void IDestructible::takeDamage(const int& damage)
         if (pausableClock - m_damageTakenTimestamp > m_invincibilityDuration)
         {
             m_damageTakenTimestamp = pausableClock;
-            m_currentHealth -= damage;
+            if (m_currentHealth - damage < m_initialHealth) m_currentHealth -= damage;
+            else resetHealth();
             if (m_healthUi)
                 m_healthUi->updateUIOnDamage(m_initialHealth, m_currentHealth);
             if (m_currentHealth <= 0) destroy();

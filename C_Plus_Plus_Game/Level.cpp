@@ -11,6 +11,10 @@
 #include "box.h"
 #include "CallbackManager.h"
 #include "ParticleManager.h"
+#include <filesystem> // to read sprites for animation 
+#include <thread>
+//#include <algorithm>
+//#include <execution>
 
 void Level::init()
 {
@@ -22,6 +26,8 @@ void Level::init()
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
+	ParticleManager::getInstance()->init();
+	readSprites("fireball", m_fireball_sprites);
 }
 
 void Level::draw()
@@ -69,18 +75,28 @@ void Level::update(float dt)
 		m_state->getPlayer()->update(dt);
 	}
 
-	for (auto p_gob : m_destructible_objects)
-		if (p_gob->isActive()) p_gob->update(dt);
-//	GameObject::update(dt);
+
+//	for (auto p_gob : m_destructible_objects)
+//		if (p_gob->isActive()) p_gob->update(dt);
+
+	std::vector<std::thread> mythreads;
+	auto middle = m_destructible_objects.begin();
+
+	std::advance(middle, m_destructible_objects.size() / 2);
+	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
+	++middle;
+	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
+	t1.join();/**/
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
 
 
 
-
 void Level::read()
 {
+	srand((unsigned)time(NULL));
+
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line, title;
 	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
@@ -128,8 +144,14 @@ void Level::read()
 								destructible = (itr->second)[3] == "1";
 								if (destructible)
 								{
-									m_destructible_objects.push_back(new CrateDestructible(30,x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
-										&(itr->second)[2], destructible));
+									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, double points
+									Loot loot;
+									if (number < 40) loot = Nothing;
+									else if (number < 80) loot = Extra_loot;
+									else loot = Health_pack;
+
+									m_destructible_objects.push_back(new CrateDestructible(std::stof((itr->second)[4]),x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+										&(itr->second)[2], destructible, loot));
 									tag_found = true;
 									break;
 								}
@@ -276,6 +298,30 @@ std::list<CollisionObject*> Level::getDestructibleObjects() const
 	return m_destructible_objects;
 }
 
+std::list<CollisionObject*>* Level::getDestructibleObjectsPtr()
+{
+	return &m_destructible_objects;
+}
+
+void Level::updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> start, 
+	std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt)
+{
+
+//	std::for_each(std::execution::par, start, end, [dt](auto itr) {
+//		if (itr->isActive()) itr->update(dt);
+//		});
+
+	for (auto itr = start; itr != end; itr++)
+		if ((*itr)->isActive()) (*itr)->update(dt);
+}
+
+std::vector<std::string>* Level::getFireballSprites()
+{
+	return &m_fireball_sprites;
+}
+
+
+
 template <typename Container>
 void Level::destroyGameObjects(Container& myContainer)
 {
@@ -288,11 +334,18 @@ void Level::destroyGameObjects(Container& myContainer)
 	}
 }
 
+
+void Level::readSprites(std::string folder, std::vector<std::string>& myVec)
+{
+	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath(folder)))
+	{
+		myVec.push_back(entry.path().u8string());
+	}
+}
+
 Level::~Level()
 {
 	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 }
-
-
