@@ -9,12 +9,14 @@ class DamageBox:public CollisionObject
 	//Parent's Looking direction:Left:-1,Right:1
 	int m_parentDirection = 0;
 	bool m_parentIsPlayer = false;
-	bool m_canBeMirrored ;
+	bool m_canActivelyBeMirrored ;
 	int m_damageToInflict = 0;
 public:	
-	DamageBox(int damage, bool canBecomeMirrored = true) : m_canBeMirrored(canBecomeMirrored),m_damageToInflict(damage)
+	DamageBox() {};
+	DamageBox(int damage, bool canBecomeMirrored = true) : m_canActivelyBeMirrored(canBecomeMirrored),m_damageToInflict(damage)
 	{ init(); };
 	
+	int m_draw_direction;
 	void init() override;
 	void draw() override;
 	void update(float dt) override;

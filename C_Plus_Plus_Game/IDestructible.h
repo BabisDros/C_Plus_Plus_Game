@@ -23,4 +23,5 @@ protected:
     //duration when the object can take anymore damage. Take damage once per hit
     float m_invincibilityDuration = 0.5f;
     float m_damageTakenTimestamp=0.0f;
+    float m_points;
 };

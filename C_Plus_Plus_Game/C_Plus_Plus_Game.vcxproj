@@ -148,6 +148,7 @@
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="HealthPack.cpp" />
     <ClCompile Include="HealthUi.cpp" />
     <ClCompile Include="HealthUIFixed.cpp" />
     <ClCompile Include="HealthUIMoving.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="CstmCallback.h" />
     <ClInclude Include="CallbackManager.h" />
+    <ClInclude Include="HealthPack.h" />
     <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HealthUIMoving.h" />

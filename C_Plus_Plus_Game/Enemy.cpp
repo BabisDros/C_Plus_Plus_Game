@@ -16,12 +16,13 @@ void Enemy::init()
 	m_homebase_y = m_pos_y;
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
 
-	graphics::Brush slash;
-	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
-	m_projectile.setBrush(slash);
+	graphics::Brush fireball;
+	setCustomBrushProperties(&fireball, 1.0f, 0.0f, m_state->getFullAssetPath("efecto_fuego_00030.png"));
+	m_projectile.setBrush(fireball);
 	m_projectile.setParentDirection(m_lookingDirection);
 	if (m_body_damage) m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
 	m_bodyDamage.setActive(true);
+	if (m_rangedAttack) { m_projectile.m_width = 1.2f; m_projectile.m_height = 0.8f; }
 }
 
 void Enemy::draw()
@@ -53,15 +54,24 @@ void Enemy::update(float dt)
 	movement(dt);
 	attack(dt);
 	m_healthUi->setPosition(m_pos_x, m_pos_y);
-}
+
+	graphics::Brush fireball;
+	fireball.outline_opacity = 0;
+	float dif = *m_state->getPausableClock() - m_projectile_animation_timer;
+	fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(
+		(int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size());
+
+	m_projectile.setBrush(fireball);
+}	
 
 void Enemy::destroy()
 {
 	
-	CallbackManager::getInstance()->m_pointsChanged.trigger(20);
+	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points);
 	CallbackManager::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
 	setActive(false);
 }
+
 
 void Enemy::movement(float dt)
 {
@@ -174,10 +184,12 @@ void Enemy::rangedAttack(float dt)
 	m_projectile.update(dt);
 	if (!m_throwProjectile.isRunning())
 	{
+		m_projectile_animation_timer = *m_state->getPausableClock();
 		m_projectile.setActive(true);
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
-		m_projectile.setPosition(m_pos_x, m_pos_y, 0.8f, 0.8f);
+		m_projectile.setPosition(m_pos_x, m_pos_y, m_projectile.m_width, m_projectile.m_height);
 		m_projectile_direction = m_lookingDirection;
+		m_projectile.m_draw_direction = m_projectile_direction;
 		if (fabs(m_state->getPlayer()->m_pos_x - m_pos_x) < 25 && fabs(m_state->getPlayer()->m_pos_y - m_pos_y) < 15) // not too far
 		{
 			graphics::playSound("music\\enemy_projectile.wav", 0.05f);
@@ -192,7 +204,7 @@ void Enemy::rangedAttack(float dt)
 			m_projectile_vx = std::min(m_projectile_max_velocity, m_projectile_vx + dt * move * m_projectile_accel_horizontal);
 			m_projectile_vx = std::max(-m_projectile_max_velocity, m_projectile_vx);
 			float distance = dt * m_projectile_vx;
-			m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, 0.8f, 0.8f);
+			m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, m_projectile.m_width, m_projectile.m_height);
 		}
 		else if (m_projectile.isActive())
 		{

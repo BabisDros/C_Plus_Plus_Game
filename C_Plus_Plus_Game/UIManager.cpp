@@ -5,6 +5,7 @@
 #include <iostream>
 #include "CallbackManager.h"
 #include "player.h"
+
 UIManager* UIManager::s_unique_instance = nullptr;
 
 void UIManager::init()
@@ -31,6 +32,8 @@ void UIManager::draw()
 		{
 			drawPause();
 		}
+		drawDashCooldown();
+		drawFps();
 	}
 }
 
@@ -43,11 +46,13 @@ void UIManager::drawScore()
 {
 	std::string str = "Score: " + m_points;
 	graphics::Brush textBrush;
-	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
-	textBrush.fill_opacity = 0.8f;
-	textBrush.outline_opacity = 1.0f;
-	float centeringValue = str.size() / 2.f - 0.5f;//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawText(m_state->getCanvasWidth() - centeringValue, 1, 1.f, str, textBrush);
+	graphics::Brush backPLate;
+	SETCOLOR(backPLate.fill_color, 0, 0, 0);
+	backPLate.fill_opacity = 0.5f;
+	SETCOLOR(backPLate.outline_color, 0, 0, 0)
+	float centeringValue = str.size() / 3.f;//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
+	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, str, textBrush);
 }
 
 
@@ -70,6 +75,34 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 	textBrush.outline_opacity = 1.0f;
 	float centeringValue = str.size() / 4.f;//centering offset value for 1 size font, each letter is half a unit
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValue, m_state->getCanvasHeight() / 2, 1.f, str, textBrush);
+}
+
+void UIManager::drawDashCooldown()
+{
+	graphics::Brush cooldown, on_cooldown;
+	setCustomBrushProperties(&cooldown, 1, 0, m_state->getFullAssetPath("UI\\dash_cd.png"));
+	bool onCD = false;
+	float height;
+	if (m_state->getPlayer()->getDashAbility()->getStartTime() != 0)
+	{
+		//setCustomBrushProperties(&cooldown, 1, 1, m_state->getFullAssetPath("Character Sprites V2\\Run\\Run3.png"));
+		SETCOLOR(cooldown.fill_color, 0.7, 0.7, 0.7);
+		cooldown.outline_opacity = 1;
+		SETCOLOR(on_cooldown.fill_color, 0.6, 0.6, 0.6);
+		on_cooldown.fill_opacity = 0.5f;
+		height = 1-(m_state->getPlayer()->getDashAbility()->getElapsedTime()/m_state->getPlayer()->getDashAbility()->getCooldown());
+		onCD = true;
+	}
+	graphics::drawRect(m_state->getCanvasWidth() - 1, 3, 1,	1, cooldown);
+	if (onCD)graphics::drawRect(m_state->getCanvasWidth() - 1, 3 - height / 2 + 0.5, 1, height, on_cooldown);	// y = location - go top to bottom + image height /2
+}
+
+void UIManager::drawFps()
+{
+	std::string str = std::to_string(m_fps);
+	graphics::Brush textBrush;
+	SETCOLOR(textBrush.outline_color, 1, 1, 1);
+	graphics::drawText(0.2f, m_state->getCanvasHeight() - .5f, .4f, str, textBrush);
 }
 
 void UIManager::drawMenu()

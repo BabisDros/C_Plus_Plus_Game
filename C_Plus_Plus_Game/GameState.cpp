@@ -108,16 +108,13 @@ void GameState::showFPS()
 	float currentTime = graphics::getGlobalTime() / 1000;
 	if (currentTime > m_time)
 	{
-		std::cout << m_fps << std::endl;
+		UIManager::getInstance()->m_fps = m_fps;
 		m_fps = 0;
-		while (currentTime > m_time)
-		{
-			m_time++;
-		}
+		++m_time;
 	}
 	else
 	{
-		m_fps++;
+		++m_fps;
 	}
 }
 
