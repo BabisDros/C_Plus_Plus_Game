@@ -23,7 +23,7 @@ void DamageBox::draw()
 {
 	if (isActive())
 	{
-		if (m_parentDirection < 0 && m_canBeMirrored)
+		if ((m_parentDirection < 0 && m_canActivelyBeMirrored) || (!m_canActivelyBeMirrored && m_draw_direction < 0))
 		{ 
 			graphics::setScale(-1.0f, 1.0f);//mirrors image according to parent object direction
 		}
