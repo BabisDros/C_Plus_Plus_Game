@@ -2,7 +2,8 @@
 #include "GameState.h"
 #include <ctime>
 #include <thread>
-#include <future>
+
+
 //Creates a system of individual particles 
 ParticleSystem::ParticleSystem(unsigned int emissionRate, unsigned int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
@@ -33,6 +34,7 @@ void ParticleSystem::init()
 {      
     if (!isRunning())
     {
+        std::lock_guard<std::mutex> lock(particlesMutex);
         destroyParticles();
         //used to start/reset particle system
         m_currentLife = m_lifetime;
@@ -41,10 +43,10 @@ void ParticleSystem::init()
 
 void ParticleSystem::draw()
 {
-   
     if (isRunning())
     {
-        std::lock_guard<std::mutex> lock(m_particlesMutex);
+        //should lock every m_particles because it is used by both threads
+        std::lock_guard<std::mutex> lock(particlesMutex);
         for (Particle*& particle : m_particles)
         {
             particle->draw();
@@ -71,7 +73,6 @@ void ParticleSystem::update(float dt)
         {
             if (m_particles.size() < m_maxParticles)
             {
-                std::lock_guard<std::mutex> lock(m_particlesMutex);
                 float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
                 //populate m_particles list with particles with random x position.
                 randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
@@ -86,36 +87,9 @@ void ParticleSystem::update(float dt)
         }
         // Update the system's life
         m_currentLife -= deltaTimeSec;
-
-        //auto updateFuture = std::async(std::launch::async, [this, dt]() 
-        //{
-        //    // Lock the mutex before accessing m_particles for update
-        //    std::lock_guard<std::mutex> lock(m_particlesMutex);
-
-        //    for (auto& particle : m_particles) 
-        //    {
-        //        particle->setInitialPosition(m_posX, m_posY);
-        //        particle->update(dt);
-        //    }
-        //});
-        //updateFuture.wait();
-
-        std::async(std::launch::async, [this, dt]()
-            {
-                std::lock_guard<std::mutex> lock(m_particlesMutex);
-
-                for (auto& particle : m_particles)
-                {
-                    particle->setInitialPosition(m_posX, m_posY);
-                    particle->update(dt);
-                }
-            });
-
-        for (auto& particle : m_particles)
-        {
-            particle->setInitialPosition(m_posX, m_posY);
-            particle->update(dt);
-        }
+        std::lock_guard<std::mutex> lock(particlesMutex);
+        std::thread updateThread(&ParticleSystem::updateThreadFunction, this, dt);
+        updateThread.join();
     }  
 }
 
@@ -126,7 +100,7 @@ void ParticleSystem::updateThreadFunction(float dt)
         particle->setInitialPosition(m_posX, m_posY);
         particle->update(dt);
     }
-   //not needed because thread runs in demand 
+   //not needed because it delays thread
  /*   std::this_thread::sleep_for(std::chrono::milliseconds(5)); */
 }
 
@@ -142,7 +116,7 @@ void ParticleSystem::followGameobject(float x, float y)
 }
 
 void ParticleSystem::destroyParticles()
-{
+{  
     if (m_particles.size() > 0)
     {
         for (Particle* particle : m_particles)

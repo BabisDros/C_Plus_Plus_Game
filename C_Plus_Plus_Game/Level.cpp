@@ -47,11 +47,12 @@ void Level::draw()
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob->isActive()) p_gob->draw();
 	//? order of draw() matters, if overllaping last goes on top
-	ParticleManager::getInstance()->draw();
+
 	if (m_state->getPlayer()->isActive()) //? draws player
 	{
 		m_state->getPlayer()->draw();
 	}
+	ParticleManager::getInstance()->draw();
 }
 
 void Level::update(float dt)
@@ -73,6 +74,7 @@ void Level::update(float dt)
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob->isActive()) p_gob->update(dt);
 //	GameObject::update(dt);
+	
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
