@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Particle.h"
+#include <thread>
+#include <mutex>
 /*int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture="", float maxVelocity = 1.5f, float acceleration = 0.5f,
 		float gravity = -1,float oscillationFrequency = 5.0f, float oscillationAmplitude = 0.4f, float red = 1.0f, float green = 1.0f, float blue = 1.0f*/
 class ParticleSystem:public GameObject
@@ -8,7 +10,7 @@ class ParticleSystem:public GameObject
 	
 	graphics::Brush m_brush;	
 	std::vector<Particle*> m_particles;
-	
+	std::mutex m_particlesMutex;
 	//number of particles emmited per second
 	int m_emissionRate = 0;
 	int m_maxParticles = 0;	
@@ -29,7 +31,7 @@ class ParticleSystem:public GameObject
 	float m_red = 1.0f;
 	float m_green = 1.0f;
 	float m_blue = 1.0f;
-
+	std::thread myThread;
 	float m_currentLife = 0;
 	float m_emissionTimer = 0;
 public:

@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include <ctime>
 #include <thread>
+#include <future>
 //Creates a system of individual particles 
 ParticleSystem::ParticleSystem(unsigned int emissionRate, unsigned int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
     float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
@@ -40,11 +41,13 @@ void ParticleSystem::init()
 
 void ParticleSystem::draw()
 {
+   
     if (isRunning())
     {
+        std::lock_guard<std::mutex> lock(m_particlesMutex);
         for (Particle*& particle : m_particles)
         {
-            //particle->draw();
+            particle->draw();
         }
     }
 }
@@ -68,6 +71,7 @@ void ParticleSystem::update(float dt)
         {
             if (m_particles.size() < m_maxParticles)
             {
+                std::lock_guard<std::mutex> lock(m_particlesMutex);
                 float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
                 //populate m_particles list with particles with random x position.
                 randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
@@ -83,8 +87,30 @@ void ParticleSystem::update(float dt)
         // Update the system's life
         m_currentLife -= deltaTimeSec;
 
-        /*std::thread updateThread(&ParticleSystem::updateThreadFunction, this, dt);
-        updateThread.detach();*/
+        //auto updateFuture = std::async(std::launch::async, [this, dt]() 
+        //{
+        //    // Lock the mutex before accessing m_particles for update
+        //    std::lock_guard<std::mutex> lock(m_particlesMutex);
+
+        //    for (auto& particle : m_particles) 
+        //    {
+        //        particle->setInitialPosition(m_posX, m_posY);
+        //        particle->update(dt);
+        //    }
+        //});
+        //updateFuture.wait();
+
+        std::async(std::launch::async, [this, dt]()
+            {
+                std::lock_guard<std::mutex> lock(m_particlesMutex);
+
+                for (auto& particle : m_particles)
+                {
+                    particle->setInitialPosition(m_posX, m_posY);
+                    particle->update(dt);
+                }
+            });
+
         for (auto& particle : m_particles)
         {
             particle->setInitialPosition(m_posX, m_posY);

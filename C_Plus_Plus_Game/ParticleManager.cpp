@@ -23,7 +23,7 @@ void ParticleManager::init()
 	CallbackManager::getInstance()->m_enemyDied.addArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
 	
 	//pos x and y are temporar
-	m_playerBlood= new ParticleSystem(4294967, 429496729, 1, 1, 0.1f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
+	m_playerBlood= new ParticleSystem(42949, 42949672, 1, 1, 0.1f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
 	CallbackManager::getInstance()->m_playHurtFx.addArgActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
 	CallbackManager::getInstance()->m_playerMoved.addArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this, std::placeholders::_1, std::placeholders::_2));
 }
@@ -43,11 +43,11 @@ void ParticleManager::threadUpdate(float dt)
 	   m_playerBlood->update(dt);
 }
 
-void ParticleManager::updateThreadFunction(float dt)
-{
-	m_enemyKilledFx->update(dt);
-	m_playerBlood->update(dt);
-}
+//void ParticleManager::updateThreadFunction(float dt)
+//{
+//	m_enemyKilledFx->update(dt);
+//	m_playerBlood->update(dt);
+//}
 //because the enemy dies and stops moving, we can update m_enemyKilledFx position once
 void ParticleManager::onEnemyDied(const float posX, const float posY)
 {
