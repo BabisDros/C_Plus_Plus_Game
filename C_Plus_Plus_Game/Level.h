@@ -67,5 +67,6 @@ public:
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);
-
+	void updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>>  start, 
+		std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt);
 };
