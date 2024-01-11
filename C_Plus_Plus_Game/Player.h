@@ -62,7 +62,7 @@ public:
 	{
 		setInitialHealthValues(initialHealth);
 		m_height = 1.f;
-		m_width = 0.65f;
+		m_width = 0.55f;
 	}
 	~Player();
 	void init() override;
@@ -76,10 +76,10 @@ public:
 	void setPushed(float x, float y);
 	void getPushed(float dt);
 	Ability* getDashAbility();
-
+	
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);
 
-	void readSprites(std::string folder, std::vector<std::string> &myVec);
+	
 };

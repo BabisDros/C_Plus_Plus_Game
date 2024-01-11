@@ -36,7 +36,7 @@ class Enemy :public IDestructible, public Entity
 	float m_projectile_direction; //looking left value: -1 | looking right value: 1
 
 	float jump();
-
+	float m_projectile_animation_timer;
 public:
 
 	Enemy(std::string name, float pos_x, float pos_y, float width, float height, const std::string* texture, int hp, 

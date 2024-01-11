@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Level.h"
 #include "CallbackManager.h"
-#include <filesystem> // to read sprites for animation 
+
 
 AnimationSequence Player::m_animation = Idle;
 Player::~Player()
@@ -29,11 +29,11 @@ void Player::init()
 	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
-	readSprites("Character Sprites V2\\Walk", m_sprites_walking);
-	readSprites("Character Sprites V2\\Idle", m_sprites_idle);
-	readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
-	readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
-	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
+	m_state->getLevel()->readSprites("Character Sprites V2\\Walk", m_sprites_walking);
+	m_state->getLevel()->readSprites("Character Sprites V2\\Idle", m_sprites_idle);
+	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
+	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
+	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
 
 }
 
@@ -385,10 +385,3 @@ void Player::cameraOffsetY(float multiplier1, float multiplier2)
 	}
 }
 
-void Player::readSprites(std::string folder, std::vector<std::string> &myVec)
-{
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath(folder)))
-	{
-		myVec.push_back(entry.path().u8string());
-	}
-}
