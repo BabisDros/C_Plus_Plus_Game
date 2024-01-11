@@ -33,6 +33,7 @@ void UIManager::draw()
 			drawPause();
 		}
 		drawDashCooldown();
+		drawFps();
 	}
 }
 
@@ -51,7 +52,7 @@ void UIManager::drawScore()
 	SETCOLOR(backPLate.outline_color, 0, 0, 0)
 	float centeringValue = str.size() / 3.f;//centering offset value for 1 size font, each letter is half a unit
 	graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
-	graphics::drawText(m_state->getCanvasWidth() - centeringValue, 1.f, .6f, str, textBrush);
+	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, str, textBrush);
 }
 
 
@@ -94,6 +95,14 @@ void UIManager::drawDashCooldown()
 	}
 	graphics::drawRect(m_state->getCanvasWidth() - 1, 3, 1,	1, cooldown);
 	if (onCD)graphics::drawRect(m_state->getCanvasWidth() - 1, 3 - height / 2 + 0.5, 1, height, on_cooldown);	// y = location - go top to bottom + image height /2
+}
+
+void UIManager::drawFps()
+{
+	std::string str = std::to_string(m_fps);
+	graphics::Brush textBrush;
+	SETCOLOR(textBrush.outline_color, 1, 1, 1);
+	graphics::drawText(0.2f, m_state->getCanvasHeight() - .5f, .4f, str, textBrush);
 }
 
 void UIManager::drawMenu()

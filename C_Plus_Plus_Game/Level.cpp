@@ -76,47 +76,20 @@ void Level::update(float dt)
 	}
 
 
-	for (auto p_gob : m_destructible_objects)
-		if (p_gob->isActive()) p_gob->update(dt);
+//	for (auto p_gob : m_destructible_objects)
+//		if (p_gob->isActive()) p_gob->update(dt);
 
-
-	// Attempt threads, comment above to use
-/*
 	std::vector<std::thread> mythreads;
-
-//	auto prev = m_destructible_objects.begin();
 	auto middle = m_destructible_objects.begin();
+
 	std::advance(middle, m_destructible_objects.size() / 2);
 	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
 	++middle;
-//	std::thread t2(&Level::updateDynamicBounded, this, middle, m_destructible_objects.end(), dt);
 	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	t1.join();
-//	t2.join();
-*/
-	//below is for many threads
-	//++middle;
-/*	mythreads.push_back(std::thread([&]()
-		{
-			updateDynamicBounded(prev, middle, dt);
-		}));
-	for (int i = 0; i < m_destructible_objects.size()-1; i++) {
-		mythreads.push_back(std::thread([&]()
-			{
-				updateDynamicBounded(++prev, ++middle, dt);
-			}));
-	}
-
-	
-	std::for_each(mythreads.begin(), mythreads.end(), [](std::thread& t)
-		{
-			t.join();
-		});*/
-
+	t1.join();/**/
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
-
 
 
 
