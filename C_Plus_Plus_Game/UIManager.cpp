@@ -13,7 +13,7 @@ void UIManager::init()
 	m_state = GameState::getInstance();
 	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
 
-	CallbackManager::getInstance()->m_playerIsDamaged.addTwoArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playerIsDamaged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
 }
 
@@ -118,7 +118,7 @@ void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& curre
 
 void UIManager::onPointsChanged(const int& points)
 {
-	m_points = std::to_string((int)points);
+	m_points = std::to_string(m_state->m_points);
 }
 
 

@@ -189,6 +189,7 @@ void Enemy::rangedAttack(float dt)
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
 		m_projectile.setPosition(m_pos_x, m_pos_y, m_projectile.m_width, m_projectile.m_height);
 		m_projectile_direction = m_lookingDirection;
+		m_projectile.m_draw_direction = m_projectile_direction;
 		if (fabs(m_state->getPlayer()->m_pos_x - m_pos_x) < 25 && fabs(m_state->getPlayer()->m_pos_y - m_pos_y) < 15) // not too far
 		{
 			graphics::playSound("music\\enemy_projectile.wav", 0.05f);

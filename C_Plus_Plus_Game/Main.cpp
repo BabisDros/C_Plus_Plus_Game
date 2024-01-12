@@ -11,6 +11,10 @@ if //, general use, does not fall in above categories
 #include "GameState.h"
 #include <string>
 #include <stdio.h>
+#include <thread>
+#include "ParticleManager.h"
+
+
 
 void init()
 {
@@ -27,20 +31,22 @@ void update(float dt)
 	GameState::getInstance()->update(dt);
 }
 
-
 int main(int argc, char** argv)
 {
 	graphics::createWindow(1200, 600, "Test Stage1");
 
 	init();
-
+	
 	graphics::setDrawFunction(draw);
 	graphics::setUpdateFunction(update);
 
 	graphics::setCanvasSize(GameState::getInstance()->getCanvasWidth(), 
 							GameState::getInstance()->getCanvasHeight());
+	
 	graphics::setCanvasScaleMode(graphics::CANVAS_SCALE_FIT);
 	graphics::setFont("assets\\OpenSans-Regular.ttf");
+	
 	graphics::startMessageLoop();
+	
 	return 0;
 }

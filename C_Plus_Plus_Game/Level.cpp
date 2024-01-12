@@ -52,22 +52,23 @@ void Level::draw()
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob->isActive()) p_gob->draw();
 	//? order of draw() matters, if overllaping last goes on top
-	ParticleManager::getInstance()->draw();
+
 	if (m_state->getPlayer()->isActive()) //? draws player
 	{
 		m_state->getPlayer()->draw();
 	}
+	ParticleManager::getInstance()->draw();
 }
 
 void Level::update(float dt)
 {
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	ParticleManager::getInstance()->update(dt);
+	ParticleManager::getInstance()->threadUpdate(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
 		m_state->goNextLevel = true; // level finished
-		CallbackManager::getInstance()->m_pointsChanged.trigger(100);
+		CallbackManager::getInstance()->m_pointsChanged.trigger(100);//triggers a point changed with value 100
 	}	
 
 	if (m_state->getPlayer()->isActive())	

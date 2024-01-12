@@ -20,7 +20,6 @@ enum AnimationSequence
 class Player :public IDestructible, public Entity
 {
 	DamageBox m_slashWeapon = DamageBox(10);
-	ParticleSystem* m_bloodParticles =new ParticleSystem(8, 20, m_pos_x, m_pos_y, 0.1f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
 	Ability m_dashAbility = Ability(2.0f, 0.2f, 0.0f, 12.f);
 	Ability m_slashAbility = Ability(1.0f, 0.25f, 0.0f);
 	Ability m_jumpAbility = Ability(0.3f, 0.0f, 0.0f);

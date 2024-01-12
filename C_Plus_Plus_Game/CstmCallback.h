@@ -6,45 +6,31 @@ Then we add actionCallbacks (reactions) to that. E.g UI health to be reduced, so
 Instead of getting references of every object and call the functions directly we can use callbacks 
 to decouple (make more independent) relations between classes.*/
 
-template<typename T1, typename T2>
+//using https://en.cppreference.com/w/cpp/language/parameter_pack
+template<typename... T>
 class CstmCallback
 {
 protected:
 	bool m_action_occured = false;
 
-	std::vector<std::function<void(const T1&, const T2&)>>m_twoArgActionCallbacks;	
-	std::vector<std::function<void(const T1&)>>m_argActionCallbacks;
 
+	std::vector<std::function<void(const T&...)>>m_actionCallbacks;
 public:
-	void addTwoArgActionCallback(std::function<void(const T1&, const T2&)> cb);
-	void addArgActionCallback(std::function<void(const T1&)> cb);
-
-	void trigger(T1 val1, T2 val2);
-	void trigger(T1 val1);
+	void addArgActionCallback(std::function<void(const T&...)> cb);
+	void trigger(const T&... values);
 };
 
-template<typename T1, typename T2>
-inline void CstmCallback<T1, T2>::addTwoArgActionCallback(std::function<void(const T1&, const T2&)> cb)
+template<typename... T>
+inline void CstmCallback<T...>::addArgActionCallback(std::function<void(const T&...)> cb)
 {
-	m_twoArgActionCallbacks.push_back(cb);
+	m_actionCallbacks.push_back(cb);
 }
 
-template<typename T1, typename T2>
-inline void CstmCallback<T1, T2>::addArgActionCallback(std::function<void(const T1&)> cb)
+template<typename ...T>
+inline void CstmCallback<T...>::trigger(const T & ...values)
 {
-	m_argActionCallbacks.push_back(cb);
+	for (const auto& callback : m_actionCallbacks) {
+		callback(values...);
+	}
 }
 
-template<typename T1, typename T2>
-inline void CstmCallback<T1, T2>::trigger(T1 val1, T2 val2)
-{
-	for (const auto& callB : m_twoArgActionCallbacks)
-		callB(val1, val2);
-}
-
-template<typename T1, typename T2>
-inline void CstmCallback<T1, T2>::trigger(T1 val1)
-{
-	for (const auto& callB : m_argActionCallbacks)
-		callB(val1);
-}
