@@ -15,6 +15,13 @@ ParticleManager* ParticleManager::getInstance()
 	return s_unique_instance;
 }
 
+ParticleManager::~ParticleManager()
+{
+	CallbackManager::getInstance()->m_enemyDied.removeArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playHurtFx.removeArgActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
+	CallbackManager::getInstance()->m_playerMoved.removeArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this, std::placeholders::_1, std::placeholders::_2));
+}
+
 void ParticleManager::init()
 {
 	m_state = GameState::getInstance();

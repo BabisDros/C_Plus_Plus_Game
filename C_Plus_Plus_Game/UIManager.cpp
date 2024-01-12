@@ -8,6 +8,12 @@
 
 UIManager* UIManager::s_unique_instance = nullptr;
 
+UIManager::~UIManager()
+{
+	CallbackManager::getInstance()->m_playerIsDamaged.removeArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_pointsChanged.removeArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
+}
+
 void UIManager::init()
 {
 	m_state = GameState::getInstance();
@@ -15,8 +21,6 @@ void UIManager::init()
 
 	CallbackManager::getInstance()->m_playerIsDamaged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
-
-
 }
 
 
@@ -35,8 +39,7 @@ void UIManager::draw()
 		if (m_state->getCurrentState() == States::Paused)
 		{
 			drawPause();
-		}
-		
+		}		
 	}
 }
 
@@ -45,8 +48,7 @@ void UIManager::drawPlayerHealth()
 	if (m_playerHealthUI)
 	{
 		m_playerHealthUI->draw();
-	}
-	
+	}	
 }
 
 void UIManager::drawScore()
@@ -100,7 +102,17 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 	//draw text Paused
 	std::string str3 = "Press  \"R\"  to  Restart";
 	float centeringValueX3 = calcCenteringXForTextSize(str3, 0.5f);//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 +strFontSize+ str2FontSize, str2FontSize, str3, textBrush);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 + strFontSize + str2FontSize, str2FontSize, str3, textBrush);
+}
+void UIManager::drawWin()
+{
+	graphics::Brush winBrush;
+	setCustomBrushProperties(&winBrush, 1.0f, 0, m_state->getFullAssetPath("UI\\pause.png"));
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),m_state->getCanvasHeight(), winBrush);
+
+	graphics::Brush starBrush;
+	setCustomBrushProperties(&starBrush, 1.0f, 0, m_state->getFullAssetPath("UI\\Star_icon.png"));
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), starBrush);
 
 }
 
@@ -143,16 +155,13 @@ void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& curre
 	if (m_playerHealthUI)
 	{
 		m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
-	}
-	
+	}	
 }
 
 void UIManager::onPointsChanged(const int& points)
 {
 	m_points = std::to_string(m_state->m_points);
 }
-
-
 
 UIManager* UIManager::getInstance()
 {

@@ -10,6 +10,7 @@ class UIManager
 	graphics::Brush m_menu;
 	
 public:
+	~UIManager();
 	int m_fps;
 	void init();
 	void draw();
@@ -17,6 +18,7 @@ public:
 	void drawScore();
 	void drawMenu();
 	void drawPause();
+	void drawWin();
 	void drawDashCooldown();
 	void drawFps();
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);

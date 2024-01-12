@@ -357,5 +357,5 @@ Level::~Level()
 	destroyGameObjects(m_blocks);
 	//this is to reset points gained in a case of level restart
 	m_state->m_points -= pointsGainedInLevel;
-	
+	CallbackManager::getInstance()->m_pointsChanged.removeArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 }

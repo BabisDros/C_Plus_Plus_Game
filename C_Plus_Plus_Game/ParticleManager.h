@@ -10,6 +10,7 @@ class ParticleManager
 
 public:
 	static ParticleManager* getInstance();
+	~ParticleManager();
 	void init();
 	void draw();
 	void threadUpdate(float dt);

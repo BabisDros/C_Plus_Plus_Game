@@ -82,6 +82,7 @@ GameState::~GameState()
 	{
 		delete m_current_level;
 	}
+	CallbackManager::getInstance()->m_pointsChanged.removeArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
 }
 
 void GameState::handleStates()
