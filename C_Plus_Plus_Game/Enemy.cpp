@@ -9,7 +9,6 @@
 
 void Enemy::init()
 {
-	//if (m_stick_to_wall == 2) m_pos_x += (1 - m_width) * 0.5f;
 	if (m_stick_to_wall == 3) m_pos_y += (1 - m_height) * 0.5f;	// Currently only done for either top or bottom
 
 	m_homebase_x = m_pos_x;
@@ -32,6 +31,7 @@ void Enemy::draw()
 	if (m_stick_to_wall == 1) angle = 180.f;
 	graphics::setOrientation(angle);
 
+	m_mirrored = m_lookingDirection == -1;
 	if (m_mirrored) graphics::setScale(-1.f, 1.f); //mirrors image
 	//! -0.5f MUST be gone
 	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
@@ -58,9 +58,10 @@ void Enemy::update(float dt)
 	graphics::Brush fireball;
 	fireball.outline_opacity = 0;
 	float dif = *m_state->getPausableClock() - m_projectile_animation_timer;
-	fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(
-		(int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size());
 
+	int index = (int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size();
+	fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(index);
+	if (index > 32) m_projectile.m_width = 1.2 - 1.2 * (index - 32) / ((*m_state->getLevel()->getFireballSprites()).size() - 32);
 	m_projectile.setBrush(fireball);
 }	
 
@@ -106,7 +107,6 @@ void Enemy::movementStaticX(float dt)
 		m_lookingDirection *= -1;
 		m_vx = 0;
 	}
-	m_mirrored = m_lookingDirection == -1;
 	m_vx = std::min(m_max_velocity, m_vx + dt * m_lookingDirection * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	m_pos_x += dt * m_vx;
@@ -160,7 +160,6 @@ void Enemy::movementDynamic(float dt)
 	}
 	else canFollow = false;
 
-	m_mirrored = m_lookingDirection == -1;
 	m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
 	m_vx = std::max(-m_max_velocity, m_vx);
 	move = dt * m_vx;
@@ -184,6 +183,7 @@ void Enemy::rangedAttack(float dt)
 	m_projectile.update(dt);
 	if (!m_throwProjectile.isRunning())
 	{
+		m_projectile.m_width = 1.2;
 		m_projectile_animation_timer = *m_state->getPausableClock();
 		m_projectile.setActive(true);
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
