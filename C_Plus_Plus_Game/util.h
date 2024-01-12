@@ -31,10 +31,23 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 	graphics::drawText(centerX- centeringValue, centerY, 0.2f, idStr, debug_textBrush);
 }
 
-static float calcCenteringXForTextSize(const size_t& stringSize, const float& targetFontSize)
+/*in order to work correctly, use monospace font MONACO because the space size 0.18 is calculated specificly
+param stringSize : e.g m_healthTxt*/
+static float calcCenteringXForTextSize(const std::string str, const float& targetFontSize)
 {
-	float value = float(stringSize) * targetFontSize* 0.25f;
+	int spaceCount = 0;
+	for (char c : str) 
+	{
+		if (c == ' ') 
+		{
+			spaceCount++;
+		}
+	}
+
+	float stringSize = str.size();
+	float value = (float(stringSize) *  0.25f - spaceCount * 0.18f)* targetFontSize;
 	return  value;
+
 }
 
 static float calcCenteringYForTextSize(const float& targetFontSize)

@@ -4,11 +4,13 @@
 #include "UIManager.h"
 #include "GameState.h"
 #include "CallbackManager.h"
+#include "ParticleManager.h"
 #include "Level.h"
 #include "Player.h"
 #include <thread>
 #include <chrono>
 #include <iostream>
+
 
 
 GameState::GameState()
@@ -19,7 +21,8 @@ void GameState::init()
 {	
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
-	LevelManager::getInstance()->init();
+	ParticleManager::getInstance()->init();
+	LevelManager::getInstance()->init();	
 	MusicManager::getInstance()->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
@@ -74,10 +77,7 @@ GameState* GameState::getInstance()
 
 GameState::~GameState()
 {
-	if (m_player)
-	{
-		delete m_player;
-	}
+	deletePlayer();
 	if (m_current_level)
 	{
 		delete m_current_level;
@@ -86,20 +86,40 @@ GameState::~GameState()
 
 void GameState::handleStates()
 {
-	if (m_currentState == Menu)
+    if (m_currentState == Menu)
+    {       
+        if (graphics::getKeyState(graphics::SCANCODE_N) )
+        {
+            LevelManager::getInstance()->nextLevel();
+            m_currentState = States::InGame;
+        }
+        else if (graphics::getKeyState(graphics::SCANCODE_L))
+        {
+            LevelManager::getInstance()->m_loadingFile = true;
+            LevelManager::getInstance()->loadSaveFile();
+            LevelManager::getInstance()->m_loadingFile = false;
+            m_currentState = States::InGame;
+
+        }
+	
+      
+    }
+    if (m_currentState == Paused)
+    {      
+        if (graphics::getKeyState(graphics::SCANCODE_R))
+        {
+			LevelManager::getInstance()->restartLevel();
+			m_paused = false;
+			m_currentState = States::InGame;
+        }            
+    }
+}
+
+void GameState::deletePlayer() const
+{
+	if (m_player)
 	{
-		if (graphics::getKeyState(graphics::SCANCODE_N))
-		{
-			LevelManager::getInstance()->nextLevel();
-			m_currentState = States::InGame;
-		}
-		else if (graphics::getKeyState(graphics::SCANCODE_L))
-		{
-			LevelManager::getInstance()->m_loadingFile = true;
-			LevelManager::getInstance()->loadSaveFile();
-			LevelManager::getInstance()->m_loadingFile = false;
-			m_currentState = States::InGame;
-		}
+		delete m_player;
 	}
 }
 

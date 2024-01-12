@@ -2,6 +2,7 @@
 #include "sgg/graphics.h"
 #include <string>
 #include <list>
+
 enum States
 {
 	Menu,
@@ -22,7 +23,6 @@ class GameState
 	static States m_currentState;
 	GameState();
 	float m_pausableClock = 0.0f;
-
 
 public:	
 	class Player* m_player = 0;
@@ -54,6 +54,7 @@ public:
 	float getCanvasHeight() { return m_canvas_height; }
 
 	void handleStates();
+	void deletePlayer() const;
 	void showFPS();
 	void onPointsCollected(int points);
 	States& getCurrentState();

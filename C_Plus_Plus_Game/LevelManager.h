@@ -10,7 +10,8 @@ public:
 	std::vector<std::string> levels_list;
 	void init();
 	static LevelManager* getInstance();
-	void nextLevel();
+	void nextLevel(bool restartLevel = false);
+	void restartLevel();
 	void saveData();
 	void loadSaveFile();
 	bool m_loadingFile = false;

@@ -18,6 +18,7 @@
 
 void Level::init()
 {
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();
@@ -26,7 +27,8 @@ void Level::init()
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
-	ParticleManager::getInstance()->init();
+
+
 	readSprites("fireball", m_fireball_sprites);
 }
 
@@ -80,11 +82,11 @@ void Level::update(float dt)
 //	for (auto p_gob : m_destructible_objects)
 //		if (p_gob->isActive()) p_gob->update(dt);
 
-	std::vector<std::thread> mythreads;
+	//std::vector<std::thread> mythreads;
 	auto middle = m_destructible_objects.begin();
 
 	std::advance(middle, m_destructible_objects.size() / 2);
-	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
+	t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
 	++middle;
 	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
 	t1.join();/**/
@@ -321,7 +323,10 @@ std::vector<std::string>* Level::getFireballSprites()
 	return &m_fireball_sprites;
 }
 
-
+void Level::onPointsCollected(int points)
+{
+	pointsGainedInLevel += points;
+}
 
 template <typename Container>
 void Level::destroyGameObjects(Container& myContainer)
@@ -346,7 +351,11 @@ void Level::readSprites(std::string folder, std::vector<std::string>& myVec)
 
 Level::~Level()
 {
+	t1.join();//join thread before destroying object that the thread uses
 	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
+	//this is to reset points gained in a case of level restart
+	m_state->m_points -= pointsGainedInLevel;
+	
 }

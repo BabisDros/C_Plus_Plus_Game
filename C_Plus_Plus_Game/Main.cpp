@@ -44,7 +44,9 @@ int main(int argc, char** argv)
 							GameState::getInstance()->getCanvasHeight());
 	
 	graphics::setCanvasScaleMode(graphics::CANVAS_SCALE_FIT);
-	graphics::setFont("assets\\OpenSans-Regular.ttf");
+	/*this spesific font is used because it is monospace and all letters have the same size.
+	Is is use so that util methods calcCenteringOffset works correctly*/
+	graphics::setFont("assets\\MONACO.ttf");
 	
 	graphics::startMessageLoop();
 	

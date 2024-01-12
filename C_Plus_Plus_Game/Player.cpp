@@ -11,6 +11,8 @@ AnimationSequence Player::m_animation = Idle;
 Player::~Player()
 {
 	/*delete m_bloodParticles;*/
+	std::cout << "deleted";
+	//delete m_healthUi;
 }
 void Player::init()
 {
@@ -34,7 +36,7 @@ void Player::init()
 	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
-
+	std::cout << "draaaaaaaaaw";
 }
 
 void Player::draw()
@@ -107,6 +109,7 @@ void Player::update(float dt)
 void Player::destroy()
 {
 	setActive(false);
+	CallbackManager::getInstance()->m_playerDied.trigger();
 }
 
 

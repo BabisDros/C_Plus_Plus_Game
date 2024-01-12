@@ -15,6 +15,8 @@ void UIManager::init()
 
 	CallbackManager::getInstance()->m_playerIsDamaged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
+
+
 }
 
 
@@ -28,31 +30,40 @@ void UIManager::draw()
 	{
 		drawPlayerHealth();
 		drawScore();
+		drawDashCooldown();
+		drawFps();
 		if (m_state->getCurrentState() == States::Paused)
 		{
 			drawPause();
 		}
-		drawDashCooldown();
-		drawFps();
+		
 	}
 }
 
 void UIManager::drawPlayerHealth()
 {
-	m_playerHealthUI->draw();
+	if (m_playerHealthUI)
+	{
+		m_playerHealthUI->draw();
+	}
+	
 }
 
 void UIManager::drawScore()
 {
-	std::string str = "Score: " + m_points;
-	graphics::Brush textBrush;
-	graphics::Brush backPLate;
-	SETCOLOR(backPLate.fill_color, 0, 0, 0);
-	backPLate.fill_opacity = 0.5f;
-	SETCOLOR(backPLate.outline_color, 0, 0, 0)
-	float centeringValue = str.size() / 3.f;//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
-	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, str, textBrush);
+	//although score runs in update before drawPause, it continues to draw above it
+	if(m_state->getCurrentState() != States::Paused) 
+	{
+		std::string str = "Score: " + m_points;
+		graphics::Brush textBrush;
+		graphics::Brush backPLate;
+		SETCOLOR(backPLate.fill_color, 0, 0, 0);
+		backPLate.fill_opacity = 0.5f;
+		SETCOLOR(backPLate.outline_color, 0, 0, 0)
+			float centeringValue = str.size() / 3.f;//centering offset value for 1 size font, each letter is half a unit
+		graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
+		graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, str, textBrush);
+	}
 }
 
 
@@ -60,21 +71,37 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 {
 	//draw canvas
 	graphics::Brush paused_brush;
-	paused_brush.fill_opacity = 0.75f;
-	paused_brush.outline_opacity = 0.f;
-	SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
-
+	//paused_brush.fill_opacity = 0.75f;
+	//paused_brush.outline_opacity = 0.f;
+	//SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
+	setCustomBrushProperties(&paused_brush, 0.8f, 0, m_state->getFullAssetPath("UI\\pause.png"));
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
 		m_state->getCanvasHeight(), paused_brush);
 	
-	//draw text
-	std::string str = "Paused";
+	//common text brush
 	graphics::Brush textBrush;
 	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
 	textBrush.fill_opacity = 1.f;
 	textBrush.outline_opacity = 1.0f;
-	float centeringValue = str.size() / 4.f;//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValue, m_state->getCanvasHeight() / 2, 1.f, str, textBrush);
+
+	//draw text Paused
+	std::string str = "Paused";
+	float strFontSize = 1.0f;
+	float centeringValueX = calcCenteringXForTextSize(str, 1.f);//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, strFontSize, str, textBrush);
+
+	//draw text Paused
+	std::string str2 = "Press  \"Esc\"  to exit";
+	float str2FontSize = 0.5f;
+	float centeringValueX2 = calcCenteringXForTextSize(str2, str2FontSize);//centering offset value for 1 size font, each letter is half a unit
+
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + strFontSize, str2FontSize, str2, textBrush);
+
+	//draw text Paused
+	std::string str3 = "Press  \"R\"  to  Restart";
+	float centeringValueX3 = calcCenteringXForTextSize(str3, 0.5f);//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 +strFontSize+ str2FontSize, str2FontSize, str3, textBrush);
+
 }
 
 void UIManager::drawDashCooldown()
@@ -113,7 +140,11 @@ void UIManager::drawMenu()
 
 void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& currentHealth)
 {
-	m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
+	if (m_playerHealthUI)
+	{
+		m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
+	}
+	
 }
 
 void UIManager::onPointsChanged(const int& points)
