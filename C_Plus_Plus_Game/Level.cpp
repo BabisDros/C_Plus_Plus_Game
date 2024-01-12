@@ -19,7 +19,7 @@
 void Level::init()
 {
 	m_brush.outline_opacity = 0.0f;
-	m_brush.texture = m_state->getFullAssetPath("temp_background2.png"); //? Make it not TOO big and try powers of 2 for given dimensions
+	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();
 	for (auto p_gob : m_static_objects)
 		if (p_gob) p_gob->init();
