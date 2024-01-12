@@ -108,7 +108,7 @@ void Player::update(float dt)
 
 void Player::destroy()
 {
-	setActive(false);
+	//setActive(false);
 	CallbackManager::getInstance()->m_playerDied.trigger();
 }
 
@@ -198,9 +198,7 @@ void Player::movement(float delta_time)
 		{ 
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
-		}
-
-		
+		}		
 	}
 	else
 	{

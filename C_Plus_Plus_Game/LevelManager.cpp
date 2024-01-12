@@ -43,11 +43,12 @@ void LevelManager::nextLevel(bool restartLevel)
 	//not needed to save in a restart
 	m_state->goNextLevel = false;
 
-	if (restartLevel) return;	
+/*	if (restartLevel) return;*/	
 	if (!m_loadingFile) saveData();
 }
 void LevelManager::restartLevel()
 {
+	//m_state->m_paused = true;
 	m_state->m_player->setInitialHealthValues(100);
 	nextLevel(true);
 }

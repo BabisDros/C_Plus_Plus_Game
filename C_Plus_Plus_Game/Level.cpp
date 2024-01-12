@@ -64,6 +64,7 @@ void Level::draw()
 
 void Level::update(float dt)
 {
+	if (m_state->m_paused) return;
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
 	ParticleManager::getInstance()->threadUpdate(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
@@ -79,17 +80,17 @@ void Level::update(float dt)
 	}
 
 
-//	for (auto p_gob : m_destructible_objects)
-//		if (p_gob->isActive()) p_gob->update(dt);
+	for (auto p_gob : m_destructible_objects)
+		if (p_gob->isActive()) p_gob->update(dt);
 
 	//std::vector<std::thread> mythreads;
-	auto middle = m_destructible_objects.begin();
+	//auto middle = m_destructible_objects.begin();
 
-	std::advance(middle, m_destructible_objects.size() / 2);
-	t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
-	++middle;
-	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	t1.join();/**/
+	//std::advance(middle, m_destructible_objects.size() / 2);
+	//t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
+	//++middle;
+	//updateDynamicBounded (middle, m_destructible_objects.end(), dt);
+	//t1.join();/**/
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
@@ -351,7 +352,6 @@ void Level::readSprites(std::string folder, std::vector<std::string>& myVec)
 
 Level::~Level()
 {
-	t1.join();//join thread before destroying object that the thread uses
 	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);

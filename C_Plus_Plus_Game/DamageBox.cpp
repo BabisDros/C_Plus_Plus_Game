@@ -45,7 +45,7 @@ void DamageBox::update(float dt)
 		{
 			checkForCollisions(m_state->getLevel()->getDestructibleObjects());
 		}
-		else if(GameState::getInstance()->getPlayer())
+		else 
 		{
 			CollisionObject* player= dynamic_cast<CollisionObject*>(m_state->getPlayer());
 			checkForCollisions(player);
