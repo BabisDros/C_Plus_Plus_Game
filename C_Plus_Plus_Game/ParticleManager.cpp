@@ -1,8 +1,5 @@
 #include "ParticleManager.h"
 #include "CallbackManager.h"
-#include "GameState.h"
-#include <iostream>
-#include <thread>
 
 ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
@@ -13,13 +10,6 @@ ParticleManager* ParticleManager::getInstance()
 		s_unique_instance = new ParticleManager();
 	}
 	return s_unique_instance;
-}
-
-ParticleManager::~ParticleManager()
-{
-	CallbackManager::getInstance()->m_enemyDied.removeArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
-	CallbackManager::getInstance()->m_playHurtFx.removeArgActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
-	CallbackManager::getInstance()->m_playerMoved.removeArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ParticleManager::init()

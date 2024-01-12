@@ -163,6 +163,7 @@
     <ClCompile Include="ParticleManager.h" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
@@ -190,6 +191,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="util.h" />

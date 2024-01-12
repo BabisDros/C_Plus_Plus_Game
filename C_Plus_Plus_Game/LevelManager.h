@@ -7,7 +7,6 @@ class LevelManager
 	static LevelManager* s_unique_instance;
 	int m_level_counter = -1; // starts counting from 0
 public:
-	~LevelManager();
 	std::vector<std::string> levels_list;
 	void init();
 	static LevelManager* getInstance();

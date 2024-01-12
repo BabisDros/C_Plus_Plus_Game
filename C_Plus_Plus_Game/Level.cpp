@@ -10,7 +10,7 @@
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
-#include "ParticleManager.h"
+
 #include <filesystem> // to read sprites for animation 
 #include <thread>
 //#include <algorithm>
@@ -59,14 +59,14 @@ void Level::draw()
 	{
 		m_state->getPlayer()->draw();
 	}
-	ParticleManager::getInstance()->draw();
+	//ParticleManager::getInstance()->draw();
 }
 
 void Level::update(float dt)
 {
 	if (m_state->m_paused) return;
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	ParticleManager::getInstance()->threadUpdate(dt);
+	//ParticleManager::getInstance()->threadUpdate(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
@@ -357,5 +357,5 @@ Level::~Level()
 	destroyGameObjects(m_blocks);
 	//this is to reset points gained in a case of level restart
 	m_state->m_points -= pointsGainedInLevel;
-	CallbackManager::getInstance()->m_pointsChanged.removeArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
+	
 }

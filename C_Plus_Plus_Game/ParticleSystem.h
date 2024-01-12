@@ -62,7 +62,6 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	float calcRandomPositionX();
 	void updateThreadFunction(float dt);
 	float calcRandomValue();
 	bool isRunning() const;

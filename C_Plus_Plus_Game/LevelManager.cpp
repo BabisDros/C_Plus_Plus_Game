@@ -10,11 +10,6 @@
 
 LevelManager* LevelManager::s_unique_instance = nullptr;
 
-LevelManager::~LevelManager()
-{
-	CallbackManager::getInstance()->m_playerDied.removeArgActionCallback(std::bind(&LevelManager::restartLevel, this));
-}
-
 void LevelManager::init()
 {
 	m_state = GameState::getInstance();
@@ -45,9 +40,9 @@ void LevelManager::nextLevel(bool restartLevel)
 
 	if (!m_state->m_player) m_state->m_player = new Player("Player", 100);
 	m_state->m_player->init();
-
-	m_state->goNextLevel = false;
 	//not needed to save in a restart
+	m_state->goNextLevel = false;
+
 /*	if (restartLevel) return;*/	
 	if (!m_loadingFile) saveData();
 }

@@ -13,6 +13,9 @@
 
 
 
+States GameState::m_currentState = Menu;
+GameState* GameState::s_unique_instance = nullptr;
+
 GameState::GameState()
 {
 }
@@ -45,6 +48,7 @@ void GameState::update(float dt)
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
+	UIManager::getInstance()->update(dt);
 	handleStates();
 	if (!m_current_level) return;
 	
@@ -82,7 +86,6 @@ GameState::~GameState()
 	{
 		delete m_current_level;
 	}
-	CallbackManager::getInstance()->m_pointsChanged.removeArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
 }
 
 void GameState::handleStates()
@@ -188,6 +191,3 @@ std::string GameState::getFullDataPath(const std::string& data)
 	return m_data_path + data;
 }
 
-
-States GameState::m_currentState = Menu;
-GameState* GameState::s_unique_instance = nullptr;

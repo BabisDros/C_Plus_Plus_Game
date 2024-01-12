@@ -13,10 +13,10 @@ class CstmCallback
 protected:
 	bool m_action_occured = false;
 
+
 	std::vector<std::function<void(const T&...)>>m_actionCallbacks;
 public:
 	void addArgActionCallback(std::function<void(const T&...)> cb);
-	void removeArgActionCallback(std::function<void(const T&...)> cb);
 	void trigger(const T&... values);
 };
 
@@ -24,16 +24,6 @@ template<typename... T>
 inline void CstmCallback<T...>::addArgActionCallback(std::function<void(const T&...)> cb)
 {
 	m_actionCallbacks.push_back(cb);
-}
-
-template<typename... T>
-inline void CstmCallback<T...>::removeArgActionCallback(std::function<void(const T&...)> cb) 
-{
-	auto it = std::find(m_actionCallbacks.begin(), m_actionCallbacks.end(), cb);
-	if (it != m_actionCallbacks.end()) 
-	{
-		m_actionCallbacks.erase(it);
-	}
 }
 
 template<typename ...T>

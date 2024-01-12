@@ -1,16 +1,17 @@
 #pragma once
 #include "ParticleSystem.h"
+#include "GameState.h"
 
 class ParticleManager
 {
 	static ParticleManager* s_unique_instance;
-	class GameState* m_state;
+	GameState* m_state=nullptr;
 	ParticleSystem* m_enemyKilledFx = nullptr;
 	ParticleSystem* m_playerBlood = nullptr;
 
 public:
 	static ParticleManager* getInstance();
-	~ParticleManager();
+	ParticleManager() {};
 	void init();
 	void draw();
 	void threadUpdate(float dt);
