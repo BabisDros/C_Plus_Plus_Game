@@ -3,33 +3,11 @@
 #include <ctime>
 #include <thread>
 
-
-//Creates a system of individual particles 
-ParticleSystem::ParticleSystem(unsigned int emissionRate, unsigned int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture, float maxVelocity,
-    float acceleration, float gravity, float oscillationFrequency, float oscillationAmplitude, float red, float green, float blue) :
-    m_emissionRate(emissionRate),
-    m_maxParticles(maxParticles),
-    m_posX(posX),
-    m_posY(posY),
-    m_width(width),
-    m_particleSize(particleSize),
-    m_lifetime(lifetime),
-    m_texture(texture),
-    m_maxVelocity(maxVelocity),
-    m_acceleration(acceleration),
-    m_gravity(gravity),
-    m_oscillationFrequency(oscillationFrequency),
-    m_oscillationAmplitude(oscillationAmplitude),
-    m_red(red),
-    m_green(green),
-    m_blue(blue)
-{}
-
 ParticleSystem::~ParticleSystem()
 {
     destroyParticles();
 }
-
+//init is used to reset and run the system
 void ParticleSystem::init()
 {      
     if (!isRunning())
@@ -60,25 +38,16 @@ void ParticleSystem::update(float dt)
     if (m_currentLife > 0)
     {      
         float deltaTimeSec = dt / 1000;
-        //create particles in random position of the width of particle system
-        //seed based on time
-        srand(static_cast<unsigned int>(std::time(0)));
-        float firstNumber = -2;
-        int lastNumber =2;
 
-        float randomPositionX = 0;
         // Spawn new particles based on emission rate. Particles per second
         m_emissionTimer += deltaTimeSec;
         while (m_emissionTimer > 1.0f / m_emissionRate)
         {
             if (m_particles.size() < m_maxParticles)
             {
-                float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
-                //populate m_particles list with particles with random x position.
-                randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
-                randomPositionX = std::max(m_posX - m_width, randomPositionX);
+                float randomVal = calcRandomPositionX();
 
-                m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture, 
+                m_particles.push_back(new Particle(calcRandomPositionX(), m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture,
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
             }
          
@@ -93,15 +62,24 @@ void ParticleSystem::update(float dt)
     }  
 }
 
-void ParticleSystem::updateThreadFunction(float dt) 
-{   
-    for (auto& particle : m_particles) 
+void ParticleSystem::updateThreadFunction(float dt)
+{
+    for (auto& particle : m_particles)
     {
-        particle->setInitialPosition(m_posX, m_posY);
+        particle->setInitialPosition(calcRandomPositionX(), m_posY);
         particle->update(dt);
     }
-   //not needed because it delays thread
- /*   std::this_thread::sleep_for(std::chrono::milliseconds(5)); */
+}
+
+float ParticleSystem::calcRandomPositionX() 
+{
+    float firstNumber = -2;
+    int lastNumber = 2;
+
+    float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
+    float randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
+    randomPositionX = std::max(m_posX - m_width, randomPositionX);
+    return randomPositionX;
 }
 
 bool ParticleSystem::isRunning() const

@@ -2,7 +2,9 @@
 #include <vector>
 #include "Particle.h"
 #include <mutex>
-/*int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture="", float maxVelocity = 1.5f, float acceleration = 0.5f,
+
+/*Creates a system of individual particles
+Params: int emissionRate, int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture="", float maxVelocity = 1.5f, float acceleration = 0.5f,
 		float gravity = -1,float oscillationFrequency = 5.0f, float oscillationAmplitude = 0.4f, float red = 1.0f, float green = 1.0f, float blue = 1.0f*/
 class ParticleSystem:public GameObject
 {			
@@ -35,12 +37,32 @@ class ParticleSystem:public GameObject
 	float m_emissionTimer = 0;
 public:
 	ParticleSystem(unsigned int emissionRate, unsigned int maxParticles, float posX, float posY, float width, float particleSize, float lifetime, std::string texture = "", float maxVelocity = 1.5f, float acceleration = 1.0f,
-		float gravity = 1, float oscillationFrequency = 5.0f, float oscillationAmplitude = 0.4f, float red = 1.0f, float green = 1.0f, float blue = 1.0f);
+		float gravity = 1, float oscillationFrequency = 5.0f, float oscillationAmplitude = 0.4f, float red = 1.0f, float green = 1.0f, float blue = 1.0f):
+		m_emissionRate(emissionRate),
+		m_maxParticles(maxParticles),
+		m_posX(posX),
+		m_posY(posY),
+		m_width(width),
+		m_particleSize(particleSize),
+		m_lifetime(lifetime),
+		m_texture(texture),
+		m_maxVelocity(maxVelocity),
+		m_acceleration(acceleration),
+		m_gravity(gravity),
+		m_oscillationFrequency(oscillationFrequency),
+		m_oscillationAmplitude(oscillationAmplitude),
+		m_red(red),
+		m_green(green),
+		m_blue(blue)
+	{
+		srand(static_cast<unsigned int>(std::time(0)));
+	}
 	~ParticleSystem();
 	//call this so that the particles start playing
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
+	float calcRandomPositionX();
 	void updateThreadFunction(float dt);
 	bool isRunning() const;
 	void followGameobject(float x, float y);
