@@ -31,7 +31,7 @@ void Particle::draw()
 
 	if (m_state->m_debugging)
 	{
-		debugDraw(m_initialPosX + m_state->m_global_offset_x, m_initialPosY + m_state->m_global_offset_y, m_initialWidth, m_initialHeight, m_id);
+		debugDraw(m_currentPosX + m_state->m_global_offset_x, m_currentPosY + m_state->m_global_offset_y, m_currentWidth, m_currentHeight, m_id);
 	}
 }
 
@@ -83,12 +83,6 @@ void Particle::reduceHeight(const float& deltaTime)
 void Particle::reduceLife(const float& deltaTime)
 {	
 	m_currentLife -= deltaTime;
-}
-
-void Particle::setInitialPosition(float x, float y)
-{
-	m_initialPosX = x;
-	m_initialPosY = y;
 }
 
 void Particle::oscilateInXAxis(const float& deltaTime)

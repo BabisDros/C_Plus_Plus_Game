@@ -64,6 +64,7 @@ public:
 	void update(float dt) override;
 	float calcRandomPositionX();
 	void updateThreadFunction(float dt);
+	float calcRandomValue();
 	bool isRunning() const;
 	void followGameobject(float x, float y);
 	void destroyParticles();

@@ -45,9 +45,11 @@ void ParticleSystem::update(float dt)
         {
             if (m_particles.size() < m_maxParticles)
             {
-                float randomVal = calcRandomPositionX();
+                float randomVal = calcRandomValue();
+                float randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
+                randomPositionX = std::max(m_posX - m_width, randomPositionX);
 
-                m_particles.push_back(new Particle(calcRandomPositionX(), m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture,
+                m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture,
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
             }
          
@@ -62,24 +64,22 @@ void ParticleSystem::update(float dt)
     }  
 }
 
+
 void ParticleSystem::updateThreadFunction(float dt)
 {
     for (auto& particle : m_particles)
     {
-        particle->setInitialPosition(calcRandomPositionX(), m_posY);
         particle->update(dt);
     }
 }
 
-float ParticleSystem::calcRandomPositionX() 
+float ParticleSystem::calcRandomValue() 
 {
     float firstNumber = -2;
     int lastNumber = 2;
-
     float randomVal = (firstNumber + rand() % lastNumber) / 10.f;
-    float randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
-    randomPositionX = std::max(m_posX - m_width, randomPositionX);
-    return randomPositionX;
+   
+    return randomVal;
 }
 
 bool ParticleSystem::isRunning() const
