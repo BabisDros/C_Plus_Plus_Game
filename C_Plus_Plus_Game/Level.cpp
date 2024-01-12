@@ -77,17 +77,18 @@ void Level::update(float dt)
 	}
 
 
-	for (auto p_gob : m_destructible_objects)
-		if (p_gob->isActive()) p_gob->update(dt);
+//	for (auto p_gob : m_destructible_objects)
+//		if (p_gob->isActive()) p_gob->update(dt);
 
-/*	std::vector<std::thread> mythreads;
+	std::vector<std::thread> mythreads;
 	auto middle = m_destructible_objects.begin();
 
 	std::advance(middle, m_destructible_objects.size() / 2);
-	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
-	++middle;
+	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), middle, dt);
+
 	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	t1.join();*/
+	t1.join();/**/
+
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}

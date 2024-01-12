@@ -49,6 +49,7 @@ void Enemy::draw()
 void Enemy::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
+	checkCollision(m_state->getLevel()->getDestructibleObjects());
 //	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
 //	checkCollision(temp);
 	movement(dt);

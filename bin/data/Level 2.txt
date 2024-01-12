@@ -93,7 +93,7 @@ Enemy
 		jumping: 1
 		looking: -1
 		stick_to_wall:
-		territory_x: 1.5
+		territory_x: 2
 		territory_y: 2
 		movement: 2
 	}
@@ -201,29 +201,29 @@ Enemy
 
 
 Level
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|
-                         FFA                    |
-                   O  O FFFA                    |
-    P            BAAAAAAAAA                     |
-  AAAAA   AAA  A   Q                            |
-                 AAAAA AA                       |
-SSSSSSSSSSSSSSSSS          B                    |
-AAAAAAAAAAAAAAAAA        B                      |
-                      V    B                    |
-                         B                      |
- F                       Q B                    |
-AAAAAAAAAAAAAAAAAAAA   AAAAAAAAAAAAAAAAAAAAAAAAA|
-E                     A A         A             |
-        S           B             A             |
- A      AA   A  A                 A             |
-  AA   A                A  A S    B             |
-    A      T      AA    A  AAAA                 |
-     A    AAA    A      A SA     A              |
-         A    A         AAAA          A         |
-               A                     A          |
-  V            D            O     F A           |
-                          AAAAA   AAA           |
-        S SS   FFF       A    Z  A             A|
+
+ F FF                                           |
+AA AAA  V                                       |
+      AAAAAAA                                Z  |
+             A   S S                       AAA  |
+              AAAAAAAB   AAAAAA           A     |
+                 DD     A      ASSSS SSS A      |
+                       A        AAAAAAAAA       |
+             OA  SSS  A                         |
+          AAAAAAAAAAAA                          |
+      B                                         |
+        B                                       |
+      B                                         |
+        B       V                               |
+      B   F  S      V       S     Q             |
+        BAAAAAAAAAAAAAAA  AAAA  AAAAAB     T    |
+                       AF              B        |
+                       AFF           B     T    |
+                 S     AAAA            B        |
+              BAAAAA      D          B     T    |
+            B       A  F O      S SS   B        |
+              B      AAAAAAA    AAAAAAB         |
+   P        B                F             FF   |
 C                                               |
 $ Info that are not read from program
 $
