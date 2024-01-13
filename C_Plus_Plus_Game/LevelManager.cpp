@@ -37,26 +37,49 @@ LevelManager* LevelManager::getInstance()
 	return s_unique_instance;
 }
 
-void LevelManager::nextLevel(bool restartLevel)
+//void LevelManager::nextLevel(bool restartLevel)
+//{
+//	if (m_state->m_current_level) m_state->m_current_level->~Level();
+//	if (!restartLevel)	++m_level_counter;
+//	m_state->m_current_level = new Level(levels_list[(m_level_counter) % levels_list.size()]);	// no end level, so loop through list
+//	m_state->m_current_level->init();
+//
+//	if (!m_state->m_player) m_state->m_player = new Player("Player", m_state->getInitialHealth());
+//	m_state->m_player->init();
+//	//not needed to save in a restart
+//	m_state->m_goNextLevel = false;
+//
+//	if (restartLevel) return;	
+//	if (!m_loadingFile) saveData();
+//}
+
+void LevelManager::nextLevel(bool restartingLevel)
 {
 	if (m_state->m_current_level) m_state->m_current_level->~Level();
-	if (!restartLevel)	++m_level_counter;
-	m_state->m_current_level = new Level(levels_list[(m_level_counter) % levels_list.size()]);	// no end level, so loop through list
-	m_state->m_current_level->init();
+	if (!restartingLevel && m_level_counter + 1 >= levels_list.size())
+	{
+		m_win = true;
+		m_state->setState(Win);
+	}
+	else
+	{
+		if (!restartingLevel) { ++m_level_counter; }
+		m_state->m_current_level = new Level(levels_list[(m_level_counter)]);	// no end level, so loop through list
+		m_state->m_current_level->init();
 
-	if (!m_state->m_player) m_state->m_player = new Player("Player", 10);
-	m_state->m_player->init();
-	//not needed to save in a restart
-	m_state->m_goNextLevel = false;
-
-	if (restartLevel) return;	
-	if (!m_loadingFile) saveData();
+		if (!m_state->m_player) m_state->m_player = new Player("Player", m_state->getInitialHealth());
+		m_state->m_player->init();
+		m_state->m_goNextLevel = false;
+		//not needed to save in a restart
+		if (restartingLevel) return;
+		if (!m_loadingFile) saveData();
+	}
 }
 void LevelManager::restartLevel()
 {
 	m_state->m_suspendExecution = true;
 	if (m_state->waitForFrameToEnd()) return;
-	m_state->m_player->setInitialHealthValues(100);
+	m_state->m_player->setInitialHealthValues(m_state->getInitialHealth());
 	nextLevel(true);
 	m_state->m_pauseButtonPressed = false;
 	m_state->m_suspendExecution = false;

@@ -20,7 +20,8 @@ class GameState
 	std::string m_data_path = "data\\";
 	float m_canvas_width = 24.0f;
 	float m_canvas_height = m_canvas_width / 2;
-
+	int m_initialLives = 1;
+	int m_initialHealth = 20;
 	static GameState* s_unique_instance;
 	static States m_currentState;
 	GameState();
@@ -46,7 +47,7 @@ public:
 	int m_fps = 0;
 	int m_time = 0; // used for fps counting purposes
 	
-	int m_lives = 1;
+	int m_lives = m_initialLives;
 	int m_points = 0 ;
 
 	void init();
@@ -65,6 +66,7 @@ public:
 	void deletePlayer() const;
 	void showFPS();
 	void onPointsCollected(int points);
+	void onPlayerLivesChanged(int life);
 	States& getCurrentState();
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
@@ -75,5 +77,6 @@ public:
 
 	Player* getPlayer() { return m_player; }
 	class Level* getLevel() { return m_current_level; }
-	
+	int getInitialLives() const;
+	int getInitialHealth() const;
 };

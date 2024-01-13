@@ -23,6 +23,7 @@ GameState::GameState()
 void GameState::init()
 {	
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
@@ -50,7 +51,7 @@ void GameState::update(float dt)
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
 	UIManager::getInstance()->update(dt);
 	LevelManager::getInstance()->update(dt);
-	
+	ParticleManager::getInstance()->threadUpdate(dt);
 	handleStates();
 	if (!m_current_level) return;
 
@@ -142,9 +143,12 @@ void GameState::handleStates()
 	else if (m_currentState == Lose)
 	{
 		m_suspendExecution = true;
+		MusicManager::getInstance()->playLoseSound();
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
-			LevelManager::getInstance()->restartLevel();
+			MusicManager::getInstance()->m_playedLoseSound = false;
+			LevelManager::getInstance()->restartLevel();		
+			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
 		}
 	}
 }
@@ -179,6 +183,11 @@ void GameState::showFPS()
 void GameState::onPointsCollected(int points)
 {
 	m_points += points;
+}
+
+void GameState::onPlayerLivesChanged(int life)
+{
+	m_lives += life;
 }
 
 States& GameState::getCurrentState()
@@ -223,5 +232,15 @@ std::string GameState::getFullAssetPath(const std::string& asset)
 std::string GameState::getFullDataPath(const std::string& data)
 {
 	return m_data_path + data;
+}
+
+int GameState::getInitialLives() const
+{
+	return m_initialLives;
+}
+
+int GameState::getInitialHealth() const
+{
+	return m_initialHealth;
 }
 

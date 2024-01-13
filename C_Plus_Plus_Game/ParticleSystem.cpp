@@ -19,7 +19,7 @@ void ParticleSystem::init()
         m_currentLife = m_lifetime;
     }     
 }
-
+//param: bool drawWithOffset. Set it to false for screen UI effects
 void ParticleSystem::draw(bool drawWithOffset)
 {
     if (isRunning())
@@ -62,7 +62,6 @@ void ParticleSystem::update(float dt, bool playOnPaused)
         updateThread.join();
     }  
 }
-
 
 void ParticleSystem::updateThreadFunction(float dt)
 {

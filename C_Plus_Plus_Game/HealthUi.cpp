@@ -32,3 +32,8 @@ void HealthUI::updateUIOnDamage(const int& initialHealth, const int& currentHeal
 
 	setActive(true);
 }
+
+float HealthUI::getHeight() const
+{
+	return m_height;
+}

@@ -20,7 +20,6 @@ void Star::update(float dt)
 	if (m_height < m_finalSize)
 	{
 		m_height +=  deltaSec;
-		std::cout << m_height << std::endl;
 		m_width += deltaSec;
 	}
 }

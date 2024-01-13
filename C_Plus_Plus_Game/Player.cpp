@@ -28,8 +28,10 @@ void Player::init()
 	m_slashWeapon.setBrush(slash);
 	m_slashWeapon.setParentIsPlayer(true);
 	m_slashWeapon.setParentDirection(m_lookingDirection);
+
 	//trigger callbackmanager to display health value
-	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
 	m_state->getLevel()->readSprites("Character Sprites V2\\Walk", m_sprites_walking);
@@ -105,7 +107,7 @@ void Player::update(float dt)
 
 void Player::destroy()
 {
-	m_state->m_lives -= 1;
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(-1);
 	if (m_state->m_lives == 0)
 	{
 		setActive(false);
@@ -175,6 +177,8 @@ Ability* Player::getDashAbility()
 {
 	return &m_dashAbility;
 }
+
+
 
 void Player::movement(float delta_time)
 {
@@ -342,7 +346,7 @@ void Player::takeDamage(const int& damage)
 	IDestructible::takeDamage(damage);
 
 	//triggers the methods with two arguments and with empty
-	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 	if (damage>0) CallbackManager::getInstance()->m_playHurtFx.trigger();
 }
 
