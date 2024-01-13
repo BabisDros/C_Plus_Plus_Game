@@ -8,7 +8,8 @@ class UIManager
 {
 	static UIManager* s_unique_instance;
 	class GameState* m_state=nullptr;
-	ParticleSystem* m_lostBloodEffect = nullptr;
+	ParticleSystem* m_lostEffect = nullptr;
+	ParticleSystem* m_winEffect = nullptr;
 	HealthUIFixed m_playerHealthUI;
 	Star m_star;
 	std::string m_pointsTxt="";
@@ -34,6 +35,8 @@ class UIManager
 	float m_winTxtFontSize = 1.0f;
 	float m_loseTxtFontSize = 1.0f;
 	float m_livesFontSize = 0.6f;
+
+	
 public:
 	int m_fps=0;
 	void init();

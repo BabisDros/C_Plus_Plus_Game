@@ -21,7 +21,7 @@ class GameState
 	float m_canvas_width = 24.0f;
 	float m_canvas_height = m_canvas_width / 2;
 	int m_initialLives = 1;
-	int m_initialHealth = 100;
+	int m_initialHealth = 20;
 	static GameState* s_unique_instance;
 	static States m_currentState;
 	GameState();

@@ -10,6 +10,7 @@ public:
 	CstmCallback<> m_playerDied;
 	CstmCallback<int> m_playerLivesChanged;
 	CstmCallback<int> m_pointsChanged;
+
 	CstmCallback<float,float> m_enemyDied;
 	static CallbackManager* getInstance();
 };

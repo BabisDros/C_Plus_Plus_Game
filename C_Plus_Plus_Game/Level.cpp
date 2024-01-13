@@ -66,7 +66,7 @@ void Level::draw()
 void Level::update(float dt)
 {
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	ParticleManager::getInstance()->threadUpdate(dt);
+	
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 

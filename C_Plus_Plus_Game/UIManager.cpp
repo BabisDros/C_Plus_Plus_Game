@@ -5,6 +5,7 @@
 #include <iostream>
 #include "CallbackManager.h"
 #include "player.h"
+#include "MusicManager.h"
 
 UIManager* UIManager::s_unique_instance = nullptr;
 
@@ -18,9 +19,10 @@ void UIManager::init()
 	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&UIManager::onPlayerLivesChanged, this));
 	m_playerHealthUI = HealthUIFixed(0, 0, 5, 1);
 	 
-	m_lostBloodEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,
+	m_lostEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,
 		m_state->getFullAssetPath("blood.png"), 10.f, 5.f, 5.f, 0.f, 0.0f);
-
+	m_winEffect = new ParticleSystem(20, 1000, m_state->getCanvasWidth() / 2, m_state->getCanvasHeight()/4, 2.3f, 0.3f, 50.f,
+		m_state->getFullAssetPath("smoke3.png"), 10.f, 5.f, 5.f, 0.f, 0.0f, 1.f, 1.f, 0);
 
 	SETCOLOR(backPLate.fill_color, 0, 0, 0);
 	backPLate.fill_opacity = 0.5f;
@@ -48,11 +50,15 @@ void UIManager::draw()
 	}
 	else
 	{
-		drawPlayerHealth();
-		drawScore();
-		drawDashCooldown();
-		drawFps();
-		drawLives();
+		if (m_state->getCurrentState() == States::InGame)
+		{
+			drawPlayerHealth();
+			drawScore();
+			drawDashCooldown();
+			drawFps();
+			drawLives();
+		}
+		
 		if (m_state->getCurrentState() == States::Paused)
 		{			
 			drawPause();		
@@ -72,14 +78,16 @@ void UIManager::draw()
 
 void UIManager::update(float dt)
 {
-	if (m_state->getCurrentState() == Paused)
+	if (m_state->getCurrentState() == Win)
 	{
+		m_winEffect->init();
+		m_winEffect->update(dt, true);
 		m_star.update(dt);		
 	}
 	else if (m_state->getCurrentState() == Lose)
 	{
-		m_lostBloodEffect->init();
-		m_lostBloodEffect->update(dt, true);
+		m_lostEffect->init();
+		m_lostEffect->update(dt, true);
 	}
 	else m_star.init();
 }
@@ -127,6 +135,9 @@ void UIManager::drawWinScreen()
 	m_star.draw();
 	if (!m_star.hasGrown()) return;
 
+	MusicManager::getInstance()->playWinSound();
+	
+	m_winEffect->draw(false);
 	float centeringValueX = calcCenteringXForTextSize(m_winTxt, 1.f);//centering offset value for 1 size font, each letter is half a unit
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_winTxtFontSize, m_winTxt, textBrush);
 }
@@ -135,7 +146,7 @@ void UIManager::drawLoseScreen()
 {
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), diedBrush);
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 4, 4, 4, skullBrush);
-	m_lostBloodEffect->draw(false);
+	m_lostEffect->draw(false);
 
 	float centeringValueX = calcCenteringXForTextSize(m_loseTxt, 1.f);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_loseTxtFontSize, m_loseTxt, textBrush);

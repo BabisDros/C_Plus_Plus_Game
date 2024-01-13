@@ -51,7 +51,7 @@ void GameState::update(float dt)
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
 	UIManager::getInstance()->update(dt);
 	LevelManager::getInstance()->update(dt);
-	
+	ParticleManager::getInstance()->threadUpdate(dt);
 	handleStates();
 	if (!m_current_level) return;
 
@@ -143,8 +143,10 @@ void GameState::handleStates()
 	else if (m_currentState == Lose)
 	{
 		m_suspendExecution = true;
+		MusicManager::getInstance()->playLoseSound();
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
+			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->restartLevel();		
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
 		}
