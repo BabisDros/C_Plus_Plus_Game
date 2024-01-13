@@ -31,13 +31,22 @@ LevelManager* LevelManager::getInstance()
 void LevelManager::nextLevel()
 {
 	if (m_state->m_current_level) m_state->m_current_level->~Level();
-	m_state->m_current_level = new Level(levels_list[(++m_level_counter) % levels_list.size()]);	// no end level, so loop through list
-	m_state->m_current_level->init();
+	if (m_level_counter + 1 == levels_list.size())
+	{
+		m_win = true;
+		// call win screen
+		// or make use of bool variable
+	}
+	else
+	{ 
+		m_state->m_current_level = new Level(levels_list[(++m_level_counter)]);	// no end level, so loop through list
+		m_state->m_current_level->init();
 
-	if (!m_state->m_player) m_state->m_player = new Player("Player", 100);
-	m_state->m_player->init();
-	m_state->goNextLevel = false;
-	if (!m_loadingFile) saveData();
+		if (!m_state->m_player) m_state->m_player = new Player("Player", 100);
+		m_state->m_player->init();
+		m_state->goNextLevel = false;
+		if (!m_loadingFile) saveData();
+	}
 }
 
 void LevelManager::saveData()
