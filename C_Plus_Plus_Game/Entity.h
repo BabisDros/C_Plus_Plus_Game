@@ -26,8 +26,10 @@ protected:
 template<typename Container>
 inline void Entity::checkCollision(Container myContainer)
 {
+
 	for (auto& block : myContainer)
 	{
+		if (typeid(*block).name() == typeid(*this).name()) continue;	//No collision between enemies, but allowed between destructibles
 		if (block->isActive())
 		{
 			if (!intersectTypeY(*block))
@@ -45,6 +47,7 @@ inline void Entity::checkCollision(Container myContainer)
 	
 	for (auto& block : myContainer)
 	{
+		if (typeid(*block).name() == typeid(*this).name()) continue;	//No collision between enemies, but allowed between destructibles
 		if (block->isActive())
 		{
 			if (intersectTypeY(*block) && intersect(*block))

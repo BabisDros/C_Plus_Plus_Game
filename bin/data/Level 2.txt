@@ -93,7 +93,7 @@ Enemy
 		jumping: 1
 		looking: -1
 		stick_to_wall:
-		territory_x: 1
+		territory_x: 2
 		territory_y: 2
 		movement: 2
 	}
@@ -179,32 +179,53 @@ Enemy
 
 }
 
+Enemy
+{
+	T: Stationary looking left
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 20
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: -1
+		stick_to_wall:
+		territory_x: 
+		territory_y: 
+		movement: 
+	}
+
+}
+
+
 Level
-                                                |
-                                                |
-                                                |
-                                                |
-                                                |
-                                                |
-                                                |
-                                                |
-                              A                 |
-                             A                  |
- F                          A                   |
-AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
-E                     A A         A             |
- F                  B             A             |
- A      AA   A  A                 A   Q     Z   |
-  AA   A                A  A S    B  BAA  AAA   |
-    A      V      AA    A  AAAA                 |
-     A    AAA    A      AS A     A              |
-         A    A         AAAA          A         |
-               A                     A          |
-  V            D            O     F A           |
-                          AAAAA   AAA           |
-     P  S SS   FFF       A       A             A|
+
+ F FF                                           |
+AA AAA  V                                       |
+      AAAAAAA                                Z  |
+             A   S S                       AAA  |
+              AAAAAAAB   AAAAAA           A     |
+                 DD     A      ASSSS SSS A      |
+                       A        AAAAAAAAA       |
+             OA  SSS  A                         |
+          AAAAAAAAAAAA                          |
+      B                                         |
+        B                                       |
+      B                                         |
+        B       V                               |
+      B   F  S      V       S     Q             |
+        BAAAAAAAAAAAAAAA  AAAA  AAAAAB     T    |
+                       AF              B        |
+                       AFF           B     T    |
+                 S     AAAA            B        |
+              BAAAAA      D          B     T    |
+            B       A  F O      S SS   B        |
+              B      AAAAAAA    AAAAAAB         |
+   P        B                F             FF   |
 C                                               |
-$ 
+$ Info that are not read from program
 $
 Templates
 
@@ -226,25 +247,16 @@ Enemy
 {
 	tag
 	{
-		width: 
-		height: 
-		texture: 
-		health: 
-		ranged: 
-		body_damage:
-		jumping: 
-		looking: 
-		territory_x: 
+		width:
+		height:
+		texture:
+		health:
+		territory_x:
 		territory_y:
-		movement:	{1: dynamic | 2: staticX | 3: staticY}
-		stick_to_wall:	{1: up | 2: right | 3: down | 4: left} (for spikes)
 	}
 
 }
-$ Info that are not read from program
-48*24 ([CanvasWidth * images stretch] * [CanvasWidth/2])
+48*12 ([CanvasWidth * images stretch] * [CanvasWidth/2])
 A: Basic crate
 |: Edge of Level
 C: floor, needs new texture
-P: Player, 
-DO ONLY TOP AND BOTTOM SPIKES

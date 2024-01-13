@@ -89,7 +89,7 @@ Enemy
 		texture: temp_enemy2.png
 		health: 50
 		ranged: 1
-		body_damage:
+		body_damage: 1
 		jumping: 1
 		looking: -1
 		stick_to_wall:
@@ -179,6 +179,26 @@ Enemy
 
 }
 
+Enemy
+{
+	T: Stationary looking left
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 20
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: -1
+		stick_to_wall:
+		territory_x: 
+		territory_y: 
+		movement: 
+	}
+
+}
+
 
 Level
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|
@@ -187,19 +207,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|
     P            BAAAAAAAAA                     |
   AAAAA   AAA  A   Q                            |
                  AAAAA AA                       |
-                           B                    |
-                         B                      |
+SSSSSSSSSSSSSSSSS          B                    |
+AAAAAAAAAAAAAAAAA        B                      |
                       V    B                    |
                          B                      |
- F                                              |
-AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
+ F                       Q B                    |
+AAAAAAAAAAAAAAAAAAAA   AAAAAAAAAAAAAAAAAAAAAAAAA|
 E                     A A         A             |
- F                  B             A             |
- A      AA   A  A                 A   Q         |
-  AA   A                A  A S    B  BAA  AAA   |
-    A      V      AA    A  AAAA                 |
-     A    AAA    A      AAAA     A              |
-         A    A                       A         |
+        S           B             A             |
+ A      AA   A  A                 A             |
+  AA   A                A  A S    B             |
+    A      T      AA    A  AAAA                 |
+     A    AAA    A      A SA     A              |
+         A    A         AAAA          A         |
                A                     A          |
   V            D            O     F A           |
                           AAAAA   AAA           |

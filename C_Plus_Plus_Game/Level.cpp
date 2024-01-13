@@ -65,7 +65,6 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	if (m_state->m_suspendExecution) return;
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
 	ParticleManager::getInstance()->threadUpdate(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
@@ -81,18 +80,18 @@ void Level::update(float dt)
 	}
 
 
-	/*for (auto p_gob : m_destructible_objects)
-		if (p_gob && p_gob->isActive())
-			p_gob->update(dt);*/
+//	for (auto p_gob : m_destructible_objects)
+//		if (p_gob->isActive()) p_gob->update(dt);
 
 	std::vector<std::thread> mythreads;
 	auto middle = m_destructible_objects.begin();
 
 	std::advance(middle, m_destructible_objects.size() / 2);
-	t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
-	++middle;
+	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), middle, dt);
+
 	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
 	t1.join();/**/
+
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
@@ -184,7 +183,7 @@ void Level::read()
 									if ((itr->second)[8] == "") stick_wall = 0;
 									else stick_wall = std::stoi((itr->second)[8]);
 
-									if (itr->second[9] != "")	// It has a movement value
+									if (itr->second[11] != "")	// It has a movement value
 									{
 										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
@@ -195,7 +194,7 @@ void Level::read()
 									{
 										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
-											ranged, body_damage, jumping, std::stof((itr->second)[7]), std::stof((itr->second)[8])));
+											ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall));
 										break;
 									}
 								}
@@ -341,7 +340,6 @@ void Level::destroyGameObjects(Container& myContainer)
 			delete p_gob;
 		}
 	}
-
 }
 
 
