@@ -78,8 +78,9 @@ void Player::update(float dt)
 	if (m_dev_fly) fly(delta_time);
 	else movement(delta_time);
 
-	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 2) //? is in void
+	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 1) //? is in void
 	{
+		takeDamage(m_initialHealth);
 		m_pos_x = m_state->getLevel()->m_player_start_x; 
 		m_pos_y = m_state->getLevel()->m_player_start_y;
 	}
