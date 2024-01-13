@@ -23,6 +23,7 @@ GameState::GameState()
 void GameState::init()
 {	
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
@@ -144,7 +145,8 @@ void GameState::handleStates()
 		m_suspendExecution = true;
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
-			LevelManager::getInstance()->restartLevel();
+			LevelManager::getInstance()->restartLevel();		
+			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
 		}
 	}
 }
@@ -179,6 +181,11 @@ void GameState::showFPS()
 void GameState::onPointsCollected(int points)
 {
 	m_points += points;
+}
+
+void GameState::onPlayerLivesChanged(int life)
+{
+	m_lives += life;
 }
 
 States& GameState::getCurrentState()
@@ -223,5 +230,15 @@ std::string GameState::getFullAssetPath(const std::string& asset)
 std::string GameState::getFullDataPath(const std::string& data)
 {
 	return m_data_path + data;
+}
+
+int GameState::getInitialLives() const
+{
+	return m_initialLives;
+}
+
+int GameState::getInitialHealth() const
+{
+	return m_initialHealth;
 }
 

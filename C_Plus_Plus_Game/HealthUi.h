@@ -28,6 +28,6 @@ public:
 	void setPosition(float x, float y);
 	void setSize(float width, float height);
 	void updateUIOnDamage(const int& initialHealth, const  int& currentHealth);
-	
+	float getHeight() const;
 };
 

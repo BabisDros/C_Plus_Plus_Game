@@ -14,6 +14,7 @@ class UIManager
 	std::string m_pointsTxt="";
 	std::string m_scoreTxt = "";
 	std::string m_livesTxt = "";
+	std::string m_livesDisplayTxt = "";
 	std::string m_pausedTxt = "Paused";
 	std::string m_escText = "Press  \"Esc\"  to exit";
 	std::string m_restartTxt = "Press  \"R\"  to  Restart";
@@ -32,6 +33,7 @@ class UIManager
 	float m_escTxtFontSize = 0.5f;
 	float m_winTxtFontSize = 1.0f;
 	float m_loseTxtFontSize = 1.0f;
+	float m_livesFontSize = 0.6f;
 public:
 	int m_fps=0;
 	void init();
@@ -47,6 +49,7 @@ public:
 	void drawDashCooldown();
 	void drawFps();
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);
-	void onPointsChanged(const int& points);
+	void onPlayerLivesChanged();
+	void onPointsChanged();
 	static UIManager* getInstance();
 };

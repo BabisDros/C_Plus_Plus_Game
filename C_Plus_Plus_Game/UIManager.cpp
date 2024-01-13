@@ -13,8 +13,9 @@ void UIManager::init()
 	m_state = GameState::getInstance();
 	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
 
-	CallbackManager::getInstance()->m_playerIsDamaged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
-	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_playerHealthChanged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this));
+	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&UIManager::onPlayerLivesChanged, this));
 	m_playerHealthUI = HealthUIFixed(0, 0, 5, 1);
 	 
 	m_lostBloodEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,
@@ -114,13 +115,14 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 }
 void UIManager::drawLives()
 {
-	m_scoreTxt = "Score: " + m_pointsTxt;
-	graphics::drawRect(m_state->getCanvasWidth() , 0.75f, 3, 1, backPLate);
-	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, m_scoreTxt, textBrush);
+	m_livesDisplayTxt = "Lives: " + m_livesTxt;
+	
+	float backgroungUiHeight=1;
+	graphics::drawRect(0, m_playerHealthUI.getHeight()+ backgroungUiHeight / 2, m_livesDisplayTxt.size()/1.6f, backgroungUiHeight, backPLate);
+	graphics::drawText(0, m_playerHealthUI.getHeight() + backgroungUiHeight / 2+ calcCenteringYForTextSize(m_livesFontSize), m_livesFontSize, m_livesDisplayTxt, textBrush);
 }
 void UIManager::drawWinScreen()
-{
-			
+{			
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), winBrush);		
 	m_star.draw();
 	if (!m_star.hasGrown()) return;
@@ -183,8 +185,12 @@ void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& curre
 {	
 	m_playerHealthUI.updateUIOnDamage(initialHealth, currentHealth);		
 }
+void UIManager::onPlayerLivesChanged()
+{
+	m_livesTxt = std::to_string(m_state->m_lives);
+}
 
-void UIManager::onPointsChanged(const int& points)
+void UIManager::onPointsChanged()
 {
 	m_pointsTxt = std::to_string(m_state->m_points);
 }

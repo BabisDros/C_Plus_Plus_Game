@@ -44,7 +44,7 @@ void LevelManager::nextLevel(bool restartLevel)
 	m_state->m_current_level = new Level(levels_list[(m_level_counter) % levels_list.size()]);	// no end level, so loop through list
 	m_state->m_current_level->init();
 
-	if (!m_state->m_player) m_state->m_player = new Player("Player", 10);
+	if (!m_state->m_player) m_state->m_player = new Player("Player", m_state->getInitialHealth());
 	m_state->m_player->init();
 	//not needed to save in a restart
 	m_state->m_goNextLevel = false;
@@ -56,7 +56,7 @@ void LevelManager::restartLevel()
 {
 	m_state->m_suspendExecution = true;
 	if (m_state->waitForFrameToEnd()) return;
-	m_state->m_player->setInitialHealthValues(100);
+	m_state->m_player->setInitialHealthValues(m_state->getInitialHealth());
 	nextLevel(true);
 	m_state->m_pauseButtonPressed = false;
 	m_state->m_suspendExecution = false;
