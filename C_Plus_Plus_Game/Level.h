@@ -8,6 +8,7 @@ class Level : public GameObject
 {
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
+	float pointsGainedInLevel=0;
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	std::vector<std::string> m_fireball_sprites;
@@ -15,7 +16,7 @@ class Level : public GameObject
 	TODO: use a binary search to find elements and then remove destructed*/
 	std::list<CollisionObject*> m_destructible_objects;
 	std::vector<LevelBox*> m_blocks;
-
+	std::thread t1;
 
 	std::map <char, std::vector<std::string>> m_terrain_data;	//? For every tag, width, height, texture and is IDestructible are saved
 	std::map <char, std::vector<std::string>> m_enemy_data;	//? for every tag, width, height, texture, health, territory_x and territory_y are saved
@@ -71,5 +72,6 @@ public:
 		std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt);
 
 	std::vector<std::string>* getFireballSprites();
+	void onPointsCollected(int points);
 	void readSprites(std::string folder, std::vector<std::string>& myVec);
 };

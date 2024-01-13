@@ -32,12 +32,11 @@ public:
 
 	const bool isAlive() const;
 	void init() override;
-	void draw() override;
+	void draw(bool drawWithOffset = true);
 	void update(float dt) override;
 	//all properties will run during lifetime
 	void fade(const float& deltaTime);
 	void move(const float& deltaTime);
-	void setInitialPosition(float x, float y);
 	void reduceWidth(const float& deltaTime);
 	void reduceHeight(const float& deltaTime);
 	void reduceLife(const float& deltaTime);

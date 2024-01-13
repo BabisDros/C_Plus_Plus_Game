@@ -60,10 +60,10 @@ public:
 	~ParticleSystem();
 	//call this so that the particles start playing
 	void init() override;
-	void draw() override;
-	void update(float dt) override;
-	float calcRandomPositionX();
+	void draw(bool drawWithOffset = true);
+	void update(float dt, bool playOnPaused = false);
 	void updateThreadFunction(float dt);
+	float calcRandomPosX() const;
 	float calcRandomValue();
 	bool isRunning() const;
 	void followGameobject(float x, float y);

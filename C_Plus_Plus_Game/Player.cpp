@@ -11,9 +11,12 @@ AnimationSequence Player::m_animation = Idle;
 Player::~Player()
 {
 	/*delete m_bloodParticles;*/
+	std::cout << "deleted";
+	//delete m_healthUi;
 }
 void Player::init()
 {
+	if (!isActive()) setActive(true);
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
@@ -34,7 +37,6 @@ void Player::init()
 	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
-
 }
 
 void Player::draw()
@@ -101,12 +103,18 @@ void Player::update(float dt)
 	}
 }
 
-	
-
-
 void Player::destroy()
 {
-	setActive(false);
+	m_state->m_lives -= 1;
+	if (m_state->m_lives == 0)
+	{
+		setActive(false);
+		m_state->setState(Lose);
+	}
+	else
+	{		
+		CallbackManager::getInstance()->m_playerDied.trigger();
+	}
 }
 
 
@@ -195,9 +203,7 @@ void Player::movement(float delta_time)
 		{ 
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
-		}
-
-		
+		}		
 	}
 	else
 	{

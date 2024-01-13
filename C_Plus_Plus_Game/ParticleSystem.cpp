@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include <ctime>
 #include <thread>
+#include <iostream>
 
 ParticleSystem::~ParticleSystem()
 {
@@ -19,7 +20,7 @@ void ParticleSystem::init()
     }     
 }
 
-void ParticleSystem::draw()
+void ParticleSystem::draw(bool drawWithOffset)
 {
     if (isRunning())
     {
@@ -27,14 +28,14 @@ void ParticleSystem::draw()
         std::lock_guard<std::mutex> lock(particlesMutex);
         for (Particle*& particle : m_particles)
         {
-            particle->draw();
+            particle->draw(drawWithOffset);
         }
     }
 }
 
-void ParticleSystem::update(float dt)
+void ParticleSystem::update(float dt, bool playOnPaused)
 {
-    if (m_state->getCurrentState() == Paused) return;
+    if (!playOnPaused && m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
     {      
         float deltaTimeSec = dt / 1000;
@@ -46,10 +47,8 @@ void ParticleSystem::update(float dt)
             if (m_particles.size() < m_maxParticles)
             {
                 float randomVal = calcRandomValue();
-                float randomPositionX = std::min(m_posX + m_width, m_posX + randomVal);
-                randomPositionX = std::max(m_posX - m_width, randomPositionX);
-
-                m_particles.push_back(new Particle(randomPositionX, m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture,
+                std::lock_guard<std::mutex> lock(particlesMutex);
+                m_particles.push_back(new Particle(calcRandomPosX(), m_posY, m_particleSize, m_particleSize, m_lifetime, m_texture,
                     m_maxVelocity, m_acceleration, m_gravity, m_oscillationFrequency + randomVal, m_oscillationAmplitude + randomVal, m_red, m_green, m_blue));
             }
          
@@ -71,6 +70,17 @@ void ParticleSystem::updateThreadFunction(float dt)
     {
         particle->update(dt);
     }
+}
+//TODO:HANDLE small width values under 1
+float ParticleSystem::calcRandomPosX() const
+{
+    float firstNumber = 0;
+    int lastNumber= 10;
+    float randomVal = (firstNumber + rand() % lastNumber)/10.f;
+
+    float randomPositionX = m_posX - m_width/2 + randomVal * m_width;
+
+    return randomPositionX;
 }
 
 float ParticleSystem::calcRandomValue() 
