@@ -28,7 +28,7 @@ void MusicManager::playWinSound()
 {
 	if (!m_playedWinSound)
 	{
-		graphics::playMusic("music\\Win_sound_23.wav", 0.05, false);
+		graphics::playMusic("music\\Success_3.wav", 0.05, false);
 		m_playedWinSound = true;
 		m_playing_music = false;
 	}
