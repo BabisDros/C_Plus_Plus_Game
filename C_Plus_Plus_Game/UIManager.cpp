@@ -136,10 +136,12 @@ void UIManager::drawWinScreen()
 	if (!m_star.hasGrown()) return;
 
 	MusicManager::getInstance()->playWinSound();
+
 	
 	m_winEffect->draw(false);
 	float centeringValueX = calcCenteringXForTextSize(m_winTxt, 1.f);//centering offset value for 1 size font, each letter is half a unit
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_winTxtFontSize, m_winTxt, textBrush);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2+ m_winTxtFontSize, m_winTxtFontSize, m_scoreTxt, textBrush);
 }
 
 void UIManager::drawLoseScreen()
