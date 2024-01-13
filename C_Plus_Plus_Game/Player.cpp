@@ -16,6 +16,7 @@ Player::~Player()
 }
 void Player::init()
 {
+	if (!isActive()) setActive(true);
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
@@ -36,7 +37,6 @@ void Player::init()
 	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
-	std::cout << "draaaaaaaaaw";
 }
 
 void Player::draw()
@@ -103,13 +103,18 @@ void Player::update(float dt)
 	}
 }
 
-	
-
-
 void Player::destroy()
 {
-	//setActive(false);
-	CallbackManager::getInstance()->m_playerDied.trigger();
+	m_state->m_lives -= 1;
+	if (m_state->m_lives == 0)
+	{
+		setActive(false);
+		m_state->setState(Lose);
+	}
+	else
+	{		
+		CallbackManager::getInstance()->m_playerDied.trigger();
+	}
 }
 
 

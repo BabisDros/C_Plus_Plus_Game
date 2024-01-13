@@ -6,7 +6,6 @@ void Star::init()
 {
 	m_height = 0;
 	m_width = 0;
-	
 	setCustomBrushProperties(&m_brush, 1.0f, 0, m_state->getFullAssetPath("UI\\Star_01.png"));	
 }
 
@@ -17,7 +16,7 @@ void Star::draw()
 
 void Star::update(float dt)
 {	
-	float deltaSec = dt / 1000 *growthRate;		
+	float deltaSec = dt / 1000 * growthRate;		
 	if (m_height < m_finalSize)
 	{
 		m_height +=  deltaSec;

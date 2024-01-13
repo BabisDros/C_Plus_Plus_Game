@@ -49,26 +49,25 @@ void GameState::update(float dt)
 	float sleep_time = std::max(0.0f, 17.0f - dt);
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
 	UIManager::getInstance()->update(dt);
+	LevelManager::getInstance()->update(dt);
+	
 	handleStates();
 	if (!m_current_level) return;
-	
-	if (!m_paused)
+
+	if (!m_suspendExecution)
 	{
 		m_current_level->update(dt);
 		m_pausableClock += graphics::getDeltaTime()/1000;
-		m_currentState = States::InGame;
-	}
-	else
-	{
-		m_currentState=States::Paused;	//? Make paused window
 	}
 	
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
-	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
+	enable(m_pauseButtonPressed, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
-	if (goNextLevel) LevelManager::getInstance()->nextLevel();
+	if (m_goNextLevel) LevelManager::getInstance()->nextLevel();
 	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
+/// sto
+
 
 GameState* GameState::getInstance()
 {
@@ -87,11 +86,23 @@ GameState::~GameState()
 		delete m_current_level;
 	}
 }
+//Allows game loop to finish its execution on this frame and then we can delete objects safely
+bool GameState::waitForFrameToEnd()
+{
+	timer.setStartTime(graphics::getGlobalTime());
 
+	if (timer.isRunning() && (graphics::getGlobalTime() - timer.getStartTime() < graphics::getDeltaTime()))
+	{
+		return false;
+	}
+	// reset timer after frame ended
+	timer.setStartTime(0.0f);
+	return true;
+}
 void GameState::handleStates()
 {
     if (m_currentState == Menu)
-    {       
+    {      
         if (graphics::getKeyState(graphics::SCANCODE_N) )
         {
             LevelManager::getInstance()->nextLevel();
@@ -103,20 +114,43 @@ void GameState::handleStates()
             LevelManager::getInstance()->loadSaveFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
-
-        }
-	
-      
+        }     
     }
-    if (m_currentState == Paused)
+	else if (m_currentState == InGame)
+	{
+		if (m_pauseButtonPressed)
+		{
+			m_currentState = States::Paused;
+			m_suspendExecution = true;
+		}
+		
+	}
+	else if (m_currentState == Paused)
     {      
         if (graphics::getKeyState(graphics::SCANCODE_R))
         {
 			LevelManager::getInstance()->restartLevel();
-			m_paused = false;
+        }  
+
+		if (!m_pauseButtonPressed)
+		{
 			m_currentState = States::InGame;
-        }            
+			m_suspendExecution = false;
+		}
     }
+
+	else if (m_currentState == Lose)
+	{
+		m_suspendExecution = true;
+		if (graphics::getKeyState(graphics::SCANCODE_R))
+		{
+			LevelManager::getInstance()->restartLevel();
+		}
+	}
+}
+void GameState::setState(States state)
+{
+	m_currentState = state;
 }
 
 void GameState::deletePlayer() const

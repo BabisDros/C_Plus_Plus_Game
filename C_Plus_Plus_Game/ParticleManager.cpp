@@ -3,14 +3,7 @@
 
 ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
-ParticleManager* ParticleManager::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new ParticleManager();
-	}
-	return s_unique_instance;
-}
+
 
 void ParticleManager::init()
 {
@@ -20,9 +13,9 @@ void ParticleManager::init()
 	CallbackManager::getInstance()->m_enemyDied.addArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
 	
 	//pos x and y are temporar
-	m_playerBlood= new ParticleSystem(8, 20, 1, 1, 0.1f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
+	m_playerBlood= new ParticleSystem(8, 20, 0, 0, 0.3f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
 	CallbackManager::getInstance()->m_playHurtFx.addArgActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
-	CallbackManager::getInstance()->m_playerMoved.addArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playerMoved.addArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this , std::placeholders::_1, std::placeholders::_2));
 }
 
 void ParticleManager::draw()
@@ -55,4 +48,12 @@ void ParticleManager::onPlayerHurt()
 	m_playerBlood->init();
 }
 
+ParticleManager* ParticleManager::getInstance()
+{
+	if (s_unique_instance == nullptr)
+	{
+		s_unique_instance = new ParticleManager();
+	}
+	return s_unique_instance;
+}
 

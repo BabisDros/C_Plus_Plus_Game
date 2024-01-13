@@ -13,6 +13,7 @@
 
 #include <filesystem> // to read sprites for animation 
 #include <thread>
+#include "ParticleManager.h"
 //#include <algorithm>
 //#include <execution>
 
@@ -59,18 +60,18 @@ void Level::draw()
 	{
 		m_state->getPlayer()->draw();
 	}
-	//ParticleManager::getInstance()->draw();
+	ParticleManager::getInstance()->draw();
 }
 
 void Level::update(float dt)
 {
-	if (m_state->m_paused) return;
+	if (m_state->m_suspendExecution) return;
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	//ParticleManager::getInstance()->threadUpdate(dt);
+	ParticleManager::getInstance()->threadUpdate(dt);
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
-		m_state->goNextLevel = true; // level finished
+		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100);//triggers a point changed with value 100
 	}	
 
@@ -80,17 +81,18 @@ void Level::update(float dt)
 	}
 
 
-	for (auto p_gob : m_destructible_objects)
-		if (p_gob->isActive()) p_gob->update(dt);
+	/*for (auto p_gob : m_destructible_objects)
+		if (p_gob && p_gob->isActive())
+			p_gob->update(dt);*/
 
-	//std::vector<std::thread> mythreads;
-	//auto middle = m_destructible_objects.begin();
+	std::vector<std::thread> mythreads;
+	auto middle = m_destructible_objects.begin();
 
-	//std::advance(middle, m_destructible_objects.size() / 2);
-	//t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
-	//++middle;
-	//updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	//t1.join();/**/
+	std::advance(middle, m_destructible_objects.size() / 2);
+	t1 = std::thread(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), m_destructible_objects.end(), dt);
+	++middle;
+	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
+	t1.join();/**/
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
@@ -339,6 +341,7 @@ void Level::destroyGameObjects(Container& myContainer)
 			delete p_gob;
 		}
 	}
+
 }
 
 
@@ -355,7 +358,8 @@ Level::~Level()
 	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
+
 	//this is to reset points gained in a case of level restart
-	m_state->m_points -= pointsGainedInLevel;
+	CallbackManager::getInstance()->m_pointsChanged.trigger( - pointsGainedInLevel);
 	
 }

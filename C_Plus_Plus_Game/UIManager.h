@@ -2,15 +2,36 @@
 #include <string>
 #include "HealthUIFixed.h"
 #include "Star.h"
+#include "ParticleSystem.h"
 
 class UIManager
 {
-	class GameState* m_state;
 	static UIManager* s_unique_instance;
-	HealthUIFixed* m_playerHealthUI = new HealthUIFixed(0,0,5,1);
-	std::string m_points;
+	class GameState* m_state=nullptr;
+	ParticleSystem* m_lostBloodEffect = nullptr;
+	HealthUIFixed m_playerHealthUI;
+	Star m_star;
+	std::string m_pointsTxt="";
+	std::string m_scoreTxt = "";
+	std::string m_livesTxt = "";
+	std::string m_pausedTxt = "Paused";
+	std::string m_escText = "Press  \"Esc\"  to exit";
+	std::string m_restartTxt = "Press  \"R\"  to  Restart";
+	std::string m_winTxt = "You  won!";
+	std::string m_loseTxt = "You  lose!";
+	std::string m_fpsTxt = "";
+
 	graphics::Brush m_menu;
-	Star star;
+	graphics::Brush textBrush;
+	graphics::Brush backPLate;
+	graphics::Brush paused_brush;
+	graphics::Brush winBrush;
+	graphics::Brush diedBrush;
+	graphics::Brush skullBrush;
+	float m_pausedTxtFontSize = 1.0f;
+	float m_escTxtFontSize = 0.5f;
+	float m_winTxtFontSize = 1.0f;
+	float m_loseTxtFontSize = 1.0f;
 public:
 	int m_fps=0;
 	void init();
@@ -20,6 +41,7 @@ public:
 	void drawScore();
 	void drawMenu();
 	void drawPause();
+	void drawLives();
 	void drawWinScreen();
 	void drawLoseScreen();
 	void drawDashCooldown();

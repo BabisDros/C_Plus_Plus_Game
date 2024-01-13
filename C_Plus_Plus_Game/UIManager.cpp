@@ -15,11 +15,30 @@ void UIManager::init()
 
 	CallbackManager::getInstance()->m_playerIsDamaged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this, std::placeholders::_1));
+	m_playerHealthUI = HealthUIFixed(0, 0, 5, 1);
+	 
+	m_lostBloodEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,
+		m_state->getFullAssetPath("blood.png"), 10.f, 5.f, 5.f, 0.f, 0.0f);
 
 
+	SETCOLOR(backPLate.fill_color, 0, 0, 0);
+	backPLate.fill_opacity = 0.5f;
+	SETCOLOR(backPLate.outline_color, 0, 0, 0)
+		
+	setCustomBrushProperties(&paused_brush, 0.8f, 0, m_state->getFullAssetPath("UI\\pause.png"));
+
+	SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
+	textBrush.fill_opacity = 1.f;
+	textBrush.outline_opacity = 1.0f;
+
+	setCustomBrushProperties(&winBrush, 0.8f, 0, m_state->getFullAssetPath("UI\\pause.png"));
+
+	SETCOLOR(diedBrush.fill_color, 0.3f, 0.3f, 0.3f);
+	setCustomBrushProperties(&diedBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\pause.png"));
+	setCustomBrushProperties(&skullBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\skull.png"));
 }
 
-
+//text always run above drawrect
 void UIManager::draw()
 {
 	if (m_state->getCurrentState() == States::Menu)
@@ -32,11 +51,21 @@ void UIManager::draw()
 		drawScore();
 		drawDashCooldown();
 		drawFps();
+		drawLives();
 		if (m_state->getCurrentState() == States::Paused)
-		{
-			drawPause();
+		{			
+			drawPause();		
 		}
-		
+
+		else if(m_state->getCurrentState() == States::Lose)
+		{
+			drawLoseScreen();
+		}
+
+		else if (m_state->getCurrentState() == States::Win)
+		{
+			drawWinScreen();
+		}
 	}
 }
 
@@ -44,92 +73,78 @@ void UIManager::update(float dt)
 {
 	if (m_state->getCurrentState() == Paused)
 	{
-		star.update(dt);
+		m_star.update(dt);		
 	}
-	else star.init();
+	else if (m_state->getCurrentState() == Lose)
+	{
+		m_lostBloodEffect->init();
+		m_lostBloodEffect->update(dt, true);
+	}
+	else m_star.init();
 }
 
 void UIManager::drawPlayerHealth()
-{
-	if (m_playerHealthUI)
-	{
-		m_playerHealthUI->draw();
-	}
+{	
+	m_playerHealthUI.draw();	
 }
 
 void UIManager::drawScore()
 {
 	//although score runs in update before drawPause, it continues to draw above it
-	if(m_state->getCurrentState() != States::Paused) 
-	{
-		std::string str = "Score: " + m_points;
-		graphics::Brush textBrush;
-		graphics::Brush backPLate;
-		SETCOLOR(backPLate.fill_color, 0, 0, 0);
-		backPLate.fill_opacity = 0.5f;
-		SETCOLOR(backPLate.outline_color, 0, 0, 0)
-			float centeringValue = str.size() / 3.f;//centering offset value for 1 size font, each letter is half a unit
-		graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
-		graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, str, textBrush);
-	}
+	m_scoreTxt = "Score: " + m_pointsTxt;
+	graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
+	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, m_scoreTxt, textBrush);	
 }
 
 void UIManager::drawPause()	//! make it better than a greyed out screen
-{
-	////draw canvas
-	//graphics::Brush paused_brush;
-	////paused_brush.fill_opacity = 0.75f;
-	////paused_brush.outline_opacity = 0.f;
-	////SETCOLOR(paused_brush.fill_color, 0.25f, 0.25f, 0.25f);
-	//setCustomBrushProperties(&paused_brush, 0.8f, 0, m_state->getFullAssetPath("UI\\pause.png"));
-	//graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
-	//	m_state->getCanvasHeight(), paused_brush);
-	//
-	////common text brush
-	//graphics::Brush textBrush;
-	//SETCOLOR(textBrush.outline_color, 1, 0.1f, 0);
-	//textBrush.fill_opacity = 1.f;
-	//textBrush.outline_opacity = 1.0f;
+{	
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
+		m_state->getCanvasHeight(), paused_brush);
+	
+	float centeringValueX = calcCenteringXForTextSize(m_pausedTxt, 1.f);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_pausedTxtFontSize, m_pausedTxt, textBrush);
 
-	////draw text Paused
-	//std::string str = "Paused";
-	//float strFontSize = 1.0f;
-	//float centeringValueX = calcCenteringXForTextSize(str, 1.f);//centering offset value for 1 size font, each letter is half a unit
-	//graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, strFontSize, str, textBrush);
+	float centeringValueX2 = calcCenteringXForTextSize(m_escText, m_escTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize, m_escTxtFontSize, m_escText, textBrush);
 
-	////draw text Paused
-	//std::string str2 = "Press  \"Esc\"  to exit";
-	//float str2FontSize = 0.5f;
-	//float centeringValueX2 = calcCenteringXForTextSize(str2, str2FontSize);//centering offset value for 1 size font, each letter is half a unit
-
-	//graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + strFontSize, str2FontSize, str2, textBrush);
-
-	////draw text Paused
-	//std::string str3 = "Press  \"R\"  to  Restart";
-	//float centeringValueX3 = calcCenteringXForTextSize(str3, 0.5f);//centering offset value for 1 size font, each letter is half a unit
-	//graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 +strFontSize+ str2FontSize, str2FontSize, str3, textBrush);
-
+	//draw text Paused
+	float centeringValueX3 = calcCenteringXForTextSize(m_restartTxt, 0.5f);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 +m_pausedTxtFontSize+ m_escTxtFontSize,
+		m_escTxtFontSize, m_restartTxt, textBrush);
 }
-
+void UIManager::drawLives()
+{
+	m_scoreTxt = "Score: " + m_pointsTxt;
+	graphics::drawRect(m_state->getCanvasWidth() , 0.75f, 3, 1, backPLate);
+	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, m_scoreTxt, textBrush);
+}
 void UIManager::drawWinScreen()
 {
-	graphics::Brush winBrush;
-	setCustomBrushProperties(&winBrush, 0.8f, 0, m_state->getFullAssetPath("UI\\pause.png"));
-	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), winBrush);
+			
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), winBrush);		
+	m_star.draw();
+	if (!m_star.hasGrown()) return;
 
-	star.draw();
-	//draw text 
-	std::string str = "You  won!";
-	float strFontSize = 1.0f;
-	graphics::Brush textBrush;
-	if (!star.hasGrown()) return;
-	float centeringValueX = calcCenteringXForTextSize(str, 1.f);//centering offset value for 1 size font, each letter is half a unit
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, strFontSize, str, textBrush);
+	float centeringValueX = calcCenteringXForTextSize(m_winTxt, 1.f);//centering offset value for 1 size font, each letter is half a unit
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_winTxtFontSize, m_winTxt, textBrush);
 }
 
 void UIManager::drawLoseScreen()
 {
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(), m_state->getCanvasHeight(), diedBrush);
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 4, 4, 4, skullBrush);
+	m_lostBloodEffect->draw(false);
 
+	float centeringValueX = calcCenteringXForTextSize(m_loseTxt, 1.f);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 2, m_loseTxtFontSize, m_loseTxt, textBrush);
+
+	float centeringValueX2 = calcCenteringXForTextSize(m_escText, m_escTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize, m_escTxtFontSize, m_escText, textBrush);
+
+	//draw text Paused
+	float centeringValueX3 = calcCenteringXForTextSize(m_restartTxt, 0.5f);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize + m_escTxtFontSize,
+		m_escTxtFontSize, m_restartTxt, textBrush);
 }
 void UIManager::drawDashCooldown()
 {
@@ -153,10 +168,9 @@ void UIManager::drawDashCooldown()
 
 void UIManager::drawFps()
 {
-	std::string str = std::to_string(m_fps);
-	graphics::Brush textBrush;
+	m_fpsTxt = std::to_string(m_fps);
 	SETCOLOR(textBrush.outline_color, 1, 1, 1);
-	graphics::drawText(0.2f, m_state->getCanvasHeight() - .5f, .4f, str, textBrush);
+	graphics::drawText(0.2f, m_state->getCanvasHeight() - .5f, .4f, m_fpsTxt, textBrush);
 }
 
 void UIManager::drawMenu()
@@ -166,20 +180,14 @@ void UIManager::drawMenu()
 }
 
 void UIManager::onPlayerHealthChanged(const int& initialHealth, const int& currentHealth)
-{
-	if (m_playerHealthUI)
-	{
-		m_playerHealthUI->updateUIOnDamage(initialHealth, currentHealth);
-	}
-	
+{	
+	m_playerHealthUI.updateUIOnDamage(initialHealth, currentHealth);		
 }
 
 void UIManager::onPointsChanged(const int& points)
 {
-	m_points = std::to_string(m_state->m_points);
+	m_pointsTxt = std::to_string(m_state->m_points);
 }
-
-
 
 UIManager* UIManager::getInstance()
 {
