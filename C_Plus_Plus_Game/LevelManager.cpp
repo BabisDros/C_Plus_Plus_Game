@@ -118,5 +118,6 @@ void LevelManager::loadSaveFile()
 	std::getline(saveFile, line);
 	m_state->getLevel()->getDataValue(line);
 	m_state->getPlayer()->setHealth((stoi(line))) ; //Better setter required
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger(stoi(line), stoi(line));
 	saveData();
 }
