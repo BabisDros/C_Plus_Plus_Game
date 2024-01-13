@@ -21,12 +21,11 @@ void Enemy::init()
 	m_projectile.setParentDirection(m_lookingDirection);
 	if (m_body_damage) m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
 	m_bodyDamage.setActive(true);
-	if (m_rangedAttack) { m_projectile.m_width = 1.2f; m_projectile.m_height = 0.8f; }
+	if (m_rangedAttack) { m_projectile.m_width = 1.2f; m_projectile.m_height = 0.8f; m_projectile.m_diesOnTouch = true; }
 }
 
 void Enemy::draw()
 {
-	
 	float angle = 0;
 	if (m_stick_to_wall == 1) angle = 180.f;
 	graphics::setOrientation(angle);
@@ -184,7 +183,10 @@ void Enemy::rangedAttack(float dt)
 	m_projectile.update(dt);
 	if (!m_throwProjectile.isRunning())
 	{
+	//	m_projectile.setActive(true);
+		m_projectile.m_canMove = true;
 		m_projectile.m_width = 1.2;
+
 		m_projectile_animation_timer = *m_state->getPausableClock();
 		m_projectile.setActive(true);
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
@@ -201,11 +203,14 @@ void Enemy::rangedAttack(float dt)
 	{	
 		if (m_throwProjectile.getElapsedTime() < m_throwProjectile.getDuration())
 		{
-			float move = m_projectile_direction;
-			m_projectile_vx = std::min(m_projectile_max_velocity, m_projectile_vx + dt * move * m_projectile_accel_horizontal);
-			m_projectile_vx = std::max(-m_projectile_max_velocity, m_projectile_vx);
-			float distance = dt * m_projectile_vx;
-			m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, m_projectile.m_width, m_projectile.m_height);
+			if (m_projectile.m_canMove)
+			{
+				float move = m_projectile_direction;
+				m_projectile_vx = std::min(m_projectile_max_velocity, m_projectile_vx + dt * move * m_projectile_accel_horizontal);
+				m_projectile_vx = std::max(-m_projectile_max_velocity, m_projectile_vx);
+				float distance = dt * m_projectile_vx;
+				m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, m_projectile.m_width, m_projectile.m_height); 
+			}	
 		}
 		else if (m_projectile.isActive())
 		{

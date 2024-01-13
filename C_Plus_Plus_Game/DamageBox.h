@@ -11,11 +11,14 @@ class DamageBox:public CollisionObject
 	bool m_parentIsPlayer = false;
 	bool m_canActivelyBeMirrored ;
 	int m_damageToInflict = 0;
+
 public:	
 	DamageBox() {};
 	DamageBox(int damage, bool canBecomeMirrored = true) : m_canActivelyBeMirrored(canBecomeMirrored),m_damageToInflict(damage)
 	{ init(); };
 	
+	bool m_diesOnTouch = false;
+	bool m_canMove = true;
 	int m_draw_direction;
 	void init() override;
 	void draw() override;

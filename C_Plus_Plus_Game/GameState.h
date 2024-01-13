@@ -20,7 +20,7 @@ class GameState
 	std::string m_data_path = "data\\";
 	float m_canvas_width = 24.0f;
 	float m_canvas_height = m_canvas_width / 2;
-	int m_initialLives = 1;
+	int m_initialLives = 2;
 	int m_initialHealth = 100;
 	static GameState* s_unique_instance;
 	static States m_currentState;

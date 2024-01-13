@@ -162,7 +162,7 @@ void UIManager::drawLoseScreen()
 void UIManager::drawDashCooldown()
 {
 	graphics::Brush cooldown, on_cooldown;
-	setCustomBrushProperties(&cooldown, 1, 0, m_state->getFullAssetPath("UI\\dash_cd.png"));
+	setCustomBrushProperties(&cooldown, 1, 1, m_state->getFullAssetPath("UI\\dash_cd.png"));
 	bool onCD = false;
 	float height;
 	if (m_state->getPlayer()->getDashAbility()->getStartTime() != 0)
