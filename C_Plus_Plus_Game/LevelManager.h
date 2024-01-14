@@ -8,9 +8,10 @@ class LevelManager
 	static LevelManager* s_unique_instance;
 	int m_level_counter = -1; // starts counting from 0
 	bool m_win = false;
-	bool m_restart = false;
+	
 public:
 	std::vector<std::string> levels_list;
+	bool m_restart = false;
 	void init();
 	void update(float dt);
 	static LevelManager* getInstance();

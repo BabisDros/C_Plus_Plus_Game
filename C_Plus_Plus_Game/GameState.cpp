@@ -130,6 +130,7 @@ void GameState::handleStates()
     {      
         if (graphics::getKeyState(graphics::SCANCODE_R))
         {
+			LevelManager::getInstance()->m_restart = true;
 			LevelManager::getInstance()->restartLevel();
         }  
 

@@ -160,7 +160,7 @@
     <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="ParticleManager.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Star.cpp" />

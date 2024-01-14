@@ -8,7 +8,7 @@ class Level : public GameObject
 {
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
-	float pointsGainedInLevel=0;
+	int pointsGainedInLevel = 0;
 	//? everything included in the level
 	std::vector<GameObject*> m_static_objects;
 	std::vector<std::string> m_fireball_sprites;

@@ -14,6 +14,7 @@
 #include <filesystem> // to read sprites for animation 
 #include <thread>
 #include "ParticleManager.h"
+#include "LevelManager.h"
 //#include <algorithm>
 //#include <execution>
 
@@ -358,6 +359,8 @@ Level::~Level()
 	destroyGameObjects(m_blocks);
 
 	//this is to reset points gained in a case of level restart
-	CallbackManager::getInstance()->m_pointsChanged.trigger( - pointsGainedInLevel);
-	
+	if (LevelManager::getInstance()->m_restart) 
+	{ 
+		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel);
+	}	
 }
