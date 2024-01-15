@@ -30,12 +30,17 @@ class UIManager
 	graphics::Brush winBrush;
 	graphics::Brush diedBrush;
 	graphics::Brush skullBrush;
+	graphics::Brush arrowBrush;
 	float m_pausedTxtFontSize = 1.0f;
 	float m_escTxtFontSize = 0.5f;
 	float m_winTxtFontSize = 1.0f;
 	float m_loseTxtFontSize = 1.0f;
 	float m_livesFontSize = 0.6f;
-
+	int m_help_page = 0;
+	bool m_pressed_right = false;
+	bool m_right_held = false;
+	bool m_pressed_left = false;
+	bool m_left_held = false;
 	
 public:
 	int m_fps=0;
@@ -51,6 +56,10 @@ public:
 	void drawLoseScreen();
 	void drawDashCooldown();
 	void drawFps();
+	void drawHelp();
+	void drawHelpBasicMovement();	// left, right, jump
+	void drawHelpAbilities();	// dash, attack
+	void drawHelpExtra(); // pause, dev fly, dev view
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);
 	void onPlayerLivesChanged();
 	void onPointsChanged();

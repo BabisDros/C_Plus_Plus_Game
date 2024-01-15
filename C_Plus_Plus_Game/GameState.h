@@ -11,7 +11,8 @@ enum States
 	InGame,
 	Paused,
 	Lose,
-	Win
+	Win,
+	Help
 };
 
 class GameState

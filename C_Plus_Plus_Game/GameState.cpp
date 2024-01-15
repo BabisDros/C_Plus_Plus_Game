@@ -28,6 +28,9 @@ void GameState::init()
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
 	MusicManager::getInstance()->init();
+	// read and save animation sprites
+
+
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
@@ -92,7 +95,7 @@ void GameState::handleStates()
 {
     if (m_currentState == Menu)
     {      
-        if (graphics::getKeyState(graphics::SCANCODE_N) )
+        if (graphics::getKeyState(graphics::SCANCODE_N))
         {
             LevelManager::getInstance()->nextLevel();
             m_currentState = States::InGame;
@@ -103,7 +106,11 @@ void GameState::handleStates()
             LevelManager::getInstance()->loadSaveFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
-        }     
+        }
+		else if (graphics::getKeyState(graphics::SCANCODE_H))
+		{
+			m_currentState = States::Help;
+		}
     }
 	else if (m_currentState == InGame)
 	{

@@ -39,6 +39,7 @@ void UIManager::init()
 	SETCOLOR(diedBrush.fill_color, 0.3f, 0.3f, 0.3f);
 	setCustomBrushProperties(&diedBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\pause.png"));
 	setCustomBrushProperties(&skullBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\skull.png"));
+	setCustomBrushProperties(&arrowBrush, 1.f, 0, m_state->getFullAssetPath("UI\\left arrow.png"));
 }
 
 //text always run above drawrect
@@ -47,6 +48,10 @@ void UIManager::draw()
 	if (m_state->getCurrentState() == States::Menu)
 	{
 		drawMenu();
+	}
+	else if (m_state->getCurrentState() == States::Help)
+	{
+		drawHelp();
 	}
 	else
 	{
@@ -206,6 +211,76 @@ void UIManager::onPlayerLivesChanged()
 void UIManager::onPointsChanged()
 {
 	m_pointsTxt = std::to_string(m_state->m_points);
+}
+
+void UIManager::drawHelp()
+{
+	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
+		m_state->getCanvasHeight(), paused_brush);
+	bool m_curr_left = m_pressed_left, m_curr_right = m_pressed_right;
+
+	if (m_help_page > 0)
+	{
+		graphics::drawRect(m_state->getCanvasWidth() / 8, m_state->getCanvasHeight() - 2.f, 2.f, 2.f, arrowBrush);
+	}
+
+	graphics::setScale(-1.f, 1.f);
+	graphics::drawRect(m_state->getCanvasWidth() * 7 / 8, m_state->getCanvasHeight() - 2.f, 2.f, 2.f, arrowBrush);
+	graphics::resetPose();
+
+	m_state->enable(m_pressed_left, m_left_held, graphics::getKeyState(graphics::SCANCODE_LEFT));
+	m_state->enable(m_pressed_right, m_right_held, graphics::getKeyState(graphics::SCANCODE_RIGHT));
+
+	if (m_curr_left != m_pressed_left && m_help_page > 0)
+	{
+		--m_help_page;
+		m_curr_left = m_pressed_left;
+	}
+
+	if (m_curr_right != m_pressed_right)
+	{
+		++m_help_page;
+		m_curr_right = m_pressed_right;
+	}
+
+	if (m_help_page == 0)
+	{
+		drawHelpBasicMovement();
+	}
+	else if (m_help_page == 1)
+	{
+		drawHelpAbilities();
+	}
+	else if (m_help_page == 2)
+	{
+		drawHelpExtra();
+	}
+	else
+	{
+		m_help_page = 0; // reset page count
+		m_state->setState(Menu);
+	}
+
+	
+	std::string m_pagetxt = std::to_string(m_help_page) + "/2";
+	float centeringValueX = calcCenteringXForTextSize(m_pagetxt, 1.f);
+
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() - .5f, 1.f, m_pagetxt, textBrush);
+}
+
+void UIManager::drawHelpBasicMovement()
+{
+
+}
+
+void UIManager::drawHelpAbilities()
+{
+
+}
+
+void UIManager::drawHelpExtra()
+{
+
 }
 
 UIManager* UIManager::getInstance()
