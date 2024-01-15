@@ -10,7 +10,7 @@ void IDestructible::setInitialHealthValues(const int& health)
 void IDestructible::setHealth(const int& health)
 {
     m_currentHealth = health;
-    CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+    CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 }
 
 int IDestructible::getHealth() const
