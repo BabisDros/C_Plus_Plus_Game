@@ -138,7 +138,6 @@ void GameState::handleStates()
 			m_suspendExecution = false;
 		}
     }
-
 	else if (m_currentState == Lose)
 	{
 		m_suspendExecution = true;
@@ -154,6 +153,10 @@ void GameState::handleStates()
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
 			std::filesystem::remove("data\\save file.txt");
 		}
+	}
+	else if (m_currentState == Win)
+	{
+		std::filesystem::remove("data\\save file.txt");
 	}
 }
 void GameState::setState(States state)
