@@ -84,6 +84,7 @@ void LevelManager::restartLevel()
 	m_state->m_suspendExecution = false;
 	m_restart = false;
 	m_state->setState(InGame);
+	saveData();
 }
 
 void LevelManager::onPlayerDied()
