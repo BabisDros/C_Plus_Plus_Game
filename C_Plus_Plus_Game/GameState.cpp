@@ -111,7 +111,7 @@ void GameState::handleStates()
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
         }
-		else if (graphics::getKeyState(graphics::SCANCODE_H))
+		else if (graphics::getKeyState(graphics::SCANCODE_I))
 		{
 			m_currentState = States::Help;
 		}
