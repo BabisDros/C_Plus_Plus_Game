@@ -152,6 +152,7 @@ void GameState::handleStates()
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->m_restart = true;
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
+			std::filesystem::remove("data\\save file.txt");
 		}
 	}
 }

@@ -84,7 +84,6 @@ void LevelManager::restartLevel()
 	m_state->m_suspendExecution = false;
 	m_restart = false;
 	m_state->setState(InGame);
-	saveData();
 }
 
 void LevelManager::onPlayerDied()
@@ -107,23 +106,29 @@ void LevelManager::loadSaveFile()
 {
 	std::ifstream saveFile("data\\save file.txt");
 	std::string line;
-	std::getline(saveFile, line);
-	auto itr = std::find(levels_list.begin(), levels_list.end(), line);
-	m_level_counter = itr - levels_list.begin() - 1;
-	nextLevel();
+	if (saveFile.is_open())
+	{
+		std::getline(saveFile, line);
+		auto itr = std::find(levels_list.begin(), levels_list.end(), line);
+		m_level_counter = itr - levels_list.begin() - 1;
+		nextLevel();
 
-	std::getline(saveFile, line);	// hp
-	m_state->getLevel()->getDataValue(line);
-	m_state->getPlayer()->setHealth((stoi(line)));	//! delete if not needed after fixes
-	CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
+		std::getline(saveFile, line);	// hp
+		m_state->getLevel()->getDataValue(line);
+		m_state->getPlayer()->setHealth((stoi(line)));	//! delete if not needed after fixes
+		CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
 
-	std::getline(saveFile, line);
-	m_state->getLevel()->getDataValue(line);	// lives
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line),true);
+		std::getline(saveFile, line);
+		m_state->getLevel()->getDataValue(line);	// lives
+		CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line), true);
 
-	std::getline(saveFile, line);
-	m_state->getLevel()->getDataValue(line);	// score
-	CallbackManager::getInstance()->m_pointsChanged.trigger(std::stoi(line),true);
-
+		std::getline(saveFile, line);
+		m_state->getLevel()->getDataValue(line);	// score
+		CallbackManager::getInstance()->m_pointsChanged.trigger(std::stoi(line), true);
+	}
+	else
+	{
+		nextLevel();
+	}
 }
