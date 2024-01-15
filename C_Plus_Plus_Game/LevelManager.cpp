@@ -93,12 +93,13 @@ void LevelManager::onPlayerDied()
 
 void LevelManager::saveData()
 {
-	std::ofstream reader;
-	reader.open("data\\save file.txt", std::ofstream::out | std::ofstream::trunc);
-	reader << m_state->m_current_level->m_name << std::endl;
-	reader << "HP: " << m_state->getPlayer()->getHealth();
-	// Write more data
-	reader.close();
+	std::ofstream writer;
+	writer.open("data\\save file.txt", std::ofstream::out | std::ofstream::trunc);
+	writer << m_state->m_current_level->m_name << std::endl;
+	writer << "HP: " << m_state->getPlayer()->getHealth() << std::endl;
+	writer << "Lives: " << m_state->m_lives << std::endl;
+	writer << "Score: " << m_state->m_points << std::endl;
+	writer.close();
 }
 
 void LevelManager::loadSaveFile()
@@ -109,14 +110,26 @@ void LevelManager::loadSaveFile()
 	auto itr = std::find(levels_list.begin(), levels_list.end(), line);
 	m_level_counter = itr - levels_list.begin() - 1;
 	nextLevel();
-	// Read more data 
-	// SaveObjectData of Level.cpp might be usefull
-	// list of wanted data required, write it below
-	// 
-	// Set Data to player
-	std::getline(saveFile, line);
+
+	std::getline(saveFile, line);	// hp
 	m_state->getLevel()->getDataValue(line);
-	m_state->getPlayer()->setHealth((stoi(line))) ; //Better setter required
+//	m_state->getPlayer()->setHealth((stoi(line)));	//! delete if not needed after fixes
 	CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
-	saveData();
+
+	//TODO fix amount of lives on load
+	std::getline(saveFile, line);
+//	m_state->getLevel()->getDataValue(line);	// lives
+//	CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line));
+
+	//TODO score gained on level load gets reset on death
+	//ex read score 250
+	// score before death on same level: 280
+	// score after death
+	// expected: 250
+	// real: 0
+	// beware of CallbackManager::getInstance()->m_pointsChanged.trigger(-m_points); on Gamestate::handleStates => lose during fix
+	std::getline(saveFile, line);
+	m_state->getLevel()->getDataValue(line);	// score
+	CallbackManager::getInstance()->m_pointsChanged.trigger(std::stoi(line));
+
 }

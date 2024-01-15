@@ -9,9 +9,6 @@ class Level : public GameObject
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
 	int pointsGainedInLevel = 0;
-	//? everything included in the level
-	std::vector<GameObject*> m_static_objects;
-	std::vector<std::string> m_fireball_sprites;
 	/*/Seperate list for destructibles to improve performance. 
 	TODO: use a binary search to find elements and then remove destructed*/
 	std::list<CollisionObject*> m_destructible_objects;
@@ -73,5 +70,4 @@ public:
 
 	std::vector<std::string>* getFireballSprites();
 	void onPointsCollected(int points);
-	void readSprites(std::string folder, std::vector<std::string>& myVec);
 };

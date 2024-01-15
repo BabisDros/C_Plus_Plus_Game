@@ -10,7 +10,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
-
+#include <filesystem> // to read sprites for animation 
 
 
 States GameState::m_currentState = Menu;
@@ -28,6 +28,13 @@ void GameState::init()
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
 	MusicManager::getInstance()->init();
+	// read and save animation sprites
+	readSprites("Character Sprites V2\\Walk", m_sprites_walking);
+	readSprites("Character Sprites V2\\Idle", m_sprites_idle);
+	readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
+	readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
+	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
+	readSprites("fireball", m_fireball_sprites);
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
@@ -88,12 +95,11 @@ GameState::~GameState()
 	}
 }
 
-
 void GameState::handleStates()
 {
     if (m_currentState == Menu)
     {      
-        if (graphics::getKeyState(graphics::SCANCODE_N) )
+        if (graphics::getKeyState(graphics::SCANCODE_N))
         {
             LevelManager::getInstance()->nextLevel();
             m_currentState = States::InGame;
@@ -104,7 +110,11 @@ void GameState::handleStates()
             LevelManager::getInstance()->loadSaveFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
-        }     
+        }
+		else if (graphics::getKeyState(graphics::SCANCODE_H))
+		{
+			m_currentState = States::Help;
+		}
     }
 	else if (m_currentState == InGame)
 	{
@@ -135,6 +145,10 @@ void GameState::handleStates()
 		MusicManager::getInstance()->playLoseSound();
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
+			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
+			CallbackManager::getInstance()->m_pointsChanged.trigger(-m_points);
+//			m_points = 0;	
+//			UIManager::getInstance()->onPointsChanged();
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->m_restart = true;
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
@@ -233,3 +247,10 @@ int GameState::getInitialHealth() const
 	return m_initialHealth;
 }
 
+void GameState::readSprites(std::string folder, std::vector<std::string>& myVec)
+{
+	for (const auto& entry : std::filesystem::directory_iterator(getFullAssetPath(folder)))
+	{
+		myVec.push_back(entry.path().u8string());
+	}
+}

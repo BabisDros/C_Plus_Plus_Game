@@ -34,11 +34,6 @@ void Player::init()
 	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
-	m_state->getLevel()->readSprites("Character Sprites V2\\Walk", m_sprites_walking);
-	m_state->getLevel()->readSprites("Character Sprites V2\\Idle", m_sprites_idle);
-	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
-	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
-	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
 }
 
 void Player::draw()
@@ -126,23 +121,23 @@ void Player::pickAnimation()
 {
 	if (m_animation == Idle)
 	{
-		m_sprites_ptr = &m_sprites_idle;
+		m_sprites_ptr = &m_state->m_sprites_idle;
 	}
 	else if (m_animation == Walking)
 	{
-		m_sprites_ptr = &m_sprites_walking;
+		m_sprites_ptr = &m_state->m_sprites_walking;
 	}
 	else if (m_animation == Attacking)
 	{
-		m_sprites_ptr = &m_sprites_attacking;
+		m_sprites_ptr = &m_state->m_sprites_attacking;
 	}
 	else if (m_animation == Jumping)
 	{
-		m_sprites_ptr = &m_sprites_jumping;
+		m_sprites_ptr = &m_state->m_sprites_jumping;
 	}
 	else if (m_animation == Dashing)
 	{
-		m_sprites_ptr = &m_sprites_dashing;
+		m_sprites_ptr = &m_state->m_sprites_dashing;
 	}
 }
 

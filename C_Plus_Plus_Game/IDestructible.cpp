@@ -1,5 +1,6 @@
 #include "IDestructible.h"
 #include "GameState.h"
+#include "CallbackManager.h"
 void IDestructible::setInitialHealthValues(const int& health)
 {
     m_initialHealth = health;
@@ -9,6 +10,7 @@ void IDestructible::setInitialHealthValues(const int& health)
 void IDestructible::setHealth(const int& health)
 {
     m_currentHealth = health;
+    CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 }
 
 int IDestructible::getHealth() const
