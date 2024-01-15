@@ -25,14 +25,18 @@ void Particle::init()
 	m_state = GameState::getInstance();
 }
 
-void Particle::draw()
+void Particle::draw(bool drawWithOffset)
 {
-	graphics::drawRect(m_currentPosX + m_state->m_global_offset_x, m_currentPosY + m_state->m_global_offset_y, m_currentWidth, m_currentHeight, m_brush);
+	float posX = drawWithOffset ? m_currentPosX + m_state->m_global_offset_x : m_currentPosX;
+	float posY = drawWithOffset ? m_currentPosY + m_state->m_global_offset_y : m_currentPosY;
+
+	graphics::drawRect(posX, posY, m_currentWidth, m_currentHeight, m_brush);
 
 	if (m_state->m_debugging)
 	{
-		debugDraw(m_currentPosX + m_state->m_global_offset_x, m_currentPosY + m_state->m_global_offset_y, m_currentWidth, m_currentHeight, m_id);
+		debugDraw(posX, posY, m_currentWidth, m_currentHeight, m_id);
 	}
+	
 }
 
 void Particle::update(float dt)

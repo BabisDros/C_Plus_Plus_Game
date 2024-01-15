@@ -11,9 +11,12 @@ AnimationSequence Player::m_animation = Idle;
 Player::~Player()
 {
 	/*delete m_bloodParticles;*/
+	std::cout << "deleted";
+	//delete m_healthUi;
 }
 void Player::init()
 {
+	if (!isActive()) setActive(true);
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
@@ -25,8 +28,10 @@ void Player::init()
 	m_slashWeapon.setBrush(slash);
 	m_slashWeapon.setParentIsPlayer(true);
 	m_slashWeapon.setParentDirection(m_lookingDirection);
+
 	//trigger callbackmanager to display health value
-	CallbackManager::getInstance()->m_playerIsDamaged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0);
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
 	m_state->getLevel()->readSprites("Character Sprites V2\\Walk", m_sprites_walking);
@@ -34,7 +39,6 @@ void Player::init()
 	m_state->getLevel()->readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
 	m_state->getLevel()->readSprites("Character Sprites V2\\Run", m_sprites_dashing);
-
 }
 
 void Player::draw()
@@ -74,8 +78,9 @@ void Player::update(float dt)
 	if (m_dev_fly) fly(delta_time);
 	else movement(delta_time);
 
-	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 2) //? is in void
+	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 1) //? is in void
 	{
+		takeDamage(m_initialHealth);
 		m_pos_x = m_state->getLevel()->m_player_start_x; 
 		m_pos_y = m_state->getLevel()->m_player_start_y;
 	}
@@ -101,12 +106,18 @@ void Player::update(float dt)
 	}
 }
 
-	
-
-
 void Player::destroy()
 {
-	setActive(false);
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(-1);
+	if (m_state->m_lives == 0)
+	{
+		setActive(false);
+		m_state->setState(Lose);
+	}
+	else
+	{		
+		CallbackManager::getInstance()->m_playerDied.trigger();
+	}
 }
 
 
@@ -168,6 +179,8 @@ Ability* Player::getDashAbility()
 	return &m_dashAbility;
 }
 
+
+
 void Player::movement(float delta_time)
 {
 	float move = 0;
@@ -195,9 +208,7 @@ void Player::movement(float delta_time)
 		{ 
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
-		}
-
-		
+		}		
 	}
 	else
 	{
@@ -336,7 +347,7 @@ void Player::takeDamage(const int& damage)
 	IDestructible::takeDamage(damage);
 
 	//triggers the methods with two arguments and with empty
-	CallbackManager::getInstance()->m_playerIsDamaged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 	if (damage>0) CallbackManager::getInstance()->m_playHurtFx.trigger();
 }
 

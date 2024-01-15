@@ -4,12 +4,17 @@
 #include "UIManager.h"
 #include "GameState.h"
 #include "CallbackManager.h"
+#include "ParticleManager.h"
 #include "Level.h"
 #include "Player.h"
 #include <thread>
 #include <chrono>
 #include <iostream>
 
+
+
+States GameState::m_currentState = Menu;
+GameState* GameState::s_unique_instance = nullptr;
 
 GameState::GameState()
 {
@@ -18,8 +23,10 @@ GameState::GameState()
 void GameState::init()
 {	
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1));
 	UIManager::getInstance()->init();
-	LevelManager::getInstance()->init();
+	ParticleManager::getInstance()->init();
+	LevelManager::getInstance()->init();	
 	MusicManager::getInstance()->init();
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 	//graphics::setFont(m_asset_path + "path");		//?	adds font
@@ -42,26 +49,26 @@ void GameState::update(float dt)
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
+	UIManager::getInstance()->update(dt);
+	LevelManager::getInstance()->update(dt);
+	ParticleManager::getInstance()->threadUpdate(dt);
 	handleStates();
 	if (!m_current_level) return;
-	
-	if (!m_paused)
+
+	if (!m_suspendExecution)
 	{
 		m_current_level->update(dt);
 		m_pausableClock += graphics::getDeltaTime()/1000;
-		m_currentState = States::InGame;
-	}
-	else
-	{
-		m_currentState=States::Paused;	//? Make paused window
 	}
 	
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
-	enable(m_paused, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
+	enable(m_pauseButtonPressed, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
-	if (goNextLevel) LevelManager::getInstance()->nextLevel();
+	if (m_goNextLevel) LevelManager::getInstance()->nextLevel();
 	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
+/// sto
+
 
 GameState* GameState::getInstance()
 {
@@ -74,32 +81,88 @@ GameState* GameState::getInstance()
 
 GameState::~GameState()
 {
-	if (m_player)
-	{
-		delete m_player;
-	}
+	deletePlayer();
 	if (m_current_level)
 	{
 		delete m_current_level;
 	}
 }
+//Allows game loop to finish its execution on this frame and then we can delete objects safely
+bool GameState::waitForFrameToEnd()
+{
+	timer.setStartTime(graphics::getGlobalTime());
 
+	if (timer.isRunning() && (graphics::getGlobalTime() - timer.getStartTime() < graphics::getDeltaTime()))
+	{
+		return false;
+	}
+	// reset timer after frame ended
+	timer.setStartTime(0.0f);
+	return true;
+}
 void GameState::handleStates()
 {
-	if (m_currentState == Menu)
+    if (m_currentState == Menu)
+    {      
+        if (graphics::getKeyState(graphics::SCANCODE_N) )
+        {
+            LevelManager::getInstance()->nextLevel();
+            m_currentState = States::InGame;
+        }
+        else if (graphics::getKeyState(graphics::SCANCODE_L))
+        {
+            LevelManager::getInstance()->m_loadingFile = true;
+            LevelManager::getInstance()->loadSaveFile();
+            LevelManager::getInstance()->m_loadingFile = false;
+            m_currentState = States::InGame;
+        }     
+    }
+	else if (m_currentState == InGame)
 	{
-		if (graphics::getKeyState(graphics::SCANCODE_N))
+		if (m_pauseButtonPressed)
 		{
-			LevelManager::getInstance()->nextLevel();
-			m_currentState = States::InGame;
+			m_currentState = States::Paused;
+			m_suspendExecution = true;
 		}
-		else if (graphics::getKeyState(graphics::SCANCODE_L))
+		
+	}
+	else if (m_currentState == Paused)
+    {      
+        if (graphics::getKeyState(graphics::SCANCODE_R))
+        {
+			LevelManager::getInstance()->m_restart = true;
+			LevelManager::getInstance()->restartLevel();
+        }  
+
+		if (!m_pauseButtonPressed)
 		{
-			LevelManager::getInstance()->m_loadingFile = true;
-			LevelManager::getInstance()->loadSaveFile();
-			LevelManager::getInstance()->m_loadingFile = false;
 			m_currentState = States::InGame;
+			m_suspendExecution = false;
 		}
+    }
+
+	else if (m_currentState == Lose)
+	{
+		m_suspendExecution = true;
+		MusicManager::getInstance()->playLoseSound();
+		if (graphics::getKeyState(graphics::SCANCODE_R))
+		{
+			MusicManager::getInstance()->m_playedLoseSound = false;
+			LevelManager::getInstance()->restartLevel();		
+			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
+		}
+	}
+}
+void GameState::setState(States state)
+{
+	m_currentState = state;
+}
+
+void GameState::deletePlayer() const
+{
+	if (m_player)
+	{
+		delete m_player;
 	}
 }
 
@@ -121,6 +184,11 @@ void GameState::showFPS()
 void GameState::onPointsCollected(int points)
 {
 	m_points += points;
+}
+
+void GameState::onPlayerLivesChanged(int life)
+{
+	m_lives += life;
 }
 
 States& GameState::getCurrentState()
@@ -167,6 +235,13 @@ std::string GameState::getFullDataPath(const std::string& data)
 	return m_data_path + data;
 }
 
+int GameState::getInitialLives() const
+{
+	return m_initialLives;
+}
 
-States GameState::m_currentState = Menu;
-GameState* GameState::s_unique_instance = nullptr;
+int GameState::getInitialHealth() const
+{
+	return m_initialHealth;
+}
+

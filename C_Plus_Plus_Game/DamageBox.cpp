@@ -45,10 +45,18 @@ void DamageBox::update(float dt)
 		{
 			checkForCollisions(m_state->getLevel()->getDestructibleObjects());
 		}
-		else
+		else 
 		{
 			CollisionObject* player= dynamic_cast<CollisionObject*>(m_state->getPlayer());
 			checkForCollisions(player);
+			for (LevelBox* itr: m_state->getLevel()->getBlocks())
+			{
+				if (intersect(*itr)) // or destory it
+				{
+					m_canMove = false;
+					break;
+				}
+			}
 		}
 	}
 }
@@ -66,7 +74,7 @@ void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerTo
 	for (auto& gameobj: containerToScan)
 	{
 		//check if the objects of the container are destructible
-		IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);
+		IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);	
 		
 		/*all objects will be setActive(false) when health is 0. 
 		TODO: if performance improvement needed : could delete them, and shorten the list*/
@@ -93,6 +101,7 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 	{
 		destructiblePtr->takeDamage(m_damageToInflict);
 		pushPlayer();
+		if (m_diesOnTouch) setActive(false);
 	}
 	
 }

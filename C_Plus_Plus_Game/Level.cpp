@@ -10,14 +10,17 @@
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
-#include "ParticleManager.h"
+
 #include <filesystem> // to read sprites for animation 
 #include <thread>
+#include "ParticleManager.h"
+#include "LevelManager.h"
 //#include <algorithm>
 //#include <execution>
 
 void Level::init()
 {
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();
@@ -26,7 +29,8 @@ void Level::init()
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
-	ParticleManager::getInstance()->init();
+
+
 	readSprites("fireball", m_fireball_sprites);
 }
 
@@ -63,11 +67,11 @@ void Level::draw()
 void Level::update(float dt)
 {
 	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	ParticleManager::getInstance()->threadUpdate(dt);
+	
 	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
-		m_state->goNextLevel = true; // level finished
+		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100);//triggers a point changed with value 100
 	}	
 
@@ -322,7 +326,10 @@ std::vector<std::string>* Level::getFireballSprites()
 	return &m_fireball_sprites;
 }
 
-
+void Level::onPointsCollected(int points)
+{
+	pointsGainedInLevel += points;
+}
 
 template <typename Container>
 void Level::destroyGameObjects(Container& myContainer)
@@ -350,4 +357,10 @@ Level::~Level()
 	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
+
+	//this is to reset points gained in a case of level restart
+	if (LevelManager::getInstance()->m_restart) 
+	{ 
+		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel);
+	}	
 }

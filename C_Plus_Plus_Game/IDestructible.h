@@ -7,7 +7,7 @@ class IDestructible
 public:
     HealthUIMoving* m_healthUi = nullptr;
     IDestructible(bool createHealthUI = true) : m_healthUi(createHealthUI ? new HealthUIMoving() : nullptr) { }
-    ~IDestructible() {}
+    ~IDestructible() { /*if( m_healthUi) delete m_healthUi;*/ }
 
     virtual void setInitialHealthValues(const int& health);
     virtual void setHealth(const int& health);
@@ -23,5 +23,5 @@ protected:
     //duration when the object can take anymore damage. Take damage once per hit
     float m_invincibilityDuration = 0.5f;
     float m_damageTakenTimestamp=0.0f;
-    float m_points;
+    float m_points=0;
 };
