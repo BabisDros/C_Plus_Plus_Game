@@ -120,7 +120,6 @@ void GameState::handleStates()
         if (graphics::getKeyState(graphics::SCANCODE_R))
         {
 			LevelManager::getInstance()->m_restart = true;
-			LevelManager::getInstance()->restartLevel();
         }  
 
 		if (!m_pauseButtonPressed)
@@ -137,7 +136,7 @@ void GameState::handleStates()
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
 			MusicManager::getInstance()->m_playedLoseSound = false;
-			LevelManager::getInstance()->restartLevel();		
+			LevelManager::getInstance()->m_restart = true;
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
 		}
 	}
