@@ -1,2 +1,4 @@
-Level 0
-HP: 100
+Level 2
+HP: 30
+Lives: 3
+Score: 250
