@@ -122,9 +122,9 @@ void UIManager::drawPause()	//! make it better than a greyed out screen
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize, m_escTxtFontSize, m_escText, textBrush);
 
 	//draw text Paused
-	float centeringValueX3 = calcCenteringXForTextSize(m_restartTxt, 0.5f);
+	float centeringValueX3 = calcCenteringXForTextSize(m_restartLevelTxt, 0.5f);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 +m_pausedTxtFontSize+ m_escTxtFontSize,
-		m_escTxtFontSize, m_restartTxt, textBrush);
+		m_escTxtFontSize, m_restartLevelTxt, textBrush);
 }
 void UIManager::drawLives()
 {
@@ -162,9 +162,9 @@ void UIManager::drawLoseScreen()
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize, m_escTxtFontSize, m_escText, textBrush);
 
 	//draw text Paused
-	float centeringValueX3 = calcCenteringXForTextSize(m_restartTxt, 0.5f);
+	float centeringValueX3 = calcCenteringXForTextSize(m_restartGameTxt, 0.5f);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 2 + m_pausedTxtFontSize + m_escTxtFontSize,
-		m_escTxtFontSize, m_restartTxt, textBrush);
+		m_escTxtFontSize, m_restartGameTxt, textBrush);
 }
 void UIManager::drawDashCooldown()
 {

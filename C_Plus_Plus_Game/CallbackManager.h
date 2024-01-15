@@ -8,8 +8,10 @@ public:
 	CstmCallback<float,float> m_playerMoved;
 	CstmCallback<> m_playHurtFx;
 	CstmCallback<> m_playerDied;
-	CstmCallback<int> m_playerLivesChanged;
-	CstmCallback<int> m_pointsChanged;
+	//int:no of lives. bool: setValue (e.g,pass true in trigger if you want to set it to the given lives value)
+	CstmCallback<int,bool> m_playerLivesChanged;
+	//int: points. bool: setValue (e.g true if want to set it to the given point value)
+	CstmCallback<int, bool> m_pointsChanged;
 
 	CstmCallback<float,float> m_enemyDied;
 	static CallbackManager* getInstance();

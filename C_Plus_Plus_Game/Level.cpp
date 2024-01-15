@@ -61,7 +61,7 @@ void Level::update(float dt)
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
 		m_state->m_goNextLevel = true; // level finished
-		CallbackManager::getInstance()->m_pointsChanged.trigger(100);//triggers a point changed with value 100
+		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
 	}	
 
 	if (m_state->getPlayer()->isActive())	
@@ -332,9 +332,10 @@ Level::~Level()
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 
-	//this is to reset points gained in a case of level restart
-	if (LevelManager::getInstance()->m_restart) 
+	
+	//TODO:FIx restart after death this is to reset points gained in a case of level restart
+	if (LevelManager::getInstance()->m_restart && m_state->getCurrentState() !=Lose)
 	{ 
-		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel);
+		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel, false);
 	}	
 }

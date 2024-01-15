@@ -65,8 +65,8 @@ public:
 	void setState(States state);
 	void deletePlayer() const;
 	void showFPS();
-	void onPointsCollected(int points);
-	void onPlayerLivesChanged(int life);
+	void onPointsCollected(int points, bool setValue);
+	void onPlayerLivesChanged(int life, bool setValue);
 	void readSprites(std::string folder, std::vector<std::string>& myVec);
 	std::vector<std::string> m_sprites_walking;
 	std::vector<std::string> m_sprites_idle;

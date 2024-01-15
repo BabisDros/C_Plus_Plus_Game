@@ -31,7 +31,7 @@ void Player::init()
 
 	//trigger callbackmanager to display health value
 	CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0);
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0, false);//used 0 to initialize the ui
 //	m_initialHealth = m_currentHealth = 100; // Was reseting hp between levels
 
 }
@@ -103,7 +103,7 @@ void Player::update(float dt)
 
 void Player::destroy()
 {
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(-1);
+	CallbackManager::getInstance()->m_playerLivesChanged.trigger(-1, false);
 	if (m_state->m_lives == 0)
 	{
 		setActive(false);

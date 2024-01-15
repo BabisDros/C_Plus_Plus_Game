@@ -18,7 +18,8 @@ class UIManager
 	std::string m_livesDisplayTxt = "";
 	std::string m_pausedTxt = "Paused";
 	std::string m_escText = "Press  \"Esc\"  to exit";
-	std::string m_restartTxt = "Press  \"R\"  to  Restart";
+	std::string m_restartLevelTxt = "Press  \"R\"  to  Restart level";
+	std::string m_restartGameTxt = "Press  \"R\"  to  Restart game";
 	std::string m_winTxt = "You  won!";
 	std::string m_loseTxt = "You  lose!";
 	std::string m_fpsTxt = "";

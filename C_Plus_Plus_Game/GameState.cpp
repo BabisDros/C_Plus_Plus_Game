@@ -22,8 +22,8 @@ GameState::GameState()
 
 void GameState::init()
 {	
-	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1));
-	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1));
+	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1, std::placeholders::_2));
+	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1, std::placeholders::_2));
 	UIManager::getInstance()->init();
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
@@ -146,12 +146,12 @@ void GameState::handleStates()
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
-			CallbackManager::getInstance()->m_pointsChanged.trigger(-m_points);
+			CallbackManager::getInstance()->m_pointsChanged.trigger(0,true);
 //			m_points = 0;	
 //			UIManager::getInstance()->onPointsChanged();
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->m_restart = true;
-			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);
+			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
 		}
 	}
 }
@@ -183,14 +183,29 @@ void GameState::showFPS()
 	}
 }
 
-void GameState::onPointsCollected(int points)
+void GameState::onPointsCollected(int points,bool setValue)
 {
-	m_points += points;
+	if (setValue)
+	{
+		m_points = points;
+	}
+	else
+	{
+		m_points += points;
+	}
+	
 }
 
-void GameState::onPlayerLivesChanged(int life)
+void GameState::onPlayerLivesChanged(int life,bool setValue)
 {
-	m_lives += life;
+	if (setValue)
+	{
+		m_lives = life;
+	}
+	else
+	{
+		m_lives += life;
+	}
 }
 
 States& GameState::getCurrentState()

@@ -41,5 +41,5 @@ void CrateDestructible::destroy()
 		m_state->getLevel()->getDestructibleObjects().back()->init();
 	}
 	if (m_loot == Extra_loot) graphics::playSound("music\\extra_loot.wav", 0.03f);
-	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points);
+	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points,false);
 }
