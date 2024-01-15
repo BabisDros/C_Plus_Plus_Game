@@ -78,7 +78,6 @@ void LevelManager::nextLevel(bool restartingLevel)
 void LevelManager::restartLevel()
 {
 	m_state->m_suspendExecution = true;
-	if (m_state->waitForFrameToEnd()) return;
 	m_state->m_player->setInitialHealthValues(m_state->getInitialHealth());
 	nextLevel(true);
 	m_state->m_pauseButtonPressed = false;

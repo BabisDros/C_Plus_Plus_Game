@@ -60,7 +60,6 @@ public:
 	float getCanvasWidth() { return m_canvas_width; }
 	float getCanvasHeight() { return m_canvas_height; }
 
-	bool waitForFrameToEnd();
 	void handleStates();
 	void setState(States state);
 	void deletePlayer() const;
