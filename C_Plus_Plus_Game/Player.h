@@ -33,11 +33,6 @@ class Player :public IDestructible, public Entity
 	bool m_dev_fly_active = false;
 	bool m_dev_fly_held = false;
 
-	std::vector<std::string> m_sprites_walking;
-	std::vector<std::string> m_sprites_idle;
-	std::vector<std::string> m_sprites_attacking;
-	std::vector<std::string> m_sprites_jumping;
-	std::vector<std::string> m_sprites_dashing;
 	std::vector<std::string>* m_sprites_ptr;
 	float jump();
 	void fly(float dt);

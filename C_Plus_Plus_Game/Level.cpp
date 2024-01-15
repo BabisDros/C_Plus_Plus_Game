@@ -10,8 +10,6 @@
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
-
-#include <filesystem> // to read sprites for animation 
 #include <thread>
 #include "ParticleManager.h"
 #include "LevelManager.h"
@@ -24,14 +22,9 @@ void Level::init()
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();
-	for (auto p_gob : m_static_objects)
-		if (p_gob) p_gob->init();
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
-
-
-	readSprites("fireball", m_fireball_sprites);
 }
 
 void Level::draw()
@@ -43,10 +36,6 @@ void Level::draw()
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 	/* background is moving */
 	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
-	
-/* Not used currently
-	for (auto p_gob : m_static_objects)
-		if (p_gob) p_gob->draw();*/
 
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
@@ -312,18 +301,13 @@ std::list<CollisionObject*>* Level::getDestructibleObjectsPtr()
 void Level::updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> start, 
 	std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt)
 {
-
-//	std::for_each(std::execution::par, start, end, [dt](auto itr) {
-//		if (itr->isActive()) itr->update(dt);
-//		});
-
 	for (auto itr = start; itr != end; itr++)
 		if ((*itr)->isActive()) (*itr)->update(dt);
 }
 
 std::vector<std::string>* Level::getFireballSprites()
 {
-	return &m_fireball_sprites;
+	return &m_state->m_fireball_sprites;
 }
 
 void Level::onPointsCollected(int points)
@@ -343,18 +327,8 @@ void Level::destroyGameObjects(Container& myContainer)
 	}
 }
 
-
-void Level::readSprites(std::string folder, std::vector<std::string>& myVec)
-{
-	for (const auto& entry : std::filesystem::directory_iterator(m_state->getFullAssetPath(folder)))
-	{
-		myVec.push_back(entry.path().u8string());
-	}
-}
-
 Level::~Level()
 {
-	destroyGameObjects(m_static_objects);
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 

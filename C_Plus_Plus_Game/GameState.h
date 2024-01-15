@@ -67,6 +67,14 @@ public:
 	void showFPS();
 	void onPointsCollected(int points);
 	void onPlayerLivesChanged(int life);
+	void readSprites(std::string folder, std::vector<std::string>& myVec);
+	std::vector<std::string> m_sprites_walking;
+	std::vector<std::string> m_sprites_idle;
+	std::vector<std::string> m_sprites_attacking;
+	std::vector<std::string> m_sprites_jumping;
+	std::vector<std::string> m_sprites_dashing;
+	std::vector<std::string> m_fireball_sprites;
+
 	States& getCurrentState();
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
