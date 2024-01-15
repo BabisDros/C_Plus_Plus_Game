@@ -1,10 +1,10 @@
 Terrain
 {
-	A
+	A: block
 	{
 		width: 1
 		height: 1
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -14,11 +14,11 @@ Terrain
 
 Terrain
 {
-	B
+	B: half block
 	{
 		width: 1
 		height: 0.5
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -28,31 +28,44 @@ Terrain
 
 Terrain
 {
-	C: Floor
-	{
-		width: 48
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
-Terrain
-{
-	E: Left wall
+	C: Left block
 	{
 		width: 1
-		height: 7
-		texture: crate.png
+		height: 1
+		texture: left_block.png
 		destructible:
 		health:
 		level_end: 
 	}
 
 }
+Terrain
+{
+	D: Middle wall
+	{
+		width: 1
+		height: 1
+		texture: middle_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	E: Right wall
+	{
+		width: 1
+		height: 1
+		texture: right_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
 Terrain
 {
 	Z: End goal
@@ -93,7 +106,7 @@ Enemy
 		jumping: 1
 		looking: -1
 		stick_to_wall:
-		territory_x: 1
+		territory_x: 1.5
 		territory_y: 2
 		movement: 2
 	}
@@ -141,7 +154,7 @@ Enemy
 
 Enemy
 {
-	D: top spikes
+	T: top spikes
 	{
 		width: 1
 		height: 0.5
@@ -179,6 +192,26 @@ Enemy
 
 }
 
+Enemy
+{
+	L: Stationary looking left
+	{
+		width: 0.5
+		height: 1
+		texture: temp_enemy2.png
+		health: 20
+		ranged: 1
+		body_damage: 0
+		jumping: 0
+		looking: -1
+		stick_to_wall:
+		territory_x: 
+		territory_y: 
+		movement: 
+	}
+
+}
+
 Level
                                                 |
                                                 |
@@ -191,19 +224,19 @@ Level
                               A                 |
                              A                  |
  F                          A                   |
-AAAAAAAAAAAAAAAAAAAA   AAAAAAAAA                |
-E                     A A         A             |
+CDDDDDDDDDDDDDDDDDDE   CDDDDDDDE                |
+E                     A           A             |
  F                  B             A             |
- A      AA   A  A                 A   Q     Z   |
-  AA   A                A  A S    B  BAA  AAA   |
-    A      V      AA    A  AAAA                 |
-     A    AAA    A      AS A     A              |
-         A    A         AAAA          A         |
+ A      CE   A  A                 A   Q     Z   |
+  CE   A                A  A S    B  CDE  CDE   |
+    A      V      AA    A  CDDE                 |
+     A    CDE    A      AS A     A              |
+         A    A         CDDE          A         |
                A                     A          |
-  V            D            O     F A           |
-                          AAAAA   AAA           |
+  V            T            O     F A           |
+                          CDDDE   CDE           |
      P  S SS   FFF       A       A             A|
-C                                               |
+CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
 $ 
 $
 Templates

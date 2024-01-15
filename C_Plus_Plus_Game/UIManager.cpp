@@ -106,7 +106,7 @@ void UIManager::drawScore()
 {
 	//although score runs in update before drawPause, it continues to draw above it
 	m_scoreTxt = "Score: " + m_pointsTxt;
-	graphics::drawRect(m_state->getCanvasWidth() - 2, 0.75f, 3, 1, backPLate);
+	graphics::drawRect(m_state->getCanvasWidth() - 1.8f, 0.75f, 3.4f, 1, backPLate);
 	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, m_scoreTxt, textBrush);	
 }
 

@@ -1,10 +1,10 @@
 Terrain
 {
-	A
+	A: block
 	{
 		width: 1
 		height: 1
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -14,11 +14,11 @@ Terrain
 
 Terrain
 {
-	B
+	B: half block
 	{
 		width: 1
 		height: 0.5
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -28,31 +28,44 @@ Terrain
 
 Terrain
 {
-	C: Floor
-	{
-		width: 48
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
-Terrain
-{
-	E: Left wall
+	C: Left block
 	{
 		width: 1
-		height: 7
-		texture: crate.png
+		height: 1
+		texture: left_block.png
 		destructible:
 		health:
 		level_end: 
 	}
 
 }
+Terrain
+{
+	D: Middle wall
+	{
+		width: 1
+		height: 1
+		texture: middle_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	E: Right wall
+	{
+		width: 1
+		height: 1
+		texture: right_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
 Terrain
 {
 	Z: End goal
@@ -141,7 +154,7 @@ Enemy
 
 Enemy
 {
-	D: top spikes
+	T: top spikes
 	{
 		width: 1
 		height: 0.5
@@ -181,7 +194,7 @@ Enemy
 
 Enemy
 {
-	T: Stationary looking left
+	L: Stationary looking left
 	{
 		width: 0.5
 		height: 1
@@ -201,30 +214,30 @@ Enemy
 
 
 Level
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|
+CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
                          FFA                    |
                    O  O FFFA                    |
-    P            BAAAAAAAAA                     |
-  AAAAA   AAA  A   Q                            |
-                 AAAAA AA                       |
+    P            BCDDDDDDDDE                    |
+  CDDDE   CDE  A   Q                            |
+                 CDDDE AA                       |
 SSSSSSSSSSSSSSSSS          B                    |
-AAAAAAAAAAAAAAAAA        B                      |
-                      V    B                    |
-                         B                      |
- F                       Q B                    |
-AAAAAAAAAAAAAAAAAAAA   AAAAAAAAAAAAAAAAAAAAAAAAA|
-E                     A A         A             |
-        S           B             A             |
- A      AA   A  A                 A             |
-  AA   A                A  A S    B             |
-    A      T      AA    A  AAAA                 |
-     A    AAA    A      A SA     A              |
-         A    A         AAAA          A         |
-               A                     A          |
-  V            D            O     F A           |
-                          AAAAA   AAA           |
-        S SS   FFF       A    Z  A             A|
-C                                               |
+CDDDDDDDDDDDDDDDE        B                      |
+A                     V    B                    |
+A                        B                      |
+AF                       Q B                    |
+CDDDDDDDDDDDDDDDDDDE   CDDDDDDDDDDDDDDDDDDDDDDDE|
+A                     A           A             |
+A       S           B             A             |
+AA      CE   A  A                 A             |
+A CE   A                A  A S    B             |
+A   A      L      CE    A  CDDE                 |
+A    A    CDE    A      A SA     A              |
+A        A    A         CDDE          A         |
+A              A                     A          |
+A V            T            O     F A           |
+A                         CDDDE   CDE           |
+A       S SS   FFF       A    Z  A             A|
+CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
 $ Info that are not read from program
 $
 Templates
