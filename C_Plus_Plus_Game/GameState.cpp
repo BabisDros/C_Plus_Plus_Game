@@ -87,19 +87,8 @@ GameState::~GameState()
 		delete m_current_level;
 	}
 }
-//Allows game loop to finish its execution on this frame and then we can delete objects safely
-bool GameState::waitForFrameToEnd()
-{
-	timer.setStartTime(graphics::getGlobalTime());
 
-	if (timer.isRunning() && (graphics::getGlobalTime() - timer.getStartTime() < graphics::getDeltaTime()))
-	{
-		return false;
-	}
-	// reset timer after frame ended
-	timer.setStartTime(0.0f);
-	return true;
-}
+
 void GameState::handleStates()
 {
     if (m_currentState == Menu)
