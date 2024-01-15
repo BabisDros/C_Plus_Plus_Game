@@ -22,6 +22,14 @@ class UIManager
 	std::string m_winTxt = "You  won!";
 	std::string m_loseTxt = "You  lose!";
 	std::string m_fpsTxt = "";
+	std::string m_helpLeftTxt = "Move left: left arrow";
+	std::string m_helpRightTxt = "Move right: right arrow";
+	std::string m_helpJumpTxt = "Jump: up arrow";
+	std::string m_helpDashTxt = "Dash: z";
+	std::string m_helpAttackTxt = "Attack: x";
+	std::string m_helpPauseTxt = "Pause: p";
+	std::string m_helpDevFlyTxt = "Dev fly: -";
+	std::string m_helpDevViewTxt = "Dev View: 0";
 
 	graphics::Brush m_menu;
 	graphics::Brush textBrush;
@@ -36,7 +44,8 @@ class UIManager
 	float m_winTxtFontSize = 1.0f;
 	float m_loseTxtFontSize = 1.0f;
 	float m_livesFontSize = 0.6f;
-	int m_help_page = 0;
+	float m_helpTxtFontSize = 0.8f;
+	int m_help_page = 1;
 	bool m_pressed_right = false;
 	bool m_right_held = false;
 	bool m_pressed_left = false;

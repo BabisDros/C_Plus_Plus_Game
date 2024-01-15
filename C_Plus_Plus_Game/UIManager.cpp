@@ -219,7 +219,7 @@ void UIManager::drawHelp()
 		m_state->getCanvasHeight(), paused_brush);
 	bool m_curr_left = m_pressed_left, m_curr_right = m_pressed_right;
 
-	if (m_help_page > 0)
+	if (m_help_page > 1)
 	{
 		graphics::drawRect(m_state->getCanvasWidth() / 8, m_state->getCanvasHeight() - 2.f, 2.f, 2.f, arrowBrush);
 	}
@@ -243,26 +243,26 @@ void UIManager::drawHelp()
 		m_curr_right = m_pressed_right;
 	}
 
-	if (m_help_page == 0)
+	if (m_help_page == 1)
 	{
 		drawHelpBasicMovement();
 	}
-	else if (m_help_page == 1)
+	else if (m_help_page == 2)
 	{
 		drawHelpAbilities();
 	}
-	else if (m_help_page == 2)
+	else if (m_help_page == 3)
 	{
 		drawHelpExtra();
 	}
 	else
 	{
-		m_help_page = 0; // reset page count
+		m_help_page = 1; // reset page count
 		m_state->setState(Menu);
 	}
 
 	
-	std::string m_pagetxt = std::to_string(m_help_page) + "/2";
+	std::string m_pagetxt = std::to_string(m_help_page) + "/3";
 	float centeringValueX = calcCenteringXForTextSize(m_pagetxt, 1.f);
 
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() - .5f, 1.f, m_pagetxt, textBrush);
@@ -270,17 +270,39 @@ void UIManager::drawHelp()
 
 void UIManager::drawHelpBasicMovement()
 {
+	float centeringValueX = calcCenteringXForTextSize(m_helpLeftTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpLeftTxt, textBrush);
 
+	float centeringValueX2 = calcCenteringXForTextSize(m_helpRightTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpRightTxt, textBrush);
+
+	float centeringValueX3 = calcCenteringXForTextSize(m_helpJumpTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 3 + 4 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpJumpTxt, textBrush);
+	
+	// draw animations
+
+	//m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 }
 
 void UIManager::drawHelpAbilities()
 {
+	float centeringValueX = calcCenteringXForTextSize(m_helpDashTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpDashTxt, textBrush);
 
+	float centeringValueX2 = calcCenteringXForTextSize(m_helpAttackTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpAttackTxt, textBrush);
 }
 
 void UIManager::drawHelpExtra()
 {
+	float centeringValueX = calcCenteringXForTextSize(m_helpPauseTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpPauseTxt, textBrush);
 
+	float centeringValueX2 = calcCenteringXForTextSize(m_helpDevFlyTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevFlyTxt, textBrush);
+
+	float centeringValueX3 = calcCenteringXForTextSize(m_helpDevViewTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 3 + 4 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevViewTxt, textBrush);
 }
 
 UIManager* UIManager::getInstance()
