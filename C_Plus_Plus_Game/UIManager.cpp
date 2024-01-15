@@ -231,7 +231,7 @@ void UIManager::drawHelp()
 	m_state->enable(m_pressed_left, m_left_held, graphics::getKeyState(graphics::SCANCODE_LEFT));
 	m_state->enable(m_pressed_right, m_right_held, graphics::getKeyState(graphics::SCANCODE_RIGHT));
 
-	if (m_curr_left != m_pressed_left && m_help_page > 0)
+	if (m_curr_left != m_pressed_left && m_help_page > 1)
 	{
 		--m_help_page;
 		m_curr_left = m_pressed_left;
