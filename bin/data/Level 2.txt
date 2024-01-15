@@ -1,10 +1,10 @@
 Terrain
 {
-	A
+	A: block
 	{
 		width: 1
 		height: 1
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -14,11 +14,11 @@ Terrain
 
 Terrain
 {
-	B
+	B: half block
 	{
 		width: 1
 		height: 0.5
-		texture: crate.png
+		texture: block.png
 		destructible:
 		health:
 		level_end: 0
@@ -28,31 +28,44 @@ Terrain
 
 Terrain
 {
-	C: Floor
-	{
-		width: 48
-		height: 1
-		texture: crate.png
-		destructible:
-		health:
-		level_end: 
-	}
-
-}
-
-Terrain
-{
-	E: Left wall
+	C: Left block
 	{
 		width: 1
-		height: 7
-		texture: crate.png
+		height: 1
+		texture: left_block.png
 		destructible:
 		health:
 		level_end: 
 	}
 
 }
+Terrain
+{
+	D: Middle wall
+	{
+		width: 1
+		height: 1
+		texture: middle_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+Terrain
+{
+	E: Right wall
+	{
+		width: 1
+		height: 1
+		texture: right_block.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
 Terrain
 {
 	Z: End goal
@@ -93,7 +106,7 @@ Enemy
 		jumping: 1
 		looking: -1
 		stick_to_wall:
-		territory_x: 2
+		territory_x: 1.5
 		territory_y: 2
 		movement: 2
 	}
@@ -141,7 +154,7 @@ Enemy
 
 Enemy
 {
-	D: top spikes
+	T: top spikes
 	{
 		width: 1
 		height: 0.5
@@ -181,7 +194,7 @@ Enemy
 
 Enemy
 {
-	T: Stationary looking left
+	L: Stationary looking left
 	{
 		width: 0.5
 		height: 1
@@ -203,28 +216,28 @@ Enemy
 Level
 
  F FF                                           |
-AA AAA  V                                       |
-      AAAAAAA                                Z  |
-             A   S S                       AAA  |
-              AAAAAAAB   AAAAAA           A     |
-                 DD     A      ASSSS SSS A      |
-                       A        AAAAAAAAA       |
+CE CDE  V                                       |
+      CDDDDDE                                Z  |
+             A   S S                       CDE  |
+              CDDDDDEB   CDDDDE           A     |
+                 TT     A      ASSSS SSS A      |
+                       A        CDDDDDDDE       |
              OA  SSS  A                         |
-          AAAAAAAAAAAA                          |
+          CDDDDDDDDDDE                          |
       B                                         |
         B                                       |
       B                                         |
         B       V                               |
       B   F  S      V       S     Q             |
-        BAAAAAAAAAAAAAAA  AAAA  AAAAAB     T    |
+        BCDDDDDDDDDDDDDE  CDDE  CDDDEB     L    |
                        AF              B        |
-                       AFF           B     T    |
-                 S     AAAA            B        |
-              BAAAAA      D          B     T    |
+                       AFF           B     L    |
+                 S     CDDE            B        |
+              BCDDDE      T          B     L    |
             B       A  F O      S SS   B        |
-              B      AAAAAAA    AAAAAAB         |
+              B      CDDDDDE    CDDDDEB         |
    P        B                F             FF   |
-C                                               |
+CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
 $ Info that are not read from program
 $
 Templates
