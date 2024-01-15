@@ -146,8 +146,9 @@ void GameState::handleStates()
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
-			m_points = 0;	
-			UIManager::getInstance()->onPointsChanged();
+			CallbackManager::getInstance()->m_pointsChanged.trigger(-m_points);
+//			m_points = 0;	
+//			UIManager::getInstance()->onPointsChanged();
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->m_restart = true;
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives);

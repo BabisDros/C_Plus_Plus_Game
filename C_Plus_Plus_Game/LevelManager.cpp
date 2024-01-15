@@ -113,18 +113,23 @@ void LevelManager::loadSaveFile()
 
 	std::getline(saveFile, line);	// hp
 	m_state->getLevel()->getDataValue(line);
-	m_state->getPlayer()->setHealth((stoi(line)));
-	CallbackManager::getInstance()->m_playerHealthChanged.trigger(stoi(line), stoi(line));
+//	m_state->getPlayer()->setHealth((stoi(line)));	//! delete if not needed after fixes
+	CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
+	//TODO fix amount of lives on load
 	std::getline(saveFile, line);
-	m_state->getLevel()->getDataValue(line);	// lives
-//	m_state->m_lives = stoi(line);
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line));
+//	m_state->getLevel()->getDataValue(line);	// lives
+//	CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line));
 
+	//TODO score gained on level load gets reset on death
+	//ex read score 250
+	// score before death on same level: 280
+	// score after death
+	// expected: 250
+	// real: 0
+	// beware of CallbackManager::getInstance()->m_pointsChanged.trigger(-m_points); on Gamestate::handleStates => lose during fix
 	std::getline(saveFile, line);
 	m_state->getLevel()->getDataValue(line);	// score
-//	m_state->m_points = stoi(line);
 	CallbackManager::getInstance()->m_pointsChanged.trigger(std::stoi(line));
-/**/
-//	saveData();
+
 }
