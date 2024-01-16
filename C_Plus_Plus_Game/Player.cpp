@@ -67,7 +67,7 @@ void Player::update(float dt)
 	m_slashWeapon.update(dt);
 	float delta_time = dt / 1000.0f;
 
-	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_MINUS));
+	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_9));
 	if (m_dev_fly) fly(delta_time);
 	else movement(delta_time);
 

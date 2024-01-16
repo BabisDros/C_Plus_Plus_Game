@@ -68,7 +68,7 @@ void GameState::update(float dt)
 		m_pausableClock += graphics::getDeltaTime()/1000;
 	}
 	
-	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_0));
+	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_8));
 	enable(m_pauseButtonPressed, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
 	if (m_goNextLevel) LevelManager::getInstance()->nextLevel();

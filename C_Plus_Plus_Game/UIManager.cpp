@@ -273,6 +273,8 @@ void UIManager::drawHelpBasicMovement()
 	float centeringValueX = calcCenteringXForTextSize(m_helpLeftTxt, m_helpTxtFontSize);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpLeftTxt, textBrush);
 
+
+
 	float centeringValueX2 = calcCenteringXForTextSize(m_helpRightTxt, m_helpTxtFontSize);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpRightTxt, textBrush);
 
