@@ -39,7 +39,8 @@ void UIManager::init()
 	SETCOLOR(diedBrush.fill_color, 0.3f, 0.3f, 0.3f);
 	setCustomBrushProperties(&diedBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\pause.png"));
 	setCustomBrushProperties(&skullBrush, 0.9f, 0, m_state->getFullAssetPath("UI\\skull.png"));
-	setCustomBrushProperties(&arrowBrush, 1.f, 0, m_state->getFullAssetPath("UI\\left arrow.png"));
+	setCustomBrushProperties(&arrowBrush, 1.f, 0, m_state->getFullAssetPath("UI\\arrow-right.png"));
+	setCustomBrushProperties(&helpBrush, 1.f, 0);
 }
 
 //text always run above drawrect
@@ -221,12 +222,12 @@ void UIManager::drawHelp()
 
 	if (m_help_page > 1)
 	{
-		graphics::drawRect(m_state->getCanvasWidth() / 8, m_state->getCanvasHeight() - 2.f, 2.f, 2.f, arrowBrush);
+		graphics::setScale(-1.f, 1.f);
+		graphics::drawRect(m_state->getCanvasWidth() / 8, m_state->getCanvasHeight() - 2.f, 2.f, 1.f, arrowBrush);
+		graphics::resetPose();
 	}
 
-	graphics::setScale(-1.f, 1.f);
-	graphics::drawRect(m_state->getCanvasWidth() * 7 / 8, m_state->getCanvasHeight() - 2.f, 2.f, 2.f, arrowBrush);
-	graphics::resetPose();
+	graphics::drawRect(m_state->getCanvasWidth() * 7 / 8, m_state->getCanvasHeight() - 2.f, 2.f, 1.f, arrowBrush);
 
 	m_state->enable(m_pressed_left, m_left_held, graphics::getKeyState(graphics::SCANCODE_LEFT));
 	m_state->enable(m_pressed_right, m_right_held, graphics::getKeyState(graphics::SCANCODE_RIGHT));
@@ -249,10 +250,6 @@ void UIManager::drawHelp()
 	}
 	else if (m_help_page == 2)
 	{
-		drawHelpAbilities();
-	}
-	else if (m_help_page == 3)
-	{
 		drawHelpExtra();
 	}
 	else
@@ -262,7 +259,7 @@ void UIManager::drawHelp()
 	}
 
 	
-	std::string m_pagetxt = std::to_string(m_help_page) + "/3";
+	std::string m_pagetxt = std::to_string(m_help_page) + "/2";
 	float centeringValueX = calcCenteringXForTextSize(m_pagetxt, 1.f);
 
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() - .5f, 1.f, m_pagetxt, textBrush);
@@ -270,41 +267,39 @@ void UIManager::drawHelp()
 
 void UIManager::drawHelpBasicMovement()
 {
-	float centeringValueX = calcCenteringXForTextSize(m_helpLeftTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpLeftTxt, textBrush);
+	float centeringValueX = calcCenteringXForTextSize(m_helpMvTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpMvTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\arrow-keys.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 , 4, 2, helpBrush);
 
+	centeringValueX = calcCenteringXForTextSize(m_helpDashTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3 + 3 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDashTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\key-z.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 + 2.7f * m_helpTxtFontSize, 1, 1, helpBrush);
 
+	centeringValueX = calcCenteringXForTextSize(m_helpAttackTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3 + 6 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpAttackTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\key-x.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 + 5.7f * m_helpTxtFontSize, 1, 1, helpBrush);
 
-	float centeringValueX2 = calcCenteringXForTextSize(m_helpRightTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpRightTxt, textBrush);
-
-	float centeringValueX3 = calcCenteringXForTextSize(m_helpJumpTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 3 + 4 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpJumpTxt, textBrush);
-	
-	// draw animations
-
-	//m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
-}
-
-void UIManager::drawHelpAbilities()
-{
-	float centeringValueX = calcCenteringXForTextSize(m_helpDashTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpDashTxt, textBrush);
-
-	float centeringValueX2 = calcCenteringXForTextSize(m_helpAttackTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpAttackTxt, textBrush);
 }
 
 void UIManager::drawHelpExtra()
 {
 	float centeringValueX = calcCenteringXForTextSize(m_helpPauseTxt, m_helpTxtFontSize);
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3, m_helpTxtFontSize, m_helpPauseTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\key-p.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 - 0.2f, 1, 1, helpBrush);
 
-	float centeringValueX2 = calcCenteringXForTextSize(m_helpDevFlyTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX2, m_state->getCanvasHeight() / 3 + 2 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevFlyTxt, textBrush);
+	centeringValueX = calcCenteringXForTextSize(m_helpDevFlyTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3 + 3 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevFlyTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\key-9.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 + 2.7f * m_helpTxtFontSize, 1, 1, helpBrush);
 
-	float centeringValueX3 = calcCenteringXForTextSize(m_helpDevViewTxt, m_helpTxtFontSize);
-	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX3, m_state->getCanvasHeight() / 3 + 4 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevViewTxt, textBrush);
+	centeringValueX = calcCenteringXForTextSize(m_helpDevViewTxt, m_helpTxtFontSize);
+	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3 + 6 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevViewTxt, textBrush);
+	helpBrush.texture = m_state->getFullAssetPath("UI\\key-8.png");
+	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 + 5.7f * m_helpTxtFontSize, 1, 1, helpBrush);
 }
 
 UIManager* UIManager::getInstance()
