@@ -113,11 +113,9 @@ void Level::read()
 			}
 			else if (line == "Level")
 			{
-				std::cout << "Level layout\n";
 				std::getline(myfile, line);
 				while (line[0] !='$')
-				{ 
-					std::cout << line;
+				{
 					x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
 					bool tag_found, destructible;
 					for (char ch : line)
@@ -193,7 +191,6 @@ void Level::read()
 						x++;
 					}
 					y++;
-					std::cout << "\n";
 					std::getline(myfile, line);
 				}
 			}
