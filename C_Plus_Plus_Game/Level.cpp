@@ -312,7 +312,8 @@ std::vector<std::string>* Level::getFireballSprites()
 
 void Level::onPointsCollected(int points)
 {
-	pointsGainedInLevel += points;
+	if (LevelManager::getInstance()->m_loadingFile) return;	
+	pointsGainedInLevel += points;	
 }
 
 template <typename Container>
