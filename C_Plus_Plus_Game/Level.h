@@ -65,9 +65,10 @@ public:
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);
+	/*	Not used currently cause of new optimized parallelization 
 	void updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>>  start, 
 		std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt);
-
+	*/
 	std::vector<std::string>* getFireballSprites();
 	void onPointsCollected(int points);
 };

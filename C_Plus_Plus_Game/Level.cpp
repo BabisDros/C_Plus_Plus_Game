@@ -10,11 +10,11 @@
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
-#include <thread>
+//#include <thread>
 #include "ParticleManager.h"
 #include "LevelManager.h"
-//#include <algorithm>
-//#include <execution>
+#include <algorithm>
+#include <execution>
 
 void Level::init()
 {
@@ -73,15 +73,21 @@ void Level::update(float dt)
 //	for (auto p_gob : m_destructible_objects)
 //		if (p_gob->isActive()) p_gob->update(dt);
 
-	std::vector<std::thread> mythreads;
+/*	
 	auto middle = m_destructible_objects.begin();
 
 	std::advance(middle, m_destructible_objects.size() / 2);
 	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), middle, dt);
 
 	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	t1.join();/**/
+	t1.join();*/
+//new	updateDynamicBounded(m_destructible_objects.begin(), m_destructible_objects.end(), dt);
 
+	//optimized parallel method, can delete updateDynamicBounded
+	std::for_each(std::execution::par, m_destructible_objects.begin(), m_destructible_objects.end(), [dt](CollisionObject* obj) 
+		{
+			if (obj->isActive()) obj->update(dt);
+		});
 }
 
 Level::Level(const std::string& name) : GameObject(name) {}
@@ -294,13 +300,17 @@ std::list<CollisionObject*>* Level::getDestructibleObjectsPtr()
 {
 	return &m_destructible_objects;
 }
-
+/*	Not used currently cause of new optimized parallelization 
 void Level::updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> start, 
 	std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt)
 {
-	for (auto itr = start; itr != end; itr++)
-		if ((*itr)->isActive()) (*itr)->update(dt);
-}
+	//for (auto itr = start; itr != end; itr++)
+	//	if ((*itr)->isActive()) (*itr)->update(dt);
+	std::for_each(std::execution::par, start, end, [dt](CollisionObject* obj) {
+		if (obj->isActive()) obj->update(dt);
+		});
+
+}*/
 
 std::vector<std::string>* Level::getFireballSprites()
 {
