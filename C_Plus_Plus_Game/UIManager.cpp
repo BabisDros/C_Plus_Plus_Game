@@ -98,6 +98,13 @@ void UIManager::update(float dt)
 	else m_star.init();
 }
 
+UIManager::~UIManager()
+{
+	//initialized with "new" in init
+	delete m_lostEffect;
+	delete m_winEffect;
+}
+
 void UIManager::drawPlayerHealth()
 {	
 	m_playerHealthUI.draw();	

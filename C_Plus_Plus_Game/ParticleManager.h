@@ -11,6 +11,7 @@ class ParticleManager
 
 public:
 	ParticleManager() {};
+	~ParticleManager();
 	void init();
 	void draw();
 	void threadUpdate(float dt);

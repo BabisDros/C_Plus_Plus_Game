@@ -59,6 +59,7 @@ public:
 	void init();
 	void draw();
 	void update(float dt);
+	~UIManager();
 	void drawPlayerHealth();
 	void drawScore();
 	void drawMenu();

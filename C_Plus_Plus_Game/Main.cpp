@@ -49,6 +49,6 @@ int main(int argc, char** argv)
 	graphics::setFont("assets\\MONACO.ttf");
 	
 	graphics::startMessageLoop();
-	
+	GameState::getInstance()->~GameState();
 	return 0;
 }

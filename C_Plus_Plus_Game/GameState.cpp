@@ -93,6 +93,11 @@ GameState::~GameState()
 	{
 		delete m_current_level;
 	}
+	//TODO delete pointers?
+//	delete CallbackManager::getInstance();
+//	delete UIManager::getInstance();
+//	delete ParticleManager::getInstance();
+//	delete MusicManager::getInstance();
 }
 
 void GameState::handleStates()
@@ -103,6 +108,7 @@ void GameState::handleStates()
         {
             LevelManager::getInstance()->nextLevel();
             m_currentState = States::InGame;
+			m_time = graphics::getGlobalTime() / 1000 - 0.5f;	//reduce delay till showing fps
         }
         else if (graphics::getKeyState(graphics::SCANCODE_L))
         {
@@ -110,6 +116,7 @@ void GameState::handleStates()
             LevelManager::getInstance()->loadSaveFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
+			m_time = graphics::getGlobalTime() / 1000 - 0.5f;	//reduce delay till showing fps
         }
 		else if (graphics::getKeyState(graphics::SCANCODE_I))
 		{

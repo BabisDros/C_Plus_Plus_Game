@@ -5,6 +5,13 @@ ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
 
 
+ParticleManager::~ParticleManager()
+{
+	//we have "new" in init
+	delete m_enemyKilledFx;
+	delete m_playerBlood;
+}
+
 void ParticleManager::init()
 {
 	m_state = GameState::getInstance();
