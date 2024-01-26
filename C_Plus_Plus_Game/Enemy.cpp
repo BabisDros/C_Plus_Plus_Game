@@ -54,16 +54,18 @@ void Enemy::update(float dt)
 	movement(dt);
 	attack(dt);
 	m_healthUi->setPosition(m_pos_x, m_pos_y);
+	if (m_throwProjectile.isRunning())
+	{
+		graphics::Brush fireball;
+		fireball.outline_opacity = 0;
+		float dif = *m_state->getPausableClock() - m_throwProjectile.getStartTime();
 
-	graphics::Brush fireball;
-	fireball.outline_opacity = 0;
-	float dif = *m_state->getPausableClock() - m_projectile_animation_timer;
-
-	int index = (int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size();
-	fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(index);
-	// at 32 fireball starts shrinking texture wise
-	if (index > 32) m_projectile.m_width = 1.2 - 1.2 * (index - 32) / ((*m_state->getLevel()->getFireballSprites()).size() - 32);
-	m_projectile.setBrush(fireball);
+		int index = (int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size();
+		fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(index);
+		// at 32 fireball starts shrinking texture wise
+		if (index > 32) m_projectile.m_width = 1.2 - 1.2 * (index - 32) / ((*m_state->getLevel()->getFireballSprites()).size() - 32);
+		m_projectile.setBrush(fireball);
+	}
 }	
 
 void Enemy::destroy()
@@ -184,11 +186,9 @@ void Enemy::rangedAttack(float dt)
 	m_projectile.update(dt);
 	if (!m_throwProjectile.isRunning())
 	{
-	//	m_projectile.setActive(true);
 		m_projectile.m_canMove = true;
 		m_projectile.m_width = 1.2;
 
-		m_projectile_animation_timer = *m_state->getPausableClock();
 		m_projectile.setActive(true);
 		m_throwProjectile.setStartTime(*m_state->getPausableClock());
 		m_projectile.setPosition(m_pos_x, m_pos_y, m_projectile.m_width, m_projectile.m_height);

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Level.h"
 #include "CallbackManager.h"
-
+#include <filesystem>
 
 AnimationSequence Player::m_animation = Idle;
 Player::~Player()
@@ -106,6 +106,7 @@ void Player::destroy()
 	{
 		setActive(false);
 		m_state->setState(Lose);
+		std::filesystem::remove("data\\save file.txt");
 	}
 	else
 	{		

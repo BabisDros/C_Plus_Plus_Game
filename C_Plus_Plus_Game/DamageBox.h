@@ -9,7 +9,7 @@ class DamageBox:public CollisionObject
 	//Parent's Looking direction:Left:-1,Right:1
 	int m_parentDirection = 0;
 	bool m_parentIsPlayer = false;
-	bool m_canActivelyBeMirrored ;
+	bool m_canActivelyBeMirrored;
 	int m_damageToInflict = 0;
 
 public:	
