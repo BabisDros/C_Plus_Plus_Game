@@ -2,7 +2,6 @@
 #include "sgg/graphics.h"
 #include <string>
 #include <list>
-#include "timer.h"
 #include "Ability.h"
 
 enum States
@@ -67,12 +66,14 @@ public:
 	void showFPS();
 	void onPointsCollected(int points, bool setValue);
 	void onPlayerLivesChanged(int life, bool setValue);
+
 	void readSprites(std::string folder, std::vector<std::string>& myVec);
 	std::vector<std::string> m_sprites_walking;
 	std::vector<std::string> m_sprites_idle;
 	std::vector<std::string> m_sprites_attacking;
 	std::vector<std::string> m_sprites_jumping;
 	std::vector<std::string> m_sprites_dashing;
+	std::vector<std::string> m_sprites_hurt;
 	std::vector<std::string> m_fireball_sprites;
 
 	States& getCurrentState();

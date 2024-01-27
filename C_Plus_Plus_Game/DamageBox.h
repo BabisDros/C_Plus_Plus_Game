@@ -1,6 +1,5 @@
 #pragma once
 #include "CollisionObject.h"
-#include <map>
 /// <summary>
 /// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
 /// </summary>

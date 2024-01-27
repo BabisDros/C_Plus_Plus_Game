@@ -1,10 +1,7 @@
 #include "UIManager.h"
-#include "Util.h"
-#include "Gamestate.h"
-//#include "Player.h"
-#include <iostream>
+#include "util.h"
+#include "Player.h"
 #include "CallbackManager.h"
-#include "player.h"
 #include "MusicManager.h"
 
 UIManager* UIManager::s_unique_instance = nullptr;
@@ -316,4 +313,10 @@ UIManager* UIManager::getInstance()
 		s_unique_instance = new UIManager();
 	}
 	return s_unique_instance;
+}
+
+void UIManager::delptr()
+{
+	if (s_unique_instance != nullptr)
+		delete s_unique_instance;
 }

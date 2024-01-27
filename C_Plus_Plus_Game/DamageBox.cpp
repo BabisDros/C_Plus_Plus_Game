@@ -1,8 +1,6 @@
 #pragma once
 #include "DamageBox.h"
-#include <iostream>
 #include "Util.h"
-#include "GameState.h"
 #include "Level.h"
 #include "Player.h"
 
@@ -51,7 +49,7 @@ void DamageBox::update(float dt)
 			checkForCollisions(player);
 			for (LevelBox* itr: m_state->getLevel()->getBlocks())
 			{
-				if (intersect(*itr)) // or destory it
+				if (intersect(*itr)) //TODO either stop it in place (m_canMove) or destory it (setActive)
 				{
 					m_canMove = false;
 					break;
@@ -102,8 +100,7 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 		destructiblePtr->takeDamage(m_damageToInflict);
 		pushPlayer();
 		if (m_diesOnTouch) setActive(false);
-	}
-	
+	}	
 }
 
 void DamageBox::setDamageToInflict(int damage)
@@ -115,7 +112,3 @@ void DamageBox::pushPlayer()
 {
 	m_state->getPlayer()->setPushed(m_pos_x, m_pos_y);
 }
-
-
-
-

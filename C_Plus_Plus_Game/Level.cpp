@@ -1,11 +1,6 @@
 #pragma once
 #include "Level.h"
-#include "GameState.h"
-#include "util.h"
 #include "Player.h"
-#include "LevelBox.h"
-#include "CrateDestructible.h"
-#include "box.h"
 #include "CallbackManager.h"
 #include "ParticleManager.h"
 #include "LevelManager.h"
@@ -303,7 +298,6 @@ Level::~Level()
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 
-	
 	//TODO:FIx restart after death this is to reset points gained in a case of level restart
 	if (LevelManager::getInstance()->m_restart && m_state->getCurrentState() !=Lose)
 	{ 

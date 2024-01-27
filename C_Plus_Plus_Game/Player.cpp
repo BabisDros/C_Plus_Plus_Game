@@ -1,8 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "GameState.h"
 #include "util.h"
-#include <iostream>
 #include "Level.h"
 #include "CallbackManager.h"
 #include <filesystem>
@@ -10,10 +8,8 @@
 AnimationSequence Player::m_animation = Idle;
 Player::~Player()
 {
-	/*delete m_bloodParticles;*/
-	std::cout << "deleted";
-	//delete m_healthUi;
 }
+
 void Player::init()
 {
 	if (!isActive()) setActive(true);
@@ -37,7 +33,7 @@ void Player::init()
 void Player::draw()
 {
 	if (m_mirrored) graphics::setScale(-1.0f, 1.0f); //mirrors image
-																						//! -0.5f MUST be gone
+
 	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, 1.4f, 1.2f, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call
@@ -47,7 +43,6 @@ void Player::draw()
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
 	}	
 	m_slashWeapon.draw();	
-	/*m_bloodParticles->draw();		*/
 }
 
 void Player::update(float dt)
@@ -89,10 +84,6 @@ void Player::update(float dt)
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
 	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
 	
-	/*m_bloodParticles->followGameobject(m_pos_x, m_pos_y);
-	m_bloodParticles->update(dt);
-	*/
-
 	// sound
 	if (m_collidingDown && m_animation == Walking) 
 	{ 
@@ -115,8 +106,6 @@ void Player::destroy()
 	}
 }
 
-
-
 void Player::pickAnimation()
 {
 	if (m_animation == Idle)
@@ -138,6 +127,10 @@ void Player::pickAnimation()
 	else if (m_animation == Dashing)
 	{
 		m_sprites_ptr = &m_state->m_sprites_dashing;
+	}
+	else if (m_animation == Hurt)
+	{
+		m_sprites_ptr = &m_state->m_sprites_hurt;
 	}
 }
 
@@ -166,6 +159,7 @@ void Player::getPushed(float delta_time)
 		m_vy = m_max_velocity / 5.f * m_pushed_y;
 		m_pos_x += delta_time * m_vx;
 		m_pos_y += delta_time * m_vx;
+		m_animation = Hurt;
 	}
 }
 
@@ -173,8 +167,6 @@ Ability* Player::getDashAbility()
 {
 	return &m_dashAbility;
 }
-
-
 
 void Player::movement(float delta_time)
 {
@@ -193,7 +185,7 @@ void Player::movement(float delta_time)
 		m_lookingDirection = 1;
 	}
 
-	if (m_animation == Jumping && m_collidingUp) m_allow_animation_change = true;	// do not play jump animation when player get on ceiling
+	if (m_animation == Jumping && m_collidingUp) m_allow_animation_change = true;	// do not play jump animation when player hits ceiling
 
 	if (graphics::getKeyState(graphics::SCANCODE_LEFT) ^ graphics::getKeyState(graphics::SCANCODE_RIGHT)) //? insta stop
 	{
@@ -214,7 +206,7 @@ void Player::movement(float delta_time)
 			m_animation = Idle;
 		}
 	}
-//	if (m_jumpAnimation.isRunning()) m_animation = Jumping;
+
 	m_pos_x += delta_time * m_vx;
 	CallbackManager::getInstance()->m_playerMoved.trigger(m_pos_x, m_pos_y);
 	m_vy -= jump();
@@ -244,7 +236,7 @@ float Player::jump()
 	if (m_vy == 0.0f && graphics::getKeyState(graphics::SCANCODE_UP) && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
-		accel = m_accel_vertical * 0.02f;//? not delta_time! Burst [Papaioannou comment]
+		accel = m_accel_vertical * 0.02f;
 		m_jumpAnimation.setStartTime(*m_state->getPausableClock());
 		m_animation = Jumping;
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
@@ -360,7 +352,7 @@ void Player::cameraOffsetX(float multiplier1, float multiplier2)
 			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
 		}
 	}
-	else if (m_pos_x < m_state->getCanvasWidth() * (multiplier1 - 0.5f))	//! Not needed for Y since there isn't currently anything higher
+	else if (m_pos_x < m_state->getCanvasWidth() * (multiplier1 - 0.5f))
 	{
 		m_state->m_global_offset_x = m_state->getCanvasWidth() * 0.5f;
 	}
@@ -392,4 +384,3 @@ void Player::cameraOffsetY(float multiplier1, float multiplier2)
 		m_state->m_global_offset_y = -m_state->getCanvasHeight() * 0.5f;
 	}
 }
-

@@ -1,8 +1,5 @@
 #include "ParticleSystem.h"
 #include "GameState.h"
-#include <ctime>
-#include <thread>
-#include <iostream>
 
 ParticleSystem::~ParticleSystem()
 {

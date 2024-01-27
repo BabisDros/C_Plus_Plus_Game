@@ -99,7 +99,7 @@ Enemy
 	{
 		width: 0.75
 		height: 1
-		texture: temp_enemy2.png
+		texture: enemy.png
 		health: 50
 		ranged: 1
 		body_damage: 1
@@ -118,7 +118,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: temp_enemy2.png
+		texture: enemy.png
 		health: 30
 		ranged: 1
 		body_damage: 0
@@ -178,7 +178,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: temp_enemy2.png
+		texture: enemy.png
 		health: 40
 		ranged: 0
 		body_damage: 1
@@ -198,7 +198,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: temp_enemy2.png
+		texture: enemy.png
 		health: 20
 		ranged: 1
 		body_damage: 0

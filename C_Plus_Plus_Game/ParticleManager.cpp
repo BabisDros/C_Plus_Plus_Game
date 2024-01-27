@@ -4,7 +4,6 @@
 ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
 
-
 ParticleManager::~ParticleManager()
 {
 	//we have "new" in init
@@ -66,3 +65,8 @@ ParticleManager* ParticleManager::getInstance()
 	return s_unique_instance;
 }
 
+void ParticleManager::delptr()
+{
+	if (s_unique_instance != nullptr)
+		delete s_unique_instance;
+}

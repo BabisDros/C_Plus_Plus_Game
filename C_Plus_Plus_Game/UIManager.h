@@ -70,11 +70,11 @@ public:
 	void drawDashCooldown();
 	void drawFps();
 	void drawHelp();
-	void drawHelpBasicMovement();	// left, right, jump
-	void drawHelpAbilities();	// dash, attack
+	void drawHelpBasicMovement();	// movement, dash, attack
 	void drawHelpExtra(); // pause, dev fly, dev view
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);
 	void onPlayerLivesChanged();
 	void onPointsChanged();
 	static UIManager* getInstance();
+	static void delptr();
 };

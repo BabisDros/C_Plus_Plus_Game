@@ -60,7 +60,7 @@ public:
 	std::vector<LevelBox*> getBlocks() const;
 
 	std::list<CollisionObject*> getDestructibleObjects() const;
-	std::list<CollisionObject*>* getDestructibleObjectsPtr();
+	std::list<CollisionObject*>* getDestructibleObjectsPtr();	//cheaper
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);

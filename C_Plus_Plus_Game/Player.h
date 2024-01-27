@@ -13,7 +13,8 @@ enum AnimationSequence
 	Walking,
 	Attacking,
 	Jumping,
-	Dashing
+	Dashing,
+	Hurt
 };
 
 
@@ -44,7 +45,7 @@ class Player :public IDestructible, public Entity
 	static AnimationSequence m_animation;
 	float m_animation_timer = *GameState::getInstance()->getPausableClock();
 	Ability m_jumpAnimation = Ability(0.6f, 0.0f, 0.0f);	// Making use of their pausable clocks to play the animations
-	Ability m_attackAnimation = Ability(0.3f, 0.0f, 0.0f);
+	Ability m_attackAnimation = Ability(0.3f, 0.0f, 0.0f);	// Independent make smoother animations
 	Ability m_dashAnimation = Ability(0.2f, 0.0f, 0.0f);
 
 	bool m_being_pushed;
@@ -74,6 +75,4 @@ public:
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);
-
-	
 };

@@ -30,4 +30,3 @@ public:
 	void updateUIOnDamage(const int& initialHealth, const  int& currentHealth);
 	float getHeight() const;
 };
-

@@ -65,9 +65,6 @@ inline void Entity::checkCollision(Container myContainer)
 					{
 						m_collidingUp = true;
 					}
-					//? add sound event
-					//if (m_vy > 1.0f)
-					//	graphics::playSound(m_state->getFullAssetPath("Metal2.wav"), 1.0f);
 					m_vy = 0.0f;
 					break;
 				}

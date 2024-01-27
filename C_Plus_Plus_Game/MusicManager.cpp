@@ -1,5 +1,4 @@
 #include "MusicManager.h"
-#include "sgg/graphics.h"
 #include "GameState.h"
 
 MusicManager* MusicManager::s_unique_instance = nullptr;
@@ -43,3 +42,8 @@ void MusicManager::playLoseSound()
 	}
 }
 
+void MusicManager::delptr()
+{
+	if (s_unique_instance != nullptr)
+		delete s_unique_instance;
+}

@@ -26,11 +26,8 @@ public:
 		m_can_die = true;
 		m_points = 10;
 	}
-	~CrateDestructible() 
-	{
-		if (m_healthUi)
-			delete m_healthUi;
-	}
+	~CrateDestructible() {} // m_healthUi should only be deleted in by its' own class, so IDestructible
+
 	void init() override;
 	void draw() override;
 	void destroy() override;

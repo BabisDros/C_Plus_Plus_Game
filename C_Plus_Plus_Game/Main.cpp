@@ -1,20 +1,5 @@
-/*
-if //!!, really urgent, needs fix
-if //?, basic info
-if //!, needs improvement
-if //??, uncertain
-if //, general use, does not fall in above categories
-*/
 #pragma once
-#include "sgg/graphics.h"
-#include "util.h"
 #include "GameState.h"
-#include <string>
-#include <stdio.h>
-#include <thread>
-#include "ParticleManager.h"
-
-
 
 void init()
 {

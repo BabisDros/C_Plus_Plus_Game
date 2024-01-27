@@ -36,7 +36,6 @@ void Particle::draw(bool drawWithOffset)
 	{
 		debugDraw(posX, posY, m_currentWidth, m_currentHeight, m_id);
 	}
-	
 }
 
 void Particle::update(float dt)
@@ -69,7 +68,6 @@ void Particle::move(const float& deltaTime)
 {	
 	m_velocity = std::min(m_maxVelocity, m_velocity + deltaTime*m_gravity * m_acceleration);
 	m_velocity = std::max(-m_maxVelocity, m_velocity);
-	//std::cout << "MAX velocity " << m_maxVelocity<< "velocity " << m_velocity << std::endl;
 	m_currentPosY += deltaTime * m_velocity;
 }
 

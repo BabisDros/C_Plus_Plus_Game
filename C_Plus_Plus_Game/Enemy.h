@@ -64,7 +64,7 @@ public:
 		m_movement_range_y = territory_y;
 		m_movement_type = movement;
 	}
-
+	
 
 	void init() override;
 	void draw() override;

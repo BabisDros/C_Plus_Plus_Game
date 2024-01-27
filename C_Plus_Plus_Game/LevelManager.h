@@ -20,4 +20,6 @@ public:
 	void saveData();
 	void loadSaveFile();
 	bool m_loadingFile = false;
+
+	static void delptr();
 };

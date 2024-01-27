@@ -1,8 +1,6 @@
 #pragma once
 #include "Enemy.h"
 #include "util.h"
-#include "GameState.h"
-#include <iostream>
 #include "Level.h"
 #include "Player.h"
 #include "CallbackManager.h"
@@ -13,7 +11,7 @@ void Enemy::init()
 
 	m_homebase_x = m_pos_x;
 	m_homebase_y = m_pos_y;
-	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"temp_enemy2.png"
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"enemy.png"
 
 	graphics::Brush fireball;
 	setCustomBrushProperties(&fireball, 1.0f, 0.0f, m_state->getFullAssetPath("efecto_fuego_00030.png"));
@@ -49,8 +47,6 @@ void Enemy::update(float dt)
 {
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
-//	std::vector<Player*> temp(1,m_state->getPlayer());	//Attempt to interact with player
-//	checkCollision(temp);
 	movement(dt);
 	attack(dt);
 	m_healthUi->setPosition(m_pos_x, m_pos_y);
@@ -70,7 +66,6 @@ void Enemy::update(float dt)
 
 void Enemy::destroy()
 {
-	
 	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points,false);
 	CallbackManager::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
 	setActive(false);
@@ -235,7 +230,7 @@ float Enemy::jump()
 	if (m_vy == 0.0f && !m_jumpAbility.isRunning())
 	{
 		m_jumpAbility.setStartTime(*m_state->getPausableClock());
-		accel = m_accel_vertical * 2.f;//? not delta_time! Burst [Papaioannou comment]
+		accel = m_accel_vertical * 2.f;
 	}
 
 	if (m_jumpAbility.isRunning())

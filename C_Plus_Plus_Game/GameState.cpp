@@ -6,12 +6,7 @@
 #include "CallbackManager.h"
 #include "ParticleManager.h"
 #include "Level.h"
-#include "Player.h"
-#include <thread>
-#include <chrono>
-#include <iostream>
 #include <filesystem> // to read sprites for animation 
-
 
 States GameState::m_currentState = Menu;
 GameState* GameState::s_unique_instance = nullptr;
@@ -34,9 +29,9 @@ void GameState::init()
 	readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
 	readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
 	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
+	readSprites("Character Sprites V2\\Hurt", m_sprites_hurt);
 	readSprites("fireball", m_fireball_sprites);
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
-	//graphics::setFont(m_asset_path + "path");		//?	adds font
 }
 
 void GameState::draw()
@@ -45,13 +40,11 @@ void GameState::draw()
 	{
 		m_current_level->draw();
 	}
-
 	UIManager::getInstance()->draw();
 }
 
 void GameState::update(float dt)
 {
-	//std::cout << "Thread 2 " << dt << std::endl;
 	if (dt > 200) return;	//? it been too long since last frame
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
 	float sleep_time = std::max(0.0f, 17.0f - dt);
@@ -74,8 +67,6 @@ void GameState::update(float dt)
 	if (m_goNextLevel) LevelManager::getInstance()->nextLevel();
 	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
-/// sto
-
 
 GameState* GameState::getInstance()
 {
@@ -93,11 +84,11 @@ GameState::~GameState()
 	{
 		delete m_current_level;
 	}
-	//TODO delete pointers?
-//	delete CallbackManager::getInstance();
-//	delete UIManager::getInstance();
-//	delete ParticleManager::getInstance();
-//	delete MusicManager::getInstance();
+	LevelManager::getInstance()->delptr();
+	CallbackManager::getInstance()->delptr();
+	UIManager::getInstance()->delptr();
+	ParticleManager::getInstance()->delptr();
+	MusicManager::getInstance()->delptr();
 }
 
 void GameState::handleStates()
@@ -153,8 +144,6 @@ void GameState::handleStates()
 		{
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
 			CallbackManager::getInstance()->m_pointsChanged.trigger(0,true);
-//			m_points = 0;	
-//			UIManager::getInstance()->onPointsChanged();
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->m_restart = true;
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
@@ -203,7 +192,6 @@ void GameState::onPointsCollected(int points,bool setValue)
 	{
 		m_points += points;
 	}
-	
 }
 
 void GameState::onPlayerLivesChanged(int life,bool setValue)
@@ -255,8 +243,7 @@ std::string GameState::getFullAssetPath(const std::string& asset)
 	return m_asset_path + asset;
 }
 
-/** Used for Level data	
-*/
+// Used for Level data	
 std::string GameState::getFullDataPath(const std::string& data)
 {
 	return m_data_path + data;

@@ -19,4 +19,5 @@ public:
 	void onPlayerMoved(const float posX, const float posY);
 	void onPlayerHurt();
 	static ParticleManager* getInstance();
+	static void delptr();
 };

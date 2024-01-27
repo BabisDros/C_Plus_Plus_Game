@@ -7,7 +7,7 @@ class IDestructible
 public:
     HealthUIMoving* m_healthUi = nullptr;
     IDestructible(bool createHealthUI = true) : m_healthUi(createHealthUI ? new HealthUIMoving() : nullptr) { }
-    ~IDestructible() { /*if( m_healthUi) delete m_healthUi;*/ }
+    ~IDestructible() { if( m_healthUi) delete m_healthUi; }
 
     virtual void setInitialHealthValues(const int& health);
     virtual void setHealth(const int& health);

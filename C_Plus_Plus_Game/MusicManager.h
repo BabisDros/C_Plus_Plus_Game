@@ -13,4 +13,5 @@ public:
 	void playWinSound();
 	void playLoseSound();
 	void init();
+	static void delptr();
 };

@@ -1,6 +1,5 @@
 #include "IDestructible.h"
 #include "GameState.h"
-#include "CallbackManager.h"
 void IDestructible::setInitialHealthValues(const int& health)
 {
     m_initialHealth = health;

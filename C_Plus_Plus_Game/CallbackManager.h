@@ -15,4 +15,5 @@ public:
 
 	CstmCallback<float,float> m_enemyDied;
 	static CallbackManager* getInstance();
+	static void delptr();
 };
