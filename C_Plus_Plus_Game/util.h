@@ -1,6 +1,5 @@
 #pragma once
 #include <sgg/graphics.h>
-#include <iostream>//TODO: for debugging. remove
 #define SETCOLOR(c, r, g, b) {c[0] = r; c[1] = g; c[2] = b;}
 
 static void setCustomBrushProperties(graphics::Brush* brush, float fillOpacity, float outlineOpacity, std::string texture = "");
