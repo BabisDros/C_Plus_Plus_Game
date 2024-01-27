@@ -143,21 +143,21 @@ void Level::read()
 								destructible = (itr->second)[3] == "1";
 								if (destructible)
 								{
-									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, double points
+									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, triple points
 									Loot loot;
 									if (number < 40) loot = Nothing;
 									else if (number < 80) loot = Extra_loot;
 									else loot = Health_pack;
-
+																							//			HP					POS_X										POS_Y								WIDTH							HEIGHT
 									m_destructible_objects.push_back(new CrateDestructible(std::stof((itr->second)[4]),x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
-										&(itr->second)[2], destructible, loot));
+										&(itr->second)[2], destructible, loot));	// texture +..
 									tag_found = true;
 									break;
 								}
 								else
-								{
+								{										//			POS_X									POS_Y								WIDTH						HEIGHT
 									m_blocks.push_back(new LevelBox(x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
-										&(itr->second)[2], destructible));
+										&(itr->second)[2], destructible));	// texture
 									if (itr->first == m_level_end_tag) m_level_end = m_blocks.back();
 									tag_found = true;
 									break;
@@ -181,14 +181,14 @@ void Level::read()
 									{
 										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
-										ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall, std::stof((itr->second)[9]), std::stof((itr->second)[10]), std::stoi((itr->second)[11]))); // + territory_x/y, movement_type
+										ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall, std::stof((itr->second)[9]), std::stof((itr->second)[10]), std::stoi((itr->second)[11]))); // + looking direction, territory_x/y, movement_type
 										break;
 									}
 									else
 									{
 										m_destructible_objects.push_back(new Enemy("", x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, // name, pos_x/y
 											std::stof((itr->second)[0]), std::stof((itr->second)[1]), &(itr->second)[2], std::stof((itr->second)[3]),	// width, height, texture, hp
-											ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall));
+											ranged, body_damage, jumping, std::stof((itr->second)[7]), stick_wall)); // looking direction
 										break;
 									}
 								}
@@ -249,7 +249,7 @@ void Level::saveObjectData(std::map<char, std::vector<std::string>>& database, s
 {
 	char tag;
 	std::string title;
-	std::vector <std::string> data(database.size(), "");
+	std::vector <std::string> data(titles.size(), "");
 	ignoreEmptyLine(file, line);
 	if (line[0] = '{')
 	{
