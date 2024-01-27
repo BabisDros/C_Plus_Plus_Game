@@ -52,7 +52,7 @@ public:
 		}
 		m_points = 20;
 		m_lookingDirection = looking;
-		m_mirrored = m_lookingDirection == -1;
+		m_mirrored = m_lookingDirection == -1;	
 		if (ranged) m_projectile = DamageBox(10, false);
 		if (body_damage) m_bodyDamage = DamageBox(10, false);
 	}

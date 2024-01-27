@@ -185,7 +185,7 @@ Enemy
 		jumping: 0
 		looking: 1
 		stick_to_wall:
-		territory_x: 1
+		territory_x: 2
 		territory_y: 1
 		movement: 1
 	}
@@ -220,7 +220,7 @@ CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
     P            BCDDDDDDDDE                    |
   CDDDE   CDE  A   Q                            |
                  CDDDE AA                       |
-SSSSSSSSSSSSSSSSS          B                    |
+SSSSSSSSSSSSSSSSSA         B                    |
 CDDDDDDDDDDDDDDDE        B                      |
 A                     V    B                    |
 A                        B                      |

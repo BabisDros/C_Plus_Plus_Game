@@ -147,27 +147,34 @@ void Enemy::movementStaticY(float dt)
 
 void Enemy::movementDynamic(float dt)
 {
-	m_vy += dt * m_gravity;
-	m_pos_y += dt * m_vy;
-	float move = 0.f;
-	bool canFollow = true;
-	if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
+	if (fabs(m_state->getPlayer()->m_pos_x - m_homebase_x + m_movement_range_x) > 1)	// if too far from player, do not attempt to chase
 	{
-		m_lookingDirection = -1;
-		move = -1;
+		movementStaticX(dt);
 	}
-	else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f > m_pos_x + m_width / 2.f)
+	else
 	{
-		m_lookingDirection = 1;
-		move = 1;
-	}
-	else canFollow = false;
+		m_vy += dt * m_gravity;
+		m_pos_y += dt * m_vy;
+		float move = 0.f;
+		bool canFollow = true;
+		if (m_state->getPlayer()->m_pos_x + m_state->getPlayer()->m_width / 2.f < m_pos_x - m_width / 2.f)
+		{
+			m_lookingDirection = -1;
+			move = -1;
+		}
+		else if (m_state->getPlayer()->m_pos_x - m_state->getPlayer()->m_width / 2.f > m_pos_x + m_width / 2.f)
+		{
+			m_lookingDirection = 1;
+			move = 1;
+		}
+		else canFollow = false;
 
-	m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
-	m_vx = std::max(-m_max_velocity, m_vx);
-	move = dt * m_vx;
-	if (!canFollow || fabs(m_pos_x - m_homebase_x + move) > m_movement_range_x)  m_vx = 0;	// If it will get him outside of territory, stop
-	m_pos_x += dt * m_vx;
+		m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
+		m_vx = std::max(-m_max_velocity, m_vx);
+		move = dt * m_vx;
+		if (!canFollow || fabs(m_pos_x - m_homebase_x + move) > m_movement_range_x)  m_vx = 0;	// If it will get him outside of territory, stop
+		m_pos_x += dt * m_vx;
+	}
 }
 
 void Enemy::attack(float delta_time)

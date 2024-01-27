@@ -16,11 +16,12 @@ public:
 
 	const std::string* m_texture;
 protected:
-	bool m_mirrored = false;
+	bool m_mirrored = false; // used for draw
 	float m_vx = 0.f;
 	float m_vy = 0.f;
 	int m_lookingDirection = 1; //looking left value: -1 | looking right value: 1
 	bool m_collidingDown;
+	bool m_collidingUp;
 };
 
 template<typename Container>
@@ -58,11 +59,11 @@ inline void Entity::checkCollision(Container myContainer)
 					m_pos_y += offset;
 					if (offset < 0)
 					{
-						m_collidingDown = true;	//Probably not needed cause of cooldown
+						m_collidingDown = true;
 					}
 					else
 					{
-						//			m_collidingDown = false;
+						m_collidingUp = true;
 					}
 					//? add sound event
 					//if (m_vy > 1.0f)

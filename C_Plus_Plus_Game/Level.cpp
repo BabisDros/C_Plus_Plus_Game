@@ -3,16 +3,13 @@
 #include "GameState.h"
 #include "util.h"
 #include "Player.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include "LevelBox.h"
 #include "CrateDestructible.h"
 #include "box.h"
 #include "CallbackManager.h"
-//#include <thread>
 #include "ParticleManager.h"
 #include "LevelManager.h"
+#include <fstream>
 #include <algorithm>
 #include <execution>
 
@@ -34,7 +31,7 @@ void Level::draw()
 
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
-	/* background is moving */
+
 	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
 
 	for (int i = 0; i < m_blocks.size(); i++)
@@ -55,9 +52,6 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	//float p = 0.5f + fabs(cos(*m_state->getPausableClock() / 10000.0f));
-	
-	//SETCOLOR(m_brush.fill_color, p, p, 1.0f);	//? change light
 	if (m_state->getPlayer()->intersect((*m_level_end))) 
 	{ 
 		m_state->m_goNextLevel = true; // level finished
@@ -69,38 +63,18 @@ void Level::update(float dt)
 		m_state->getPlayer()->update(dt);
 	}
 
-
-//	for (auto p_gob : m_destructible_objects)
-//		if (p_gob->isActive()) p_gob->update(dt);
-
-/*	
-	auto middle = m_destructible_objects.begin();
-
-	std::advance(middle, m_destructible_objects.size() / 2);
-	std::thread t1(&Level::updateDynamicBounded, this, m_destructible_objects.begin(), middle, dt);
-
-	updateDynamicBounded (middle, m_destructible_objects.end(), dt);
-	t1.join();*/
-//new	updateDynamicBounded(m_destructible_objects.begin(), m_destructible_objects.end(), dt);
-
-	//optimized parallel method, can delete updateDynamicBounded
 	std::for_each(std::execution::par, m_destructible_objects.begin(), m_destructible_objects.end(), [dt](CollisionObject* obj) 
 		{
 			if (obj->isActive()) obj->update(dt);
 		});
 }
 
-Level::Level(const std::string& name) : GameObject(name) {}
-
-
-
 void Level::read()
 {
-	srand((unsigned)time(NULL));
+	srand((unsigned)time(NULL));	// used for loot
 
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
-	std::string line, title;
-	std::vector <std::string> data(std::max(m_terrain_titles.size(), m_enemy_titles.size()), "");	// the list is as big as the base with most data
+	std::string line;
 	int x, y=0;
 	y = -m_state->getCanvasHeight() * 0.5f;
 	if (myfile.is_open())
@@ -300,17 +274,6 @@ std::list<CollisionObject*>* Level::getDestructibleObjectsPtr()
 {
 	return &m_destructible_objects;
 }
-/*	Not used currently cause of new optimized parallelization 
-void Level::updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> start, 
-	std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt)
-{
-	//for (auto itr = start; itr != end; itr++)
-	//	if ((*itr)->isActive()) (*itr)->update(dt);
-	std::for_each(std::execution::par, start, end, [dt](CollisionObject* obj) {
-		if (obj->isActive()) obj->update(dt);
-		});
-
-}*/
 
 std::vector<std::string>* Level::getFireballSprites()
 {

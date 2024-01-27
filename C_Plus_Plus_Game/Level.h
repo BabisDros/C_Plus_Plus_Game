@@ -13,10 +13,9 @@ class Level : public GameObject
 	TODO: use a binary search to find elements and then remove destructed*/
 	std::list<CollisionObject*> m_destructible_objects;
 	std::vector<LevelBox*> m_blocks;
-	std::thread t1;
 
-	std::map <char, std::vector<std::string>> m_terrain_data;	//? For every tag, width, height, texture and is IDestructible are saved
-	std::map <char, std::vector<std::string>> m_enemy_data;	//? for every tag, width, height, texture, health, territory_x and territory_y are saved
+	std::map <char, std::vector<std::string>> m_terrain_data;	//? 1-1 correlation with m_terrain_titles
+	std::map <char, std::vector<std::string>> m_enemy_data;	//? 1-1 correlation with m_enemy_titles
 	std::vector<std::string> m_terrain_titles = { 
 		"width",
 		"height",
@@ -48,7 +47,7 @@ public:
 	void init() override;
 	void draw() override;
 	void update(float dt) override;
-	Level(const std::string& name = "Level 0");
+	Level(const std::string& name = "Level 0") : GameObject(name) {};
 	~Level();
 
 	void read();	// methods used to read from file
@@ -65,10 +64,7 @@ public:
 
 	template <typename Container>
 	void destroyGameObjects(Container& myContainer);
-	/*	Not used currently cause of new optimized parallelization 
-	void updateDynamicBounded(std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>>  start, 
-		std::_List_iterator < std::_List_val < std::_List_simple_types<CollisionObject*>>> end, float dt);
-	*/
+
 	std::vector<std::string>* getFireballSprites();
 	void onPointsCollected(int points);
 };

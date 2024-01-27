@@ -60,6 +60,7 @@ void Player::update(float dt)
 		m_allow_animation_change = true;
 	}
 	m_collidingDown = false;
+	m_collidingUp = false;
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
 
@@ -192,7 +193,7 @@ void Player::movement(float delta_time)
 		m_lookingDirection = 1;
 	}
 
-//	if ((move > 1 && m_vx < 0) || (move < 1 && m_vx > 0)) m_vx = 0; // guaranteed to reset speed when changing direction
+	if (m_animation == Jumping && m_collidingUp) m_allow_animation_change = true;	// do not play jump animation when player get on ceiling
 
 	if (graphics::getKeyState(graphics::SCANCODE_LEFT) ^ graphics::getKeyState(graphics::SCANCODE_RIGHT)) //? insta stop
 	{

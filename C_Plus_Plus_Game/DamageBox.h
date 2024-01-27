@@ -13,7 +13,6 @@ class DamageBox:public CollisionObject
 	int m_damageToInflict = 0;
 
 public:	
-	DamageBox() {};
 	DamageBox(int damage, bool canBecomeMirrored = true) : m_canActivelyBeMirrored(canBecomeMirrored),m_damageToInflict(damage)
 	{ init(); };
 	
