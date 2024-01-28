@@ -142,7 +142,7 @@ void Enemy::movementStaticY(float dt)
 
 void Enemy::movementDynamic(float dt)
 {
-	if (fabs(m_state->getPlayer()->m_pos_x - m_homebase_x + m_movement_range_x) > 1)	// if too far from player, do not attempt to chase
+	if (fabs(m_state->getPlayer()->m_pos_x - m_homebase_x) > m_movement_range_x + 1)	// if too far from player, do not attempt to chase
 	{
 		movementStaticX(dt);
 	}

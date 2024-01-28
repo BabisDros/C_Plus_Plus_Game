@@ -186,7 +186,7 @@ Enemy
 		looking: 1
 		stick_to_wall:
 		territory_x: 2
-		territory_y: 1
+		territory_y: 0
 		movement: 1
 	}
 
@@ -219,8 +219,8 @@ CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
                    O  O FFFA                    |
     P            BCDDDDDDDDE                    |
   CDDDE   CDE  A   Q                            |
-                 CDDDE AA                       |
-SSSSSSSSSSSSSSSSSA         B                    |
+B                CDDDE AA                       |
+ BS SSS SSS SSSSSA         B                    |
 CDDDDDDDDDDDDDDDE        B                      |
 A                     V    B                    |
 A                        B                      |
