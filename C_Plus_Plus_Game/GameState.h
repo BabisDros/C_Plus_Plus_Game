@@ -26,8 +26,6 @@ class GameState
 	static States m_currentState;
 	GameState();
 	float m_pausableClock = 0.0f;
-	
-	Ability timer = Ability(1.0f, 0.25f, 0.0f);
 public:	
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
@@ -85,7 +83,7 @@ public:
 	std::string getFullDataPath(const std::string& data);
 
 	Player* getPlayer() { return m_player; }
-	class Level* getLevel() { return m_current_level; }
+	Level* getLevel() { return m_current_level; }
 	int getInitialLives() const;
 	int getInitialHealth() const;
 };
