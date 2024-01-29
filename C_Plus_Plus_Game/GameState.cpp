@@ -68,15 +68,6 @@ void GameState::update(float dt)
 	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
 
-GameState* GameState::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new GameState();
-	}
-	return s_unique_instance;
-}
-
 GameState::~GameState()
 {
 	deletePlayer();

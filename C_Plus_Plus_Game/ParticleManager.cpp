@@ -1,7 +1,6 @@
 #include "ParticleManager.h"
 #include "CallbackManager.h"
 
-ParticleManager* ParticleManager::s_unique_instance = nullptr;
 //Handles effects with particle systems
 
 ParticleManager::~ParticleManager()
@@ -54,19 +53,4 @@ void ParticleManager::onPlayerMoved(const float posX, const float posY)
 void ParticleManager::onPlayerHurt()
 {
 	m_playerBlood->init();
-}
-
-ParticleManager* ParticleManager::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new ParticleManager();
-	}
-	return s_unique_instance;
-}
-
-void ParticleManager::delptr()
-{
-	if (s_unique_instance != nullptr)
-		delete s_unique_instance;
 }

@@ -4,8 +4,6 @@
 #include "CallbackManager.h"
 #include "MusicManager.h"
 
-UIManager* UIManager::s_unique_instance = nullptr;
-
 void UIManager::init()
 {
 	m_state = GameState::getInstance();
@@ -304,19 +302,4 @@ void UIManager::drawHelpExtra()
 	graphics::drawText(m_state->getCanvasWidth() / 2 - centeringValueX, m_state->getCanvasHeight() / 3 + 6 * m_helpTxtFontSize, m_helpTxtFontSize, m_helpDevViewTxt, textBrush);
 	helpBrush.texture = m_state->getFullAssetPath("UI\\key-8.png");
 	graphics::drawRect(m_state->getCanvasWidth() / 2 + 4, m_state->getCanvasHeight() / 3 + 5.7f * m_helpTxtFontSize, 1, 1, helpBrush);
-}
-
-UIManager* UIManager::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new UIManager();
-	}
-	return s_unique_instance;
-}
-
-void UIManager::delptr()
-{
-	if (s_unique_instance != nullptr)
-		delete s_unique_instance;
 }

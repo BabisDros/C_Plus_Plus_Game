@@ -1,17 +1,6 @@
 #include "MusicManager.h"
 #include "GameState.h"
 
-MusicManager* MusicManager::s_unique_instance = nullptr;
-
-MusicManager* MusicManager::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new MusicManager();
-	}
-	return s_unique_instance;
-}
-
 void MusicManager::init()
 {
 	m_state = GameState::getInstance();
@@ -40,10 +29,4 @@ void MusicManager::playLoseSound()
 		m_playedLoseSound = true;
 		m_playing_music = false;
 	}
-}
-
-void MusicManager::delptr()
-{
-	if (s_unique_instance != nullptr)
-		delete s_unique_instance;
 }

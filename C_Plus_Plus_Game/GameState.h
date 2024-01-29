@@ -1,8 +1,8 @@
 #pragma once
+#include "Manager.h"
 #include "sgg/graphics.h"
 #include <string>
 #include <list>
-#include "Ability.h"
 
 enum States
 {
@@ -14,7 +14,7 @@ enum States
 	Help
 };
 
-class GameState
+class GameState: public Manager<GameState>
 {
 	std::string m_asset_path = "assets\\";
 	std::string m_data_path = "data\\";
@@ -22,11 +22,10 @@ class GameState
 	float m_canvas_height = m_canvas_width / 2;
 	int m_initialLives = 2;
 	int m_initialHealth = 100;
-	static GameState* s_unique_instance;
 	static States m_currentState;
-	GameState();
 	float m_pausableClock = 0.0f;
 public:	
+	GameState();
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
 
@@ -52,7 +51,6 @@ public:
 	void draw();
 	void update(float dt);
 	float* getPausableClock() { return &m_pausableClock; };
-	static GameState* getInstance();
 	~GameState();
 
 	float getCanvasWidth() { return m_canvas_width; }

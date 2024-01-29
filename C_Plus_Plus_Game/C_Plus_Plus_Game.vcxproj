@@ -145,7 +145,6 @@
     <ClCompile Include="CrateDestructible.cpp" />
     <ClCompile Include="DamageBox.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HealthPack.cpp" />
@@ -160,6 +159,7 @@
     <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />

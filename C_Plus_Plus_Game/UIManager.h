@@ -1,12 +1,12 @@
 #pragma once
+#include "Manager.h"
 #include <string>
 #include "HealthUIFixed.h"
 #include "Star.h"
 #include "ParticleSystem.h"
 
-class UIManager
+class UIManager: public Manager<UIManager>
 {
-	static UIManager* s_unique_instance;
 	class GameState* m_state=nullptr;
 	ParticleSystem* m_lostEffect = nullptr;
 	ParticleSystem* m_winEffect = nullptr;
@@ -75,6 +75,4 @@ public:
 	void onPlayerHealthChanged(const int& initialHealth, const int& currentHealth);
 	void onPlayerLivesChanged();
 	void onPointsChanged();
-	static UIManager* getInstance();
-	static void delptr();
 };

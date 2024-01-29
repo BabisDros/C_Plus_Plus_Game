@@ -1,8 +1,8 @@
 #pragma once
+#include "Manager.h"
 #include "CstmCallback.h"
-class CallbackManager
+class CallbackManager: public Manager<CallbackManager>
 {
-	static CallbackManager* s_unique_instance;
 public:
 	CstmCallback<int,int> m_playerHealthChanged;
 	CstmCallback<float,float> m_playerMoved;
@@ -14,6 +14,4 @@ public:
 	CstmCallback<int, bool> m_pointsChanged;
 
 	CstmCallback<float,float> m_enemyDied;
-	static CallbackManager* getInstance();
-	static void delptr();
 };

@@ -1,10 +1,10 @@
 #pragma once
+#include "Manager.h"
 #include "ParticleSystem.h"
 #include "GameState.h"
 
-class ParticleManager
+class ParticleManager: public Manager<ParticleManager>
 {
-	static ParticleManager* s_unique_instance;
 	GameState* m_state= nullptr;
 	ParticleSystem* m_enemyKilledFx = nullptr;
 	ParticleSystem* m_playerBlood = nullptr;
@@ -18,6 +18,4 @@ public:
 	void onEnemyDied(const float posX, const float posY);
 	void onPlayerMoved(const float posX, const float posY);
 	void onPlayerHurt();
-	static ParticleManager* getInstance();
-	static void delptr();
 };

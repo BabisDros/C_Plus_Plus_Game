@@ -5,8 +5,6 @@
 #include <fstream>
 #include "CallbackManager.h"
 
-LevelManager* LevelManager::s_unique_instance = nullptr;
-
 void LevelManager::init()
 {
 	m_state = GameState::getInstance();
@@ -23,15 +21,6 @@ void LevelManager::update(float dt)
 {
 	if (!m_restart) return;
 		restartLevel();
-}
-
-LevelManager* LevelManager::getInstance()
-{
-	if (s_unique_instance == nullptr)
-	{
-		s_unique_instance = new LevelManager();
-	}
-	return s_unique_instance;
 }
 
 void LevelManager::nextLevel(bool restartingLevel)
@@ -99,7 +88,6 @@ void LevelManager::loadSaveFile()
 		m_state->getPlayer()->setHealth((stoi(line)));
 		CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
-
 		std::getline(saveFile, line);
 		m_state->getLevel()->getDataValue(line);	// lives
 		CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line), true);
@@ -112,10 +100,4 @@ void LevelManager::loadSaveFile()
 	{
 		nextLevel();
 	}
-}
-
-void LevelManager::delptr()
-{
-	if (s_unique_instance != nullptr)
-		delete s_unique_instance;
 }

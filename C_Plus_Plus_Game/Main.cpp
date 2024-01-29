@@ -1,6 +1,6 @@
 #pragma once
 #include "GameState.h"
-
+#include "Manager.h"
 void init()
 {
 	GameState::getInstance()->init();	
@@ -29,11 +29,11 @@ int main(int argc, char** argv)
 							GameState::getInstance()->getCanvasHeight());
 	
 	graphics::setCanvasScaleMode(graphics::CANVAS_SCALE_FIT);
-	/*this spesific font is used because it is monospace and all letters have the same size.
+	/*this specific font is used because it is monospace and all letters have the same size.
 	Is is use so that util methods calcCenteringOffset works correctly*/
 	graphics::setFont("assets\\MONACO.ttf");
 	
 	graphics::startMessageLoop();
-	delete GameState::getInstance();
+	GameState::getInstance()->delptr();// needs to be implicitly called
 	return 0;
 }
