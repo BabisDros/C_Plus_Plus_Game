@@ -53,8 +53,8 @@ public:
 	float* getPausableClock() { return &m_pausableClock; };
 	~GameState();
 
-	float getCanvasWidth() { return m_canvas_width; }
-	float getCanvasHeight() { return m_canvas_height; }
+	float getCanvasWidth() const { return m_canvas_width; }
+	float getCanvasHeight() const { return m_canvas_height; }
 
 	void handleStates();
 	void setState(States state);
@@ -80,8 +80,8 @@ public:
 
 	std::string getFullDataPath(const std::string& data);
 
-	Player* getPlayer() { return m_player; }
-	Level* getLevel() { return m_current_level; }
+	Player* getPlayer() const { return m_player; }
+	Level* getLevel() const { return m_current_level; }
 	int getInitialLives() const;
 	int getInitialHealth() const;
 };

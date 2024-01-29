@@ -39,22 +39,12 @@ void DamageBox::update(float dt)
 {	
 	if (isActive())
 	{
-		if (m_parentIsPlayer)
-		{
-			checkForCollisions(m_state->getLevel()->getDestructibleObjects());
-		}
-		else 
+		checkForCollisions(m_state->getLevel()->getDestructibleObjects());
+		if (!m_parentIsPlayer)
 		{
 			CollisionObject* player= dynamic_cast<CollisionObject*>(m_state->getPlayer());
-			checkForCollisions(player);
-			for (LevelBox* itr: m_state->getLevel()->getBlocks())
-			{
-				if (intersect(*itr)) //TODO either stop it in place (m_canMove) or destory it (setActive)
-				{
-					m_canMove = false;
-					break;
-				}
-			}
+			checkForCollisions(player); // damage player
+			checkForCollisions(m_state->getLevel()->getBlocks()); // stop projectiles on walls
 		}
 	}
 }
@@ -70,15 +60,26 @@ void DamageBox::setBrush(const graphics::Brush& brush)
 void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerToScan)
 {
 	for (auto& gameobj: containerToScan)
-	{
-		//check if the objects of the container are destructible
-		IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);	
-		
+	{		
 		/*all objects will be setActive(false) when health is 0. 
 		TODO: if performance improvement needed : could delete them, and shorten the list*/
-		if (intersect(*gameobj) && destructiblePtr && gameobj->m_can_die)
+		if (intersect(*gameobj)) // contact was found
 		{		
-			destructiblePtr->takeDamage(m_damageToInflict);
+			if (m_parentIsPlayer)
+			{
+				//check if the objects of the container are destructible
+				IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(gameobj);
+				if (destructiblePtr && gameobj->m_can_die) destructiblePtr->takeDamage(m_damageToInflict);
+			}
+			else
+			{
+				CrateDestructible* cratePtr = dynamic_cast<CrateDestructible*>(gameobj);
+				if (cratePtr) // it came in contact with crate and not enemy
+				{
+					m_canMove = false;
+					break;
+				}
+			}
 		}
 	}
 }
@@ -97,10 +98,22 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 	TODO: if performance improvement needed : could delete them, and shorten the list*/
 	if (intersect(*player) && destructiblePtr)
 	{
-		destructiblePtr->takeDamage(m_damageToInflict);
 		pushPlayer();
+		destructiblePtr->takeDamage(m_damageToInflict);
 		if (m_diesOnTouch) setActive(false);
 	}	
+}
+
+void DamageBox::checkForCollisions(const std::vector<LevelBox*> wall)
+{
+	for (LevelBox* itr : wall)
+	{
+		if (intersect(*itr))
+		{
+			m_canMove = false;
+			break;
+		}
+	}
 }
 
 void DamageBox::setDamageToInflict(int damage)

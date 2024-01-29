@@ -68,6 +68,7 @@ public:
 	void destroy() override;
 	void pickAnimation();
 	
+	void setPushedState(bool isPushed);
 	void setPushed(float x, float y);
 	void getPushed(float dt);
 	Ability* getDashAbility();

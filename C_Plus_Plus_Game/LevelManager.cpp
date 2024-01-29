@@ -59,6 +59,7 @@ void LevelManager::restartLevel()
 void LevelManager::onPlayerDied()
 {
 	m_restart = true;
+	m_state->getPlayer()->setPushedState(false);
 }
 
 void LevelManager::saveData()

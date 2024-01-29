@@ -213,7 +213,11 @@ void Enemy::rangedAttack(float dt)
 				m_projectile_vx = std::max(-m_projectile_max_velocity, m_projectile_vx);
 				float distance = dt * m_projectile_vx;
 				m_projectile.setPosition(m_projectile.m_pos_x + distance, m_projectile.m_pos_y, m_projectile.m_width, m_projectile.m_height); 
-			}	
+			}
+			else
+			{
+				m_projectile.setActive(false);
+			}
 		}
 		else if (m_projectile.isActive())
 		{

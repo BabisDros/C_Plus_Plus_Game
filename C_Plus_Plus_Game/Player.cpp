@@ -134,6 +134,11 @@ void Player::pickAnimation()
 	}
 }
 
+void Player::setPushedState(bool isPushed)
+{
+	m_being_pushed = isPushed;
+}
+
 void Player::setPushed(float x, float y)
 {
 	if (x > m_pos_x) m_pushed_x = -1;

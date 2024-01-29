@@ -1,5 +1,6 @@
 #pragma once
 #include "CollisionObject.h"
+#include "LevelBox.h"
 /// <summary>
 /// "DamageBox is the effective area of a weapon. Anything that comes into contact with it takes damage."
 /// </summary>
@@ -25,6 +26,7 @@ public:
 	void setBrush(const graphics::Brush& brush);
 	void checkForCollisions(const std::list<CollisionObject*> containerToScan);
 	void checkForCollisions(CollisionObject* player);
+	void checkForCollisions(const std::vector<LevelBox*> wall);
 	void setDamageToInflict(int damage);
 	void pushPlayer();
 	
