@@ -68,6 +68,20 @@ Terrain
 
 Terrain
 {
+	G: Middle wall Y axis
+	{
+		width: 1
+		height: 1
+		texture: middle_block_Y.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
+Terrain
+{
 	Z: End goal
 	{
 		width: 1
@@ -222,22 +236,22 @@ CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
 B                CDDDE AA                       |
  BS SSS SSS SSSSSA         B                    |
 CDDDDDDDDDDDDDDDE        B                      |
-A                     V    B                    |
-A                        B                      |
-AF                       Q B                    |
-CDDDDDDDDDDDDDDDDDDE   CDDDDDDDDDDDDDDDDDDDDDDDE|
-A                     A           A             |
-A       S           CE            A             |
-AA      CE   ASSCDDE              A             |
-A CE   A    A AA        A  A S    B             |
-A   A      L         A  A  CDDE   F             |
-A    A    CDE    CDE    A SA     CE             |
-A        A    A         CDDE          A         |
-A              A                     A          |
-A V            T            O     F A           |
-A                         CDDDE   CDE           |
-A       S SS   FFF       A    Z  A             A|
-CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
+G                     V    B                    |
+G                        B                      |
+GF                       Q B                    |
+CDDDDDDDDDDDDDDDDDDE   CDDDDDDDDDDDDDDDDD  DDDDE|
+G                     A           G     G  G    |
+G       S           CE            G     G  G    |
+GA      CE   ASSCDDE              G     G  G    |
+G CE   A    A AA        A  A S    B     G  G    |
+G   A      L         A  A  CDDE   F     G  G    |
+G    A    CDE    CDE    A SA     CE        G    |
+G        A    A         CDDE          A G  G    |
+G              A                     A  G  G    |
+G V            T            O     F     G  G    |
+G                         CDDDE   CDE  FG  G    |
+G       S SS   FFF       A    Z  A   A  G  G   A|
+CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD  DDDDE|
 $ Info that are not read from program
 $
 Templates

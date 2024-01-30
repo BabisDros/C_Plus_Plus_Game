@@ -68,6 +68,20 @@ Terrain
 
 Terrain
 {
+	G: Middle wall Y axis
+	{
+		width: 1
+		height: 1
+		texture: middle_block_Υ.png
+		destructible:
+		health:
+		level_end: 
+	}
+
+}
+
+Terrain
+{
 	Z: End goal
 	{
 		width: 1
@@ -225,9 +239,9 @@ Level
                              A                  |
  F                          A                   |
 CDDDDDDDDDDDDDDDDDDE   CDDDDDDDE                |
-E                     A           A             |
- F                  B             A             |
- A      CE   A  A                 A   Q     Z   |
+E                     A           G             |
+ F                  B             G             |
+ A      CE   A  A                 G   Q     Z   |
   CE   A                A  A S    B  CDE  CDE   |
     A      V      AA    A  CDDE                 |
      A    CDE    A      AS A     A              |
