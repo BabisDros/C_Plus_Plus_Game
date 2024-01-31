@@ -220,11 +220,15 @@ void Player::movement(float delta_time)
 	m_vy = std::max(-m_max_velocity, m_vy);
 	
 	if (m_dashAbility.isRunning())	// add gravity if dash is not waiting for cooldown and it isn't in it's duration
-	{ 
-		if(!m_dashAbility.getElapsedTime() < m_dashAbility.getDuration())
+	{
+		if(m_dashAbility.getElapsedTime() > m_dashAbility.getDuration())
 		{ 
 			m_vy += delta_time * m_gravity;
-		}	
+		}
+		else
+		{
+			m_vy = 0;
+		}
 	}
 	else
 	{

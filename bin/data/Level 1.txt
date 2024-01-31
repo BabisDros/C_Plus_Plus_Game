@@ -233,24 +233,24 @@ CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
                    O  O FFFA                    |
     P            BCDDDDDDDDE                    |
   CDDDE   CDE  A   Q                            |
-B                CDDDE AA                       |
+B                CDDDE CE                       |
  BS SSS SSS SSSSSA         B                    |
 CDDDDDDDDDDDDDDDE        B                      |
 G                     V    B                    |
 G                        B                      |
 GF                       Q B                    |
 CDDDDDDDDDDDDDDDDDDE   CDDDDDDDDDDDDDDDDD  DDDDE|
-G                     A           G     G  G    |
-G       S           CE            G     G  G    |
-GA      CE   ASSCDDE              G     G  G    |
-G CE   A    A AA        A  A S    B     G  G    |
-G   A      L         A  A  CDDE   F     G  G    |
-G    A    CDE    CDE    A SA     CE        G    |
-G        A    A         CDDE          A G  G    |
-G              A                     A  G  G    |
-G V            T            O     F     G  G    |
-G                         CDDDE   CDE  FG  G    |
-G       S SS   FFF       A    Z  A   A  G  G   A|
+G                     A           G     G  GF FF|
+G       S           CE            G     G  GF   |
+GA      CE   ASSCDDE              G     G  G B  |
+G CE   A    A AA        A  A S    B     G      B|
+G   A      L         A  A  CDDE   F     B  G B  |
+G    A    CDE    CDE    A SA     CE        GF  B|
+G        A    A         CDDE          A G  G B  |
+G              A                     A  G  GF  B|
+G V            T            O     F     G    B  |
+G                         CDDDE   CDE  FG  G   B|
+G       S SS   FFF       A    Z  A   A  G  G B F|
 CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD  DDDDE|
 $ Info that are not read from program
 $
