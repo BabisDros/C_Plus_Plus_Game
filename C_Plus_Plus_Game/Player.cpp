@@ -163,7 +163,7 @@ void Player::getPushed(float delta_time)
 		m_vx = m_max_velocity / 4.f * m_pushed_x;
 		m_vy = m_max_velocity / 5.f * m_pushed_y;
 		m_pos_x += delta_time * m_vx;
-		m_pos_y += delta_time * m_vx;
+		m_pos_y += delta_time * m_vy;
 		m_animation = Hurt;
 	}
 }

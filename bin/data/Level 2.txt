@@ -93,6 +93,21 @@ Terrain
 
 }
 
+Terrain
+{
+	H: flowers
+	{
+		width: 2
+		height: 1
+		texture: backgrounds\\TaigaPack1-flowers.png
+		destructible:
+		health:
+		level_end:
+		background: 1
+	}
+
+}
+
 Enemy
 {
 	O: jumping enemy in "tunnel:
@@ -218,7 +233,7 @@ Level
  F FF                                           |
 CE CDE  V                                       |
       CDDDDDE                                Z  |
-             A   S S                       CDE  |
+             A   S S     H   H             CDE  |
               CDDDDDEB   CDDDDE           A     |
                  TT     A      ASSSS SSS A      |
                        A        CDDDDDDDE       |
@@ -228,7 +243,7 @@ CE CDE  V                                       |
         B                                       |
       B                                         |
         B       V                               |
-      B   F  S      V       S     Q             |
+      B   F  S    H V       S     Q             |
         BCDDDDDDDDDDDDDE  CDDE  CDDDEB     L    |
                        AF              B        |
                        AFF           B     L    |
@@ -236,7 +251,7 @@ CE CDE  V                                       |
               BCDDDE      T          B     L    |
             B       A  F O      S SS   B        |
               B      CDDDDDE    CDDDDEB         |
-   P        B                F             FF   |
+   P H H H  B       H    H   F      H      FF   |
 CDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE|
 $ Info that are not read from program
 $

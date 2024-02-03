@@ -29,10 +29,11 @@ void Level::draw()
 
 	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
 
-	for (int i = 0; i < m_blocks.size(); i++)
-	{
-		m_blocks[i]->draw();
-	}
+	for (auto p_gob : m_blocks)
+		p_gob->draw();
+
+	for (auto p_gob : m_background_objects)
+		p_gob->draw();
 
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob->isActive()) p_gob->draw();
@@ -110,6 +111,12 @@ void Level::read()
 							if (itr->first == ch)
 							{
 								destructible = (itr->second)[3] == "1";
+								if ((itr->second)[6] == "1")// is background object
+								{										//			POS_X									POS_Y								WIDTH						HEIGHT
+									m_background_objects.push_back(new LevelBox(x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),
+										&(itr->second)[2], destructible));	// texture
+									break;
+								}
 								if (destructible)
 								{
 									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, triple points
@@ -246,7 +253,7 @@ void Level::saveObjectData(std::map<char, std::vector<std::string>>& database, s
 				ignoreEmptyLine(file, line);	//go to  next data
 			}
 			// add data for tag to database
-			if (data[5] != "" && database == m_terrain_data)	// has ending value
+			if (data[5] == "1" && database == m_terrain_data)	// has ending value
 			{
 				m_level_end_tag = tag;	// this tag represents end of level
 			}
@@ -297,7 +304,7 @@ Level::~Level()
 {
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
-
+	destroyGameObjects(m_background_objects);
 	//TODO:FIx restart after death this is to reset points gained in a case of level restart
 	if (LevelManager::getInstance()->m_restart && m_state->getCurrentState() !=Lose)
 	{ 

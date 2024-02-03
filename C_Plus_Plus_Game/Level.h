@@ -13,6 +13,7 @@ class Level : public GameObject
 	TODO: use a binary search to find elements and then remove destructed*/
 	std::list<CollisionObject*> m_destructible_objects;
 	std::vector<LevelBox*> m_blocks;
+	std::vector<LevelBox*> m_background_objects;
 
 	std::map <char, std::vector<std::string>> m_terrain_data;	//? 1-1 correlation with m_terrain_titles
 	std::map <char, std::vector<std::string>> m_enemy_data;	//? 1-1 correlation with m_enemy_titles
@@ -22,7 +23,8 @@ class Level : public GameObject
 		"texture",
 		"destructible",
 		"health",
-		"level_end"};
+		"level_end",
+		"background"};
 
 	std::vector<std::string> m_enemy_titles = {
 		"width",
