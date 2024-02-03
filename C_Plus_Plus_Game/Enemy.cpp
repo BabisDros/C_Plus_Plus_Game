@@ -45,6 +45,7 @@ void Enemy::draw()
 
 void Enemy::update(float dt)
 {
+	m_collisingLR = false;
 	checkCollision(m_state->getLevel()->getBlocks());
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
 	movement(dt);
@@ -239,7 +240,8 @@ float Enemy::jump()
 
 	if (m_jumpAbility.isRunning())
 	{
-		if (m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown())
+		if ((m_jumpAbility.getElapsedTime() >= m_jumpAbility.getCooldown()) ||
+			(m_collisingLR && m_jumpAbility.getElapsedTime() > 0.5f))	// get unstuck faster
 		{
 			m_jumpAbility.setStartTime(0.f);
 		}

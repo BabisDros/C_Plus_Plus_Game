@@ -135,7 +135,7 @@ void UIManager::drawLives()
 	
 	float backgroungUiHeight=1;
 	graphics::drawRect(0, m_playerHealthUI.getHeight()+ backgroungUiHeight / 2, m_livesDisplayTxt.size()/1.6f, backgroungUiHeight, backPLate);
-	graphics::drawText(0, m_playerHealthUI.getHeight() + backgroungUiHeight / 2+ calcCenteringYForTextSize(m_livesFontSize), m_livesFontSize, m_livesDisplayTxt, textBrush);
+	graphics::drawText(0.125f, m_playerHealthUI.getHeight() + backgroungUiHeight / 2+ calcCenteringYForTextSize(m_livesFontSize), m_livesFontSize, m_livesDisplayTxt, textBrush);
 }
 void UIManager::drawWinScreen()
 {			

@@ -22,6 +22,7 @@ protected:
 	int m_lookingDirection = 1; //looking left value: -1 | looking right value: 1
 	bool m_collidingDown;
 	bool m_collidingUp;
+	bool m_collisingLR;
 };
 
 template<typename Container>
@@ -40,6 +41,7 @@ inline void Entity::checkCollision(Container myContainer)
 				{
 					m_pos_x += offset;
 					m_vx = 0.0f;
+					m_collisingLR = true;
 					break;
 				}
 			}

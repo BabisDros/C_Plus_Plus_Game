@@ -176,24 +176,30 @@ Ability* Player::getDashAbility()
 void Player::movement(float delta_time)
 {
 	float move = 0;
-
-	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
+	if (m_dashAbility.getElapsedTime() - m_dashAbility.getDuration() > 0)
 	{
-		move = -1.0f;
-		m_mirrored = true;
-		m_lookingDirection = -1;
-	}
-	if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
-	{
-		move = 1.0f;
-		m_mirrored = false;
-		m_lookingDirection = 1;
+		if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
+		{
+			move = -1.0f;
+			m_mirrored = true;
+			m_lookingDirection = -1;
+		}
+		if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
+		{
+			move = 1.0f;
+			m_mirrored = false;
+			m_lookingDirection = 1;
+		}
 	}
 
 	if (m_animation == Jumping && m_collidingUp) m_allow_animation_change = true;	// do not play jump animation when player hits ceiling
 
 	if (graphics::getKeyState(graphics::SCANCODE_LEFT) ^ graphics::getKeyState(graphics::SCANCODE_RIGHT)) //? insta stop
 	{
+		if (m_vx * move < 0)
+		{
+			m_vx = 0;
+		}
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 		m_vx = std::max(-m_max_velocity, m_vx);
 		if (m_allow_animation_change)
@@ -292,6 +298,7 @@ void Player::dash(float delta_time)
 		m_animation = Dashing;
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
 		m_allow_animation_change = false;
+		graphics::playSound("music\\dash.wav", 0.06f);
 	}	
 	
 	if (m_dashAbility.isRunning())
