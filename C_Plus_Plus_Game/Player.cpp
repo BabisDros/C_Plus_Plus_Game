@@ -68,6 +68,8 @@ void Player::update(float dt)
 	{
 		if (m_dev_fly) fly(delta_time);
 		else movement(delta_time);
+		dash(delta_time);
+		slash(delta_time);
 	}
 	else
 	{
@@ -83,9 +85,6 @@ void Player::update(float dt)
 
 	cameraOffsetX(0.4f, 0.6f);
 	cameraOffsetY(0.4f, 0.6f);
-
-	dash(delta_time);
-	slash(delta_time);
 
 	pickAnimation();
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture

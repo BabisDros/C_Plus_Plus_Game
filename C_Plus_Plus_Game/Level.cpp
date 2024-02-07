@@ -49,17 +49,17 @@ void Level::draw()
 
 void Level::update(float dt)
 {
+	if (m_state->getPlayer()->isActive())
+	{
+		m_state->getPlayer()->update(dt);
+	}
+
 	if (m_state->getPlayer()->intersect((*m_level_end)) && !m_state->m_goNextLevel)
 	{
 		MusicManager::getInstance()->m_play_door_sound = true;
 		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
 	}	
-
-	if (m_state->getPlayer()->isActive())	
-	{
-		m_state->getPlayer()->update(dt);
-	}
 	
 	std::for_each(std::execution::par, m_destructible_objects.begin(), m_destructible_objects.end(), [dt](CollisionObject* obj) 
 		{

@@ -119,9 +119,9 @@ void LevelManager::levelEndCutscene()
 		index = (int)(2 * dif) % (m_state->m_door_sprites).size();
 		door->setTexture((m_state->m_door_sprites).at(index));
 
-		if (index == size - 1)
+		if (index >= size - 1)
 		{
-			m_animation_timer == 0;
+			m_animation_timer = 0;
 			m_cutscene_move_player = true;
 		}
 
