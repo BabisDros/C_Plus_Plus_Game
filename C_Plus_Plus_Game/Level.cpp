@@ -4,6 +4,7 @@
 #include "CallbackManager.h"
 #include "ParticleManager.h"
 #include "LevelManager.h"
+#include "MusicManager.h"
 #include <fstream>
 #include <algorithm>
 #include <execution>
@@ -49,7 +50,8 @@ void Level::draw()
 void Level::update(float dt)
 {
 	if (m_state->getPlayer()->intersect((*m_level_end)) && !m_state->m_goNextLevel)
-	{ 
+	{
+		MusicManager::getInstance()->m_play_door_sound = true;
 		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
 	}	

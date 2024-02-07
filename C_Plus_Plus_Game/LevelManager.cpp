@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <fstream>
 #include "CallbackManager.h"
+#include "MusicManager.h"
 
 void LevelManager::init()
 {
@@ -104,6 +105,7 @@ void LevelManager::loadSaveFile()
 
 void LevelManager::levelEndCutscene()
 {
+	MusicManager::getInstance()->playDoorSound();
 	m_cutscene_ended = false;
 	m_state->getPlayer()->forceStop();
 	LevelBox* door = m_state->getLevel()->getLevelEnd();
@@ -114,7 +116,7 @@ void LevelManager::levelEndCutscene()
 		int index = 0;
 		int size = m_state->m_door_sprites.size();
 		float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
-		index = (int)(4 * dif) % (m_state->m_door_sprites).size();
+		index = (int)(2 * dif) % (m_state->m_door_sprites).size();
 		door->setTexture((m_state->m_door_sprites).at(index));
 
 		if (index == size - 1)
@@ -132,6 +134,7 @@ void LevelManager::levelEndCutscene()
 			m_cutscene_ended = true;
 			m_cutscene_move_player = false;
 			m_state->getPlayer()->allowPlayerMovement();
+			MusicManager::getInstance()->m_playing_door_sound = false;
 		}
 		else if (door->m_pos_x < m_state->getPlayer()->m_pos_x)
 		{
