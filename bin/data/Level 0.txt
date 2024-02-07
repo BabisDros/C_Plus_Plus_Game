@@ -72,7 +72,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: middle_block_Υ.png
+		texture: middle_block_Y.png
 		destructible:
 		health:
 		level_end: 

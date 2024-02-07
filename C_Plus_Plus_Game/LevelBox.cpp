@@ -21,7 +21,7 @@ void LevelBox::draw()
 	}
 }
 
-const std::string* LevelBox::getTexture()
+std::string* LevelBox::getTexture() // removed const
 {
 	return m_texture;
 }
@@ -29,4 +29,9 @@ const std::string* LevelBox::getTexture()
 bool& LevelBox::getIsDestructible() const
 {
 	return m_isDestructible;
+}
+
+void LevelBox::setTexture(std::string& texture)
+{
+	m_texture = &texture;
 }

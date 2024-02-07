@@ -58,7 +58,7 @@ void Enemy::update(float dt)
 		float dif = *m_state->getPausableClock() - m_throwProjectile.getStartTime();
 
 		int index = (int)(25 * dif) % (*m_state->getLevel()->getFireballSprites()).size();
-		fireball.texture = (*m_state->getLevel()->getFireballSprites()).at(index);
+		fireball.texture = m_state->getFullAssetPath((*m_state->getLevel()->getFireballSprites()).at(index));
 		// at 32 fireball starts shrinking texture wise
 		if (index > 32) m_projectile.m_width = 1.2 - 1.2 * (index - 32) / ((*m_state->getLevel()->getFireballSprites()).size() - 32);
 		m_projectile.setBrush(fireball);

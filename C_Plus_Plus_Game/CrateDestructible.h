@@ -15,9 +15,9 @@ public:
 	Loot m_loot;
 	bool m_extra_points = false;
 	bool m_has_health = false;
-	const std::string m_health_texture = "Health.png";
+	std::string m_health_texture = "Health.png"; // removed const
 
-	CrateDestructible(int initialHealth, float x, float y, float w, float h, const std::string* texture, bool destructible, Loot loot) 
+	CrateDestructible(int initialHealth, float x, float y, float w, float h, std::string* texture, bool destructible, Loot loot) //removed const
 		: LevelBox(x, y, w, h, texture, destructible), m_loot(loot)
 	{
 		init();

@@ -28,7 +28,6 @@ void LevelManager::nextLevel(bool restartingLevel)
 	if (m_state->m_current_level) m_state->m_current_level->~Level();
 	if (!restartingLevel && m_level_counter + 1 >= levels_list.size())
 	{
-		m_win = true;
 		m_state->setState(Win);
 	}
 	else
@@ -101,4 +100,51 @@ void LevelManager::loadSaveFile()
 	{
 		nextLevel();
 	}
+}
+
+void LevelManager::levelEndCutscene()
+{
+	m_cutscene_ended = false;
+	m_state->getPlayer()->forceStop();
+	LevelBox* door = m_state->getLevel()->getLevelEnd();
+	if (!m_cutscene_move_player)
+	{
+		if (m_animation_timer == 0) m_animation_timer = *GameState::getInstance()->getPausableClock();
+		
+		int index = 0;
+		int size = m_state->m_door_sprites.size();
+		float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
+		index = (int)(4 * dif) % (m_state->m_door_sprites).size();
+		door->setTexture((m_state->m_door_sprites).at(index));
+
+		if (index == size - 1)
+		{
+			m_animation_timer == 0;
+			m_cutscene_move_player = true;
+		}
+
+		m_state->getPlayer()->setAnimation(AnimationSequence::Idle);
+	}
+	else
+	{
+		if (fabs(door->m_pos_x - m_state->getPlayer()->m_pos_x) < 0.125)
+		{
+			m_cutscene_ended = true;
+			m_cutscene_move_player = false;
+			m_state->getPlayer()->allowPlayerMovement();
+		}
+		else if (door->m_pos_x < m_state->getPlayer()->m_pos_x)
+		{
+			m_state->getPlayer()->moveLeft();
+		}
+		else
+		{
+			m_state->getPlayer()->moveRight();
+		}
+
+	}
+}
+
+void LevelManager::levelStartCutscene()
+{
 }

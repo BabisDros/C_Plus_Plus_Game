@@ -71,11 +71,12 @@ public:
 	std::vector<std::string> m_sprites_dashing;
 	std::vector<std::string> m_sprites_hurt;
 	std::vector<std::string> m_fireball_sprites;
+	std::vector<std::string> m_door_sprites;
 
-	States& getCurrentState();
+	States& getCurrentState() const;
 	void enable(bool& m_option, bool& m_option_held, bool m_button);
 
-	std::string getAssetDir();
+	std::string getAssetDir() const;
 	std::string getFullAssetPath(const std::string& asset);
 
 	std::string getFullDataPath(const std::string& data);

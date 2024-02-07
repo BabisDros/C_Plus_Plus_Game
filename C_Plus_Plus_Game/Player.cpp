@@ -64,8 +64,15 @@ void Player::update(float dt)
 	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_9));
-	if (m_dev_fly) fly(delta_time);
-	else movement(delta_time);
+	if (m_allow_movement_input)
+	{
+		if (m_dev_fly) fly(delta_time);
+		else movement(delta_time);
+	}
+	else
+	{
+		automaticPlayerMovement(delta_time);
+	}
 
 	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 1) //? is in void
 	{
@@ -82,7 +89,7 @@ void Player::update(float dt)
 
 	pickAnimation();
 	float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
-	m_brush.texture = (*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size());
+	m_brush.texture = m_state->getFullAssetPath((*m_sprites_ptr).at((int)(8 * dif) % (*m_sprites_ptr).size()));
 	
 	// sound
 	if (m_collidingDown && m_animation == Walking) 
@@ -173,6 +180,65 @@ Ability* Player::getDashAbility()
 	return &m_dashAbility;
 }
 
+void Player::moveLeft()
+{
+	m_force_move_left = true;
+}
+
+void Player::moveRight()
+{
+	m_force_move_right = true;
+}
+
+void Player::forceStop()
+{
+	m_dashAbility.setStartTime(0.f);
+	m_allow_movement_input = false;
+}
+
+void Player::allowPlayerMovement()
+{
+	m_allow_movement_input = true;
+}
+
+void Player::setAnimation(AnimationSequence anim)
+{
+	m_animation = anim;
+}
+
+void Player::automaticPlayerMovement(float dt)
+{
+	float move = 0;
+	if (m_force_move_left)
+	{
+		move = -1.0f;
+		m_mirrored = true;
+		m_lookingDirection = -1;
+		m_force_move_left = false;
+	}
+	else if (m_force_move_right)
+	{
+		move = 1.0f;
+		m_mirrored = false;
+		m_lookingDirection = 1;
+		m_force_move_right = false;
+	}
+	
+	if (move != 0)
+	{
+		m_vx = std::min(m_max_velocity, m_vx + dt * move * m_accel_horizontal);
+		m_vx = std::max(-m_max_velocity, m_vx);
+		if (m_allow_animation_change)
+		{
+			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
+			m_animation = Walking;
+		}
+		m_pos_x += dt * m_vx;
+	}
+	m_vy += dt * m_gravity;
+	m_pos_y += dt * m_vy;
+}
+
 void Player::movement(float delta_time)
 {
 	float move = 0;
@@ -203,10 +269,10 @@ void Player::movement(float delta_time)
 		m_vx = std::min(m_max_velocity, m_vx + delta_time * move * m_accel_horizontal);
 		m_vx = std::max(-m_max_velocity, m_vx);
 		if (m_allow_animation_change)
-		{ 
+		{
 			if (m_animation != Walking) m_animation_timer = *GameState::getInstance()->getPausableClock();
 			m_animation = Walking;
-		}		
+		}
 	}
 	else
 	{
@@ -224,11 +290,11 @@ void Player::movement(float delta_time)
 
 	m_vy = std::min(m_max_velocity, m_vy);
 	m_vy = std::max(-m_max_velocity, m_vy);
-	
+
 	if (m_dashAbility.isRunning())	// add gravity if dash is not waiting for cooldown and it isn't in it's duration
 	{
-		if(m_dashAbility.getElapsedTime() > m_dashAbility.getDuration())
-		{ 
+		if (m_dashAbility.getElapsedTime() > m_dashAbility.getDuration())
+		{
 			m_vy += delta_time * m_gravity;
 		}
 		else

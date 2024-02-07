@@ -31,6 +31,7 @@ inline void Entity::checkCollision(Container myContainer)
 
 	for (auto& block : myContainer)
 	{
+		if (block == m_state->getLevel()->getLevelEnd()) continue; // do not collide with level end
 		if (typeid(*block).name() == typeid(*this).name()) continue;	//No collision between enemies, but allowed between destructibles
 		if (block->isActive())
 		{
@@ -50,6 +51,7 @@ inline void Entity::checkCollision(Container myContainer)
 	
 	for (auto& block : myContainer)
 	{
+		if (block == m_state->getLevel()->getLevelEnd()) continue; // do not collide with level end
 		if (typeid(*block).name() == typeid(*this).name()) continue;	//No collision between enemies, but allowed between destructibles
 		if (block->isActive())
 		{

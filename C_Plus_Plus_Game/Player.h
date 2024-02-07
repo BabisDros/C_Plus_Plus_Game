@@ -52,6 +52,10 @@ class Player :public IDestructible, public Entity
 	float m_being_pushed_timer;
 	float m_pushed_x;
 	float m_pushed_y;
+
+	bool m_force_move_left = false;
+	bool m_force_move_right = false;
+	bool m_allow_movement_input = true;
 public:
 	Player(std::string name,float initialHealth) : Entity(name), IDestructible(false)
 	{
@@ -73,6 +77,12 @@ public:
 	void getPushed(float dt);
 	Ability* getDashAbility();
 	
+	void moveLeft();
+	void moveRight();
+	void forceStop();
+	void automaticPlayerMovement(float dt);
+	void allowPlayerMovement();
+	void setAnimation(AnimationSequence anim);
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);

@@ -31,6 +31,7 @@ void GameState::init()
 	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
 	readSprites("Character Sprites V2\\Hurt", m_sprites_hurt);
 	readSprites("fireball", m_fireball_sprites);
+	readSprites("level cutscene", m_door_sprites);
 	graphics::preloadBitmaps(getAssetDir()); //? preload assets
 }
 
@@ -51,12 +52,12 @@ void GameState::update(float dt)
 	std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(sleep_time));*/ 
 	UIManager::getInstance()->update(dt);
 	LevelManager::getInstance()->update(dt);
-	ParticleManager::getInstance()->threadUpdate(dt);
 	handleStates();
 	if (!m_current_level) return;
 
 	if (!m_suspendExecution)
 	{
+		ParticleManager::getInstance()->threadUpdate(dt);
 		m_current_level->update(dt);
 		m_pausableClock += graphics::getDeltaTime()/1000;
 	}
@@ -64,7 +65,11 @@ void GameState::update(float dt)
 	enable(m_debugging, m_debugging_held, graphics::getKeyState(graphics::SCANCODE_8));
 	enable(m_pauseButtonPressed, m_paused_held, graphics::getKeyState(graphics::SCANCODE_P));
 	showFPS();
-	if (m_goNextLevel) LevelManager::getInstance()->nextLevel();
+	if (m_goNextLevel)
+	{
+		LevelManager::getInstance()->levelEndCutscene();
+		if (LevelManager::getInstance()->m_cutscene_ended) LevelManager::getInstance()->nextLevel(); // level sequence animation
+	}
 	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
 }
 
@@ -197,7 +202,7 @@ void GameState::onPlayerLivesChanged(int life,bool setValue)
 	}
 }
 
-States& GameState::getCurrentState()
+States& GameState::getCurrentState() const
 {
 	return m_currentState;
 }
@@ -224,7 +229,7 @@ void GameState::enable(bool& m_option, bool& m_option_held, bool m_button)
 	}
 }
 
-std::string GameState::getAssetDir()
+std::string GameState::getAssetDir() const
 {
 	return m_asset_path;
 }
@@ -254,6 +259,6 @@ void GameState::readSprites(std::string folder, std::vector<std::string>& myVec)
 {
 	for (const auto& entry : std::filesystem::directory_iterator(getFullAssetPath(folder)))
 	{
-		myVec.push_back(entry.path().u8string());
+		myVec.push_back(entry.path().u8string().replace(0, getFullAssetPath("").size(), ""));
 	}
 }

@@ -4,14 +4,15 @@
 class LevelBox :public CollisionObject
 {
 protected:
-	const std::string* m_texture;
+	std::string* m_texture; // removed const
 	bool& m_isDestructible;
 public:
-	LevelBox(float x, float y, float w, float h, const std::string* texture, bool destructible)
+	LevelBox(float x, float y, float w, float h, std::string* texture, bool destructible) // removed const
 		:CollisionObject(x, y, w, h), m_texture(texture), m_isDestructible(destructible) { init(); }
 
 	void init() override;
 	void draw() override;
-	const std::string* getTexture();
+	std::string* getTexture(); // removed const
 	bool& getIsDestructible() const;
+	void setTexture(std::string& texture);
 };

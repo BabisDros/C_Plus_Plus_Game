@@ -48,7 +48,7 @@ void Level::draw()
 
 void Level::update(float dt)
 {
-	if (m_state->getPlayer()->intersect((*m_level_end))) 
+	if (m_state->getPlayer()->intersect((*m_level_end)) && !m_state->m_goNextLevel)
 	{ 
 		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
@@ -58,7 +58,7 @@ void Level::update(float dt)
 	{
 		m_state->getPlayer()->update(dt);
 	}
-
+	
 	std::for_each(std::execution::par, m_destructible_objects.begin(), m_destructible_objects.end(), [dt](CollisionObject* obj) 
 		{
 			if (obj->isActive()) obj->update(dt);
@@ -267,6 +267,7 @@ std::vector<LevelBox*> Level::getBlocks() const
 {
 	return m_blocks;
 }
+
 std::list<CollisionObject*> Level::getDestructibleObjects() const
 {
 	return m_destructible_objects;
@@ -286,6 +287,11 @@ void Level::onPointsCollected(int points)
 {
 	if (LevelManager::getInstance()->m_loadingFile) return;	
 	pointsGainedInLevel += points;	
+}
+
+LevelBox* Level::getLevelEnd() const
+{
+	return m_level_end;
 }
 
 template <typename Container>

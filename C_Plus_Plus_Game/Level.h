@@ -69,4 +69,5 @@ public:
 
 	std::vector<std::string>* getFireballSprites();
 	void onPointsCollected(int points);
+	LevelBox* getLevelEnd() const;
 };
