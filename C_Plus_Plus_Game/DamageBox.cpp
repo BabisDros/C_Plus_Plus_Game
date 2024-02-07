@@ -63,7 +63,7 @@ void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerTo
 	{		
 		/*all objects will be setActive(false) when health is 0. 
 		TODO: if performance improvement needed : could delete them, and shorten the list*/
-		if (intersect(*gameobj)) // contact was found
+		if (intersect(*gameobj) && gameobj->isActive()) // contact was found
 		{		
 			if (m_parentIsPlayer)
 			{
