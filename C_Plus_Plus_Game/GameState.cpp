@@ -32,7 +32,10 @@ void GameState::init()
 	readSprites("Character Sprites V2\\Hurt", m_sprites_hurt);
 	readSprites("fireball", m_fireball_sprites);
 	readSprites("level cutscene", m_door_sprites);
-	graphics::preloadBitmaps(getAssetDir()); //? preload assets
+
+	for (auto& p : std::filesystem::recursive_directory_iterator(getAssetDir())) // preload all assets
+		if (p.is_directory()) graphics::preloadBitmaps(p.path().string());
+			
 }
 
 void GameState::draw()
