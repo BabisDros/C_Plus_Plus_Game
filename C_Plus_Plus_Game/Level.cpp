@@ -123,8 +123,8 @@ void Level::read()
 								{
 									int number = rand() % 100;	// either 0, 1, 2 | no loot, health, triple points
 									Loot loot;
-									if (number < 40) loot = Nothing;
-									else if (number < 80) loot = Extra_loot;
+									if (number < 35) loot = Nothing;
+									else if (number < 75) loot = Extra_loot;
 									else loot = Health_pack;
 																							//			HP					POS_X										POS_Y								WIDTH							HEIGHT
 									m_destructible_objects.push_back(new CrateDestructible(std::stof((itr->second)[4]),x + std::stof((itr->second)[0]) / 2.f, y + std::stof((itr->second)[1]) / 2.f, std::stof((itr->second)[0]), std::stof((itr->second)[1]),

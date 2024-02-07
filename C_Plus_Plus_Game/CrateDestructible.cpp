@@ -37,7 +37,7 @@ void CrateDestructible::destroy()
 {
 	setActive(false);
 	if (m_has_health) {
-		m_state->getLevel()->getDestructibleObjects().push_back(new HealthPack(m_pos_x, m_pos_y + m_width/4, m_width/2, m_height/2, &m_health_texture, false)); // should happen once
+		m_state->getLevel()->getDestructibleObjectsPtr()->push_back(new HealthPack(m_pos_x, m_pos_y + m_width/4, m_width/2, m_height/2, &m_health_texture, false)); // should happen once
 		m_state->getLevel()->getDestructibleObjects().back()->init();
 	}
 	if (m_loot == Extra_loot) graphics::playSound("music\\extra_loot.wav", 0.03f);
