@@ -111,11 +111,11 @@ void LevelManager::levelEndCutscene()
 	LevelBox* door = m_state->getLevel()->getLevelEnd();
 	if (!m_cutscene_move_player)
 	{
-		if (m_animation_timer == 0) m_animation_timer = *GameState::getInstance()->getPausableClock();
+		if (m_animation_timer == 0) m_animation_timer = *m_state->getPausableClock();
 		
 		int index = 0;
 		int size = m_state->m_door_sprites.size();
-		float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
+		float dif = *m_state->getPausableClock() - m_animation_timer;	// change texture
 		index = (int)(2 * dif) % (m_state->m_door_sprites).size();
 		door->setTexture((m_state->m_door_sprites).at(index));
 

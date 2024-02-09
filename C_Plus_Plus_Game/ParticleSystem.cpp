@@ -30,7 +30,7 @@ void ParticleSystem::draw(bool drawWithOffset)
     }
 }
 
-void ParticleSystem::update(float dt, bool playOnPaused)
+void ParticleSystem::update(float dt, const bool& playOnPaused)
 {
     if (!playOnPaused && m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
@@ -93,7 +93,7 @@ bool ParticleSystem::isRunning() const
     return (m_currentLife > 0 && m_currentLife < m_lifetime);
 }
 
-void ParticleSystem::followGameobject(float x, float y)
+void ParticleSystem::followGameobject(const float& x, const float& y)
 {
     m_posX = x;
     m_posY = y;
