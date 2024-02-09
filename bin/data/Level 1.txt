@@ -150,7 +150,7 @@ Enemy
 		texture: enemy.png
 		health: 30
 		ranged: 1
-		body_damage: 0
+		body_damage: 1
 		jumping: 0
 		looking: 1
 		stick_to_wall:
