@@ -30,9 +30,9 @@ void ParticleSystem::draw(const bool& drawWithOffset)
     }
 }
 
-void ParticleSystem::update(const float& dt, const bool& playOnPaused)
+void ParticleSystem::update(const float& dt)
 {
-    if (!playOnPaused && m_state->getCurrentState() == Paused) return;
+    if (m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
     {      
         float deltaTimeSec = dt / 1000;

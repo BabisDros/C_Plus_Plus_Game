@@ -61,7 +61,7 @@ public:
 	//call this so that the particles start playing
 	void init() override;
 	void draw(const bool& drawWithOffset = true);
-	void update(const float& dt, const bool& playOnPaused = false);
+	void update(const float& dt);
 	void updateThreadFunction(const float& dt);
 	float calcRandomPosX() const;
 	float calcRandomValue();

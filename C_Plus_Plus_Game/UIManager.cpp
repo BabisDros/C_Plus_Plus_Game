@@ -82,13 +82,13 @@ void UIManager::update(const float& dt)
 	if (m_state->getCurrentState() == Win)
 	{
 		m_winEffect->init();
-		m_winEffect->update(dt, true);
+		m_winEffect->update(dt);
 		m_star.update(dt);		
 	}
 	else if (m_state->getCurrentState() == Lose)
 	{
 		m_lostEffect->init();
-		m_lostEffect->update(dt, true);
+		m_lostEffect->update(dt);
 	}
 	else m_star.init();
 }

@@ -34,7 +34,7 @@ void ParticleManager::threadUpdate(const float& dt)
 	m_enemyKilledFx->update(dt);
 
 	//better for player effect to complete
-	m_playerBlood->update(dt,true);
+	m_playerBlood->update(dt);
 }
 
 //because the enemy dies and stops moving, we can update m_enemyKilledFx position once
