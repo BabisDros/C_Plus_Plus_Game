@@ -58,7 +58,7 @@ public:
 	int m_fps=0;
 	void init();
 	void draw();
-	void update(float dt);
+	void update(const float& dt);
 	~UIManager();
 	void drawPlayerHealth();
 	void drawScore();

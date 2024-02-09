@@ -33,7 +33,7 @@ public:
 	const bool isAlive() const;
 	void init() override;
 	void draw(bool drawWithOffset = true);
-	void update(float dt) override;
+	void update(const float& dt) override;
 	//all properties will run during lifetime
 	void fade(const float& deltaTime);
 	void move(const float& deltaTime);

@@ -35,7 +35,7 @@ void DamageBox::draw()
 	}
 }
 
-void DamageBox::update(float dt)
+void DamageBox::update(const float& dt)
 {	
 	if (isActive())
 	{

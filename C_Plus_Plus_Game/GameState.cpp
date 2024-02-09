@@ -47,7 +47,7 @@ void GameState::draw()
 	UIManager::getInstance()->draw();
 }
 
-void GameState::update(float dt)
+void GameState::update(const float& dt)
 {
 	if (dt > 200) return;	//? it been too long since last frame
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it

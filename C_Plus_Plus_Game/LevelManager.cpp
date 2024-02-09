@@ -18,7 +18,7 @@ void LevelManager::init()
 	levels_list.erase(std::remove(levels_list.begin(), levels_list.end(), "save file"), levels_list.end());
 }
 
-void LevelManager::update(float dt)
+void LevelManager::update(const float& dt)
 {
 	if (!m_restart) return;
 		restartLevel();

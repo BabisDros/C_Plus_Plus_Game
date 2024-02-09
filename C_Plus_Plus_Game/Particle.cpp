@@ -38,7 +38,7 @@ void Particle::draw(bool drawWithOffset)
 	}
 }
 
-void Particle::update(float dt)
+void Particle::update(const float& dt)
 {
 	if (isAlive())
 	{

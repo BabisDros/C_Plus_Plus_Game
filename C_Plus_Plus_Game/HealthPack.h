@@ -17,6 +17,6 @@ public:
 
 	void init() override;
 	void draw() override;
-	void update(float dt) override;
+	void update(const float& dt) override;
 	void destroy() override;
 };

@@ -15,7 +15,7 @@ public:
 	GameObject(const std::string& name = "");
 	virtual void init(){}
 	virtual void draw(){}
-	virtual void update(float dt){}
+	virtual void update(const float& dt){}
 	virtual ~GameObject(){}
 	bool isActive() const { return m_active; }
 	void setActive(bool state) { m_active = state; }

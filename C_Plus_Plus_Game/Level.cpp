@@ -47,7 +47,7 @@ void Level::draw()
 	ParticleManager::getInstance()->draw();
 }
 
-void Level::update(float dt)
+void Level::update(const float& dt)
 {
 	if (m_state->getPlayer()->isActive())
 	{

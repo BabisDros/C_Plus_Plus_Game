@@ -68,15 +68,15 @@ public:
 
 	void init() override;
 	void draw() override;
-	void update(float dt) override;
+	void update(const float& dt) override;
 
-	void movement(float dt) override;
+	void movement(const float& dt) override;
 	void destroy() override;
 
-	void movementStaticX(float dt);
-	void movementStaticY(float dt);
-	void movementDynamic(float dt);
+	void movementStaticX(const float& dt);
+	void movementStaticY(const float& dt);
+	void movementDynamic(const float& dt);
 
-	void attack(float dt);
-	void rangedAttack(float dt);
+	void attack(const float& dt);
+	void rangedAttack(const float& dt);
 };

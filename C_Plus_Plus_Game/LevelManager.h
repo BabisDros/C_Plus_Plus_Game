@@ -12,7 +12,7 @@ public:
 	std::vector<std::string> levels_list;
 	bool m_restart = false;
 	void init();
-	void update(float dt);
+	void update(const float& dt);
 	void nextLevel(bool restartLevel = false);
 	void restartLevel();
 	void onPlayerDied();

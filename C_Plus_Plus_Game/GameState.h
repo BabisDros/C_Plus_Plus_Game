@@ -49,7 +49,7 @@ public:
 
 	void init();
 	void draw();
-	void update(float dt);
+	void update(const float& dt);
 	float* getPausableClock() { return &m_pausableClock; };
 	~GameState();
 

@@ -77,7 +77,7 @@ void UIManager::draw()
 	}
 }
 
-void UIManager::update(float dt)
+void UIManager::update(const float& dt)
 {
 	if (m_state->getCurrentState() == Win)
 	{

@@ -30,7 +30,7 @@ void ParticleSystem::draw(bool drawWithOffset)
     }
 }
 
-void ParticleSystem::update(float dt, const bool& playOnPaused)
+void ParticleSystem::update(const float& dt, const bool& playOnPaused)
 {
     if (!playOnPaused && m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
@@ -60,7 +60,7 @@ void ParticleSystem::update(float dt, const bool& playOnPaused)
     }  
 }
 
-void ParticleSystem::updateThreadFunction(float dt)
+void ParticleSystem::updateThreadFunction(const float& dt)
 {
     for (auto& particle : m_particles)
     {

@@ -29,7 +29,7 @@ void ParticleManager::draw()
 	m_playerBlood->draw();
 }
 
-void ParticleManager::threadUpdate(float dt)
+void ParticleManager::threadUpdate(const float& dt)
 {
 	m_enemyKilledFx->update(dt);
 
