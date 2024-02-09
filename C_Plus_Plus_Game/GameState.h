@@ -26,7 +26,7 @@ class GameState: public Manager<GameState>
 	float m_pausableClock = 0.0f;
 	class Player* m_player = 0;
 	class Level* m_current_level = 0;
-	float playersLevelStartingHealth = 0;//used to store players health when starting a level
+	float playersLevelStartingHealth = m_initialHealth;//used to store players health when starting a level
 public:	
 	GameState();
 	
@@ -83,13 +83,13 @@ public:
 
 	std::string getFullDataPath(const std::string& data);
 
-	Player* getPlayer() const { return m_player; }
+	Player* getPlayer() const;
 	void setPlayer(Player* player);
-	Level* getLevel() const { return m_current_level; }
+	Level* getLevel() const;
 	void setLevel(Level* level);
 	
 	int getInitialLives() const;
 	int getInitialHealth() const;
-	int getPlayersLevelHealth() const;
-	void setPlayersLevelHealth(int health);
+	int getLastHealth() const;
+	void setLastHealth(const int& health);
 };

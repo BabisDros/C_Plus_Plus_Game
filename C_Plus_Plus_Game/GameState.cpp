@@ -143,7 +143,7 @@ void GameState::handleStates()
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
 			CallbackManager::getInstance()->m_pointsChanged.trigger(0,true);
 			MusicManager::getInstance()->m_playedLoseSound = false;
-			LevelManager::getInstance()->m_restart = true;
+			LevelManager::getInstance()->setRestartAfterDeath(true);
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
 		}
 	}
@@ -180,9 +180,9 @@ void GameState::showFPS()
 	}
 }
 
-void GameState::onPointsCollected(int points,bool setValue)
+void GameState::onPointsCollected(int points,bool set)
 {
-	if (setValue)
+	if (set)
 	{
 		m_points = points;
 	}
@@ -192,9 +192,9 @@ void GameState::onPointsCollected(int points,bool setValue)
 	}
 }
 
-void GameState::onPlayerLivesChanged(int life,bool setValue)
+void GameState::onPlayerLivesChanged(int life,bool set)
 {
-	if (setValue)
+	if (set)
 	{
 		m_lives = life;
 	}
@@ -257,9 +257,20 @@ int GameState::getInitialHealth() const
 	return m_initialHealth;
 }
 
+
+Player* GameState::getPlayer() const
+{
+	return m_player;
+}
+
 void GameState::setPlayer(Player* player)
 {
 	m_player = player;
+}
+
+Level* GameState::getLevel() const
+{
+	return m_current_level;
 }
 
 void GameState::setLevel(Level* level)
@@ -275,13 +286,12 @@ void GameState::readSprites(std::string folder, std::vector<std::string>& myVec)
 	}
 }
 
-
-int GameState::getPlayersLevelHealth() const
+int GameState::getLastHealth() const
 {
 	return playersLevelStartingHealth;
 }
 
-void GameState::setPlayersLevelHealth(int health)
+void GameState::setLastHealth(const int& health)
 {
 	playersLevelStartingHealth = health;
 }

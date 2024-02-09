@@ -14,7 +14,7 @@ void Level::init()
 	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
-	read();
+	read();	
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
 }
@@ -58,6 +58,7 @@ void Level::update(const float& dt)
 		MusicManager::getInstance()->m_play_door_sound = true;
 		m_state->m_goNextLevel = true; // level finished
 		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
+		m_state->setLastHealth(m_state->getPlayer()->getHealth());//sets player's last health value
 	}	
 	
 	std::for_each(std::execution::par, m_destructible_objects.begin(), m_destructible_objects.end(), [dt](CollisionObject* obj) 
