@@ -52,7 +52,7 @@ public:
 	void init();
 	void draw();
 	void update(const float& dt);
-	float* getPausableClock() { return &m_pausableClock; };
+	float* getPausableClock() { return &m_pausableClock; }
 	~GameState();
 
 	float getCanvasWidth() const { return m_canvas_width; }

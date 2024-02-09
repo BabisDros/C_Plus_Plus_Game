@@ -61,7 +61,7 @@ void Player::update(const float& dt)
 
 	m_slashWeapon.setParentDirection(m_lookingDirection);
 	m_slashWeapon.update(dt);
-	const float& delta_time = dt / 1000.0f;
+	float delta_time = dt / 1000.0f;
 
 	m_state->enable(m_dev_fly, m_dev_fly_held, graphics::getKeyState(graphics::SCANCODE_9));
 	if (m_allow_movement_input)

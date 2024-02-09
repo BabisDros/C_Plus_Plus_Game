@@ -75,7 +75,7 @@ void Enemy::destroy()
 
 void Enemy::movement(const float& dt)
 {
-	const float& delta_time = dt / 1000.f;
+	float delta_time = dt / 1000.f;
 	switch (m_movement_type)
 	{
 		case 1: 
@@ -175,7 +175,7 @@ void Enemy::movementDynamic(const float& dt)
 
 void Enemy::attack(const float& delta_time)
 {
-	const float& dt = delta_time / 1000.f;
+	float dt = delta_time / 1000.f;
 	if (m_rangedAttack) rangedAttack(dt);
 	if (m_body_damage) 
 	{
