@@ -12,7 +12,7 @@ class UIManager: public Manager<UIManager>
 	ParticleSystem* m_winEffect = nullptr;
 	HealthUIFixed m_playerHealthUI;
 	Star m_star;
-	std::string m_pointsTxt="";
+	std::string m_pointsTxt= "0";
 	std::string m_scoreTxt = "";
 	std::string m_livesTxt = "";
 	std::string m_livesDisplayTxt = "";

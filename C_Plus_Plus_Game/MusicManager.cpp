@@ -8,7 +8,7 @@ void MusicManager::init()
 
 void MusicManager::playMusic()
 {
-	if (!m_playing_door_sound)
+	if (!m_playing_door_sound && !m_playing_music)
 	{
 		graphics::playMusic("music\\Journey.wav", 0.05); //"music\\01. Enter Hallownest.mp3"
 		m_playing_music = true;

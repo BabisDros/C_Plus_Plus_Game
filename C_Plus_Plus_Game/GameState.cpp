@@ -73,7 +73,7 @@ void GameState::update(const float& dt)
 		LevelManager::getInstance()->levelEndCutscene();
 		if (LevelManager::getInstance()->m_cutscene_ended) LevelManager::getInstance()->nextLevel(); // level sequence animation
 	}
-	if (m_currentState == InGame && !MusicManager::getInstance()->m_playing_music) MusicManager::getInstance()->playMusic();
+	if (m_currentState == InGame) MusicManager::getInstance()->playMusic();
 }
 
 GameState::~GameState()

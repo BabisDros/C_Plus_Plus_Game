@@ -254,12 +254,12 @@ Level
                              A                  |
  F              H        H  A                   |
 CDDDDDDDDDDDDDDDDDDE   CDDDDDDDE                |
-E                     A           G             |
+                      A           G             |
  F                  B             G             |
  A      CE   A  A                 G   Q     Z   |
-  CE   A                A  A S    B  CDE  CDE   |
-    A      V      AA    A  CDDE                 |
-     A    CDE    A      AS A     A              |
+  CE   A                G  G S    B  CDE  CDE   |
+    A      V      CE    G  GCDE                 |
+     A    CDE    A      GS G     A              |
          A    A         CDDE          A         |
                A                     A          |
   V            T            O     F A           |
