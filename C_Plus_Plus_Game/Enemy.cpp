@@ -248,3 +248,4 @@ float Enemy::jump()
 	}
 	return accel;
 }
+

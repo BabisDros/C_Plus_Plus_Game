@@ -13,7 +13,7 @@ void Ability::resetIfCooldownExpired()
 	}
 }
 
-void Ability::setStartTime(float time)
+void Ability::setStartTime(const float& time)
 {
 	m_startTime = time;
 }

@@ -17,7 +17,7 @@ void ParticleSystem::init()
     }     
 }
 //param: bool drawWithOffset. Set it to false for screen UI effects
-void ParticleSystem::draw(bool drawWithOffset)
+void ParticleSystem::draw(const bool& drawWithOffset)
 {
     if (isRunning())
     {
