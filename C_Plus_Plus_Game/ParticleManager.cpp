@@ -29,23 +29,23 @@ void ParticleManager::draw()
 	m_playerBlood->draw();
 }
 
-void ParticleManager::threadUpdate(float dt)
+void ParticleManager::threadUpdate(const float& dt)
 {
 	m_enemyKilledFx->update(dt);
 
 	//better for player effect to complete
-	m_playerBlood->update(dt,true);
+	m_playerBlood->update(dt);
 }
 
 //because the enemy dies and stops moving, we can update m_enemyKilledFx position once
-void ParticleManager::onEnemyDied(const float posX, const float posY)
+void ParticleManager::onEnemyDied(const float& posX, const float& posY)
 {
 	m_enemyKilledFx->followGameobject(posX, posY);
 	m_enemyKilledFx->init();
 }
 
 //because player moves when is damaged, we update the m_playerBlood effect in every movement 
-void ParticleManager::onPlayerMoved(const float posX, const float posY)
+void ParticleManager::onPlayerMoved(const float& posX, const float& posY)
 {
 	m_playerBlood->followGameobject(posX, posY);
 }

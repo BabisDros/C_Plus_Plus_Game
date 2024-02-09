@@ -14,8 +14,8 @@ public:
 	~ParticleManager();
 	void init();
 	void draw();
-	void threadUpdate(float dt);
-	void onEnemyDied(const float posX, const float posY);
-	void onPlayerMoved(const float posX, const float posY);
+	void threadUpdate(const float& dt);
+	void onEnemyDied(const float& posX, const float& posY);
+	void onPlayerMoved(const float& posX, const float& posY);
 	void onPlayerHurt();
 };

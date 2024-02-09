@@ -47,7 +47,7 @@ void GameState::draw()
 	UIManager::getInstance()->draw();
 }
 
-void GameState::update(float dt)
+void GameState::update(const float& dt)
 {
 	if (dt > 200) return;	//? it been too long since last frame
 	/* fixes screenshaking, basically reducing frames, no issues currently, no need to enable it
@@ -103,7 +103,7 @@ void GameState::handleStates()
         else if (graphics::getKeyState(graphics::SCANCODE_L))
         {
             LevelManager::getInstance()->m_loadingFile = true;
-            LevelManager::getInstance()->loadSaveFile();
+            LevelManager::getInstance()->loadSavedFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
 			m_time = graphics::getGlobalTime() / 1000 - 0.5f;	//reduce delay till showing fps
@@ -119,8 +119,7 @@ void GameState::handleStates()
 		{
 			m_currentState = States::Paused;
 			m_suspendExecution = true;
-		}
-		
+		}	
 	}
 	else if (m_currentState == Paused)
     {      
@@ -144,7 +143,7 @@ void GameState::handleStates()
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
 			CallbackManager::getInstance()->m_pointsChanged.trigger(0,true);
 			MusicManager::getInstance()->m_playedLoseSound = false;
-			LevelManager::getInstance()->m_restart = true;
+			LevelManager::getInstance()->setRestartAfterDeath(true);
 			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
 		}
 	}
@@ -181,9 +180,9 @@ void GameState::showFPS()
 	}
 }
 
-void GameState::onPointsCollected(int points,bool setValue)
+void GameState::onPointsCollected(int points,bool set)
 {
-	if (setValue)
+	if (set)
 	{
 		m_points = points;
 	}
@@ -193,9 +192,9 @@ void GameState::onPointsCollected(int points,bool setValue)
 	}
 }
 
-void GameState::onPlayerLivesChanged(int life,bool setValue)
+void GameState::onPlayerLivesChanged(int life,bool set)
 {
-	if (setValue)
+	if (set)
 	{
 		m_lives = life;
 	}
@@ -258,10 +257,41 @@ int GameState::getInitialHealth() const
 	return m_initialHealth;
 }
 
+
+Player* GameState::getPlayer() const
+{
+	return m_player;
+}
+
+void GameState::setPlayer(Player* player)
+{
+	m_player = player;
+}
+
+Level* GameState::getLevel() const
+{
+	return m_current_level;
+}
+
+void GameState::setLevel(Level* level)
+{
+	m_current_level = level;
+}
+
 void GameState::readSprites(std::string folder, std::vector<std::string>& myVec)
 {
 	for (const auto& entry : std::filesystem::directory_iterator(getFullAssetPath(folder)))
 	{
 		myVec.push_back(entry.path().u8string().replace(0, getFullAssetPath("").size(), ""));
 	}
+}
+
+int GameState::getLastHealth() const
+{
+	return playersLevelStartingHealth;
+}
+
+void GameState::setLastHealth(const int& health)
+{
+	playersLevelStartingHealth = health;
 }

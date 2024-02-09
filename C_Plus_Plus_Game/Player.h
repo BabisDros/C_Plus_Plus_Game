@@ -36,9 +36,9 @@ class Player :public IDestructible, public Entity
 
 	std::vector<std::string>* m_sprites_ptr;
 	float jump();
-	void fly(float dt);
-	void dash(float dt);
-	void slash(float dt);
+	void fly(const float& dt);
+	void dash(const float& dt);
+	void slash(const float& dt);
 	void takeDamage(const int& damage) override;
 
 	bool m_allow_animation_change;
@@ -66,21 +66,21 @@ public:
 	~Player();
 	void init() override;
 	void draw() override;
-	void update(float dt) override;
+	void update(const float& dt) override;
 	
-	void movement(float dt) override;
+	void movement(const float& dt) override;
 	void destroy() override;
 	void pickAnimation();
 	
 	void setPushedState(bool isPushed);
 	void setPushed(float x, float y);
-	void getPushed(float dt);
+	void getPushed(const float& dt);
 	Ability* getDashAbility();
 	
 	void moveLeft();
 	void moveRight();
 	void forceStop();
-	void automaticPlayerMovement(float dt);
+	void automaticPlayerMovement(const float& dt);
 	void allowPlayerMovement();
 	void setAnimation(AnimationSequence anim);
 protected:

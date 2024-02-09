@@ -43,7 +43,7 @@ void Enemy::draw()
 	m_healthUi->draw();
 }
 
-void Enemy::update(float dt)
+void Enemy::update(const float& dt)
 {
 	m_collisingLR = false;
 	checkCollision(m_state->getLevel()->getBlocks());
@@ -73,7 +73,7 @@ void Enemy::destroy()
 }
 
 
-void Enemy::movement(float dt)
+void Enemy::movement(const float& dt)
 {
 	float delta_time = dt / 1000.f;
 	switch (m_movement_type)
@@ -99,7 +99,7 @@ void Enemy::movement(float dt)
 	}
 }
 
-void Enemy::movementStaticX(float dt)
+void Enemy::movementStaticX(const float& dt)
 {
 	if (fabs(m_pos_x - m_homebase_x + dt * m_vx) > m_movement_range_x)
 	{
@@ -120,7 +120,7 @@ void Enemy::movementStaticX(float dt)
 	}
 }
 
-void Enemy::movementStaticY(float dt)
+void Enemy::movementStaticY(const float& dt)
 {
 	if (fabs(m_pos_y - m_homebase_y + dt * m_vy) > m_movement_range_y)
 	{
@@ -141,7 +141,7 @@ void Enemy::movementStaticY(float dt)
 	}
 }
 
-void Enemy::movementDynamic(float dt)
+void Enemy::movementDynamic(const float& dt)
 {
 	if (fabs(m_state->getPlayer()->m_pos_x - m_homebase_x) > m_movement_range_x + 1)	// if too far from player, do not attempt to chase
 	{
@@ -173,7 +173,7 @@ void Enemy::movementDynamic(float dt)
 	}
 }
 
-void Enemy::attack(float delta_time)
+void Enemy::attack(const float& delta_time)
 {
 	float dt = delta_time / 1000.f;
 	if (m_rangedAttack) rangedAttack(dt);
@@ -184,7 +184,7 @@ void Enemy::attack(float delta_time)
 	}
 }
 
-void Enemy::rangedAttack(float dt)
+void Enemy::rangedAttack(const float& dt)
 {
 	m_projectile.update(dt);
 	if (!m_throwProjectile.isRunning())
@@ -248,3 +248,4 @@ float Enemy::jump()
 	}
 	return accel;
 }
+

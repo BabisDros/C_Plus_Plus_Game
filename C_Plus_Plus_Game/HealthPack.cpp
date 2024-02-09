@@ -11,7 +11,7 @@ void HealthPack::draw()
 	LevelBox::draw();
 }
 
-void HealthPack::update(float dt)
+void HealthPack::update(const float& dt)
 {
 	if (isActive())
 	{

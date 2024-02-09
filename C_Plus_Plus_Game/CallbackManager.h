@@ -12,6 +12,5 @@ public:
 	CstmCallback<int,bool> m_playerLivesChanged;
 	//int: points. bool: setValue (e.g true if want to set it to the given point value)
 	CstmCallback<int, bool> m_pointsChanged;
-
 	CstmCallback<float,float> m_enemyDied;
 };

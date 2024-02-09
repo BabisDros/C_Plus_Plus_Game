@@ -15,6 +15,6 @@ public:
     Star(std::string name) :GameObject(name) {};
     void init() override;
     void draw() override;
-    void update(float dt) override;
+    void update(const float& dt) override;
     bool hasGrown() const;
 };

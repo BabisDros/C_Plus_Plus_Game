@@ -18,15 +18,15 @@ void LevelManager::init()
 	levels_list.erase(std::remove(levels_list.begin(), levels_list.end(), "save file"), levels_list.end());
 }
 
-void LevelManager::update(float dt)
+void LevelManager::update(const float& dt)
 {
-	if (!m_restart) return;
+	if (!m_restart && !m_restartAfterDeath) return;
 		restartLevel();
 }
 
 void LevelManager::nextLevel(bool restartingLevel)
 {
-	if (m_state->m_current_level) m_state->m_current_level->~Level();
+	if (m_state->getLevel()) m_state->getLevel()->~Level();
 	if (!restartingLevel && m_level_counter + 1 >= levels_list.size())
 	{
 		m_state->setState(Win);
@@ -34,11 +34,11 @@ void LevelManager::nextLevel(bool restartingLevel)
 	else
 	{
 		if (!restartingLevel) { ++m_level_counter; }
-		m_state->m_current_level = new Level(levels_list[(m_level_counter)]);
-		m_state->m_current_level->init();
-
-		if (!m_state->m_player) m_state->m_player = new Player("Player", m_state->getInitialHealth());
-		m_state->m_player->init();
+		m_state->setLevel(new Level(levels_list[(m_level_counter)]));
+		m_state->getLevel()->init();
+		if (!m_state->getPlayer()) m_state->setPlayer(new Player("Player", m_state->getInitialHealth()));
+		m_state->getPlayer()->init();
+		
 		m_state->m_goNextLevel = false;
 		//not needed to save in a restart
 		if (restartingLevel) return;
@@ -48,17 +48,25 @@ void LevelManager::nextLevel(bool restartingLevel)
 void LevelManager::restartLevel()
 {
 	m_state->m_suspendExecution = true;
-	m_state->m_player->setInitialHealthValues(m_state->getInitialHealth());
+	if (m_restart)
+		m_state->getPlayer()->setHealth(m_state->getLastHealth());
+	else if (m_restartAfterDeath)
+	{
+		m_state->getPlayer()->setInitialHealthValues(m_state->getInitialHealth());
+		m_state->setLastHealth(m_state->getInitialHealth());
+	}
+		
 	nextLevel(true);
 	m_state->m_pauseButtonPressed = false;
 	m_state->m_suspendExecution = false;
 	m_restart = false;
+	m_restartAfterDeath = false;
 	m_state->setState(InGame);
 }
 
 void LevelManager::onPlayerDied()
 {
-	m_restart = true;
+	m_restartAfterDeath = true;
 	m_state->getPlayer()->setPushedState(false);
 }
 
@@ -66,14 +74,14 @@ void LevelManager::saveData()
 {
 	std::ofstream writer;
 	writer.open("data\\save file.txt", std::ofstream::out | std::ofstream::trunc);
-	writer << m_state->m_current_level->m_name << std::endl;
+	writer << m_state->getLevel()->m_name << std::endl;
 	writer << "HP: " << m_state->getPlayer()->getHealth() << std::endl;
 	writer << "Lives: " << m_state->m_lives << std::endl;
 	writer << "Score: " << m_state->m_points << std::endl;
 	writer.close();
 }
 
-void LevelManager::loadSaveFile()
+void LevelManager::loadSavedFile()
 {
 	std::ifstream saveFile("data\\save file.txt");
 	std::string line;
@@ -87,6 +95,7 @@ void LevelManager::loadSaveFile()
 		std::getline(saveFile, line);	// hp
 		m_state->getLevel()->getDataValue(line);
 		m_state->getPlayer()->setHealth((stoi(line)));
+		m_state->setLastHealth(m_state->getPlayer()->getHealth());
 		CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
 		std::getline(saveFile, line);
@@ -111,11 +120,11 @@ void LevelManager::levelEndCutscene()
 	LevelBox* door = m_state->getLevel()->getLevelEnd();
 	if (!m_cutscene_move_player)
 	{
-		if (m_animation_timer == 0) m_animation_timer = *GameState::getInstance()->getPausableClock();
+		if (m_animation_timer == 0) m_animation_timer = *m_state->getPausableClock();
 		
 		int index = 0;
 		int size = m_state->m_door_sprites.size();
-		float dif = *GameState::getInstance()->getPausableClock() - m_animation_timer;	// change texture
+		float dif = *m_state->getPausableClock() - m_animation_timer;	// change texture
 		index = (int)(2 * dif) % (m_state->m_door_sprites).size();
 		door->setTexture((m_state->m_door_sprites).at(index));
 
@@ -150,4 +159,9 @@ void LevelManager::levelEndCutscene()
 
 void LevelManager::levelStartCutscene()
 {
+}
+
+void LevelManager::setRestartAfterDeath(bool value)
+{
+	m_restartAfterDeath = value;
 }

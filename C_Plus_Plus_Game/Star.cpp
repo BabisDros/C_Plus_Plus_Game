@@ -14,7 +14,7 @@ void Star::draw()
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 4, m_width, m_height, m_brush);
 }
 
-void Star::update(float dt)
+void Star::update(const float& dt)
 {	
 	float deltaSec = dt / 1000 * growthRate;		
 	if (m_height < m_finalSize)

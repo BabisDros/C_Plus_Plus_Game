@@ -35,7 +35,8 @@ void DamageBox::draw()
 	}
 }
 
-void DamageBox::update(float dt)
+
+void DamageBox::update(const float& dt)
 {	
 	if (isActive())
 	{
@@ -59,7 +60,7 @@ void DamageBox::setBrush(const graphics::Brush& brush)
 
 void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerToScan)
 {
-	for (auto& gameobj: containerToScan)
+	for (auto* gameobj: containerToScan)
 	{		
 		/*all objects will be setActive(false) when health is 0. 
 		TODO: if performance improvement needed : could delete them, and shorten the list*/

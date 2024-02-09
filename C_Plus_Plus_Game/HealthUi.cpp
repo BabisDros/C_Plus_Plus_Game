@@ -11,13 +11,13 @@ void HealthUI::init()
 	setCustomBrushProperties(&m_valueBrush, 0.8f, 0.8f);
 }
 
-void HealthUI::setPosition(float x, float y)
+void HealthUI::setPosition(const float& x, const float& y)
 {
 	m_pos_x = x;
 	m_pos_y = y;
 }
 
-void HealthUI::setSize(float width, float height)
+void HealthUI::setSize(const float& width, const float& height)
 {
 	m_width = width;
 	m_height = height;

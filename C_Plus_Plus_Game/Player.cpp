@@ -45,7 +45,7 @@ void Player::draw()
 	m_slashWeapon.draw();	
 }
 
-void Player::update(float dt)
+void Player::update(const float& dt)
 {
 	if (m_jumpAnimation.isRunning()) m_jumpAnimation.resetIfCooldownExpired();
 	if (m_attackAnimation.isRunning()) m_attackAnimation.resetIfCooldownExpired();
@@ -158,7 +158,7 @@ void Player::setPushed(float x, float y)
 	graphics::playSound("music\\Body_Flesh_8.wav", 0.04f);
 }
 
-void Player::getPushed(float delta_time)
+void Player::getPushed(const float& delta_time)
 {
 	if (*GameState::getInstance()->getPausableClock() - m_being_pushed_timer > 0.2f)
 	{
@@ -205,7 +205,7 @@ void Player::setAnimation(AnimationSequence anim)
 	m_animation = anim;
 }
 
-void Player::automaticPlayerMovement(float dt)
+void Player::automaticPlayerMovement(const float& dt)
 {
 	float move = 0;
 	if (m_force_move_left)
@@ -238,7 +238,7 @@ void Player::automaticPlayerMovement(float dt)
 	m_pos_y += dt * m_vy;
 }
 
-void Player::movement(float delta_time)
+void Player::movement(const float& delta_time)
 {
 	float move = 0;
 	if (m_dashAbility.getElapsedTime() - m_dashAbility.getDuration() > 0)
@@ -331,7 +331,7 @@ float Player::jump()
 	return accel;
 }
 
-void Player::fly(float delta_time)
+void Player::fly(const float& delta_time)
 {
 	const float velocity = 10.0f;
 	if (graphics::getKeyState(graphics::SCANCODE_LEFT))	//? movement
@@ -354,7 +354,7 @@ void Player::fly(float delta_time)
 	}
 }
 
-void Player::dash(float delta_time)
+void Player::dash(const float& delta_time)
 {
 	if (graphics::getKeyState(graphics::SCANCODE_Z) && !m_dashAbility.isRunning())
 	{
@@ -378,7 +378,7 @@ void Player::dash(float delta_time)
 	}
 }
 
-void Player::slash(float delta_time)
+void Player::slash(const float& delta_time)
 {
 	if (graphics::getKeyState(graphics::SCANCODE_X) && !m_slashAbility.isRunning())
 	{	
@@ -411,12 +411,16 @@ void Player::slash(float delta_time)
 
 void Player::takeDamage(const int& damage)
 {
+	
 	//call base class to update health
 	IDestructible::takeDamage(damage);
 
 	//triggers the methods with two arguments and with empty
 	CallbackManager::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	if (damage>0) CallbackManager::getInstance()->m_playHurtFx.trigger();
+	if (m_currentHealth > 0)
+	{
+		if (damage > 0) CallbackManager::getInstance()->m_playHurtFx.trigger();
+	}
 }
 
 

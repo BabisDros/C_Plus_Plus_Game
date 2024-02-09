@@ -25,7 +25,7 @@ void Particle::init()
 	m_state = GameState::getInstance();
 }
 
-void Particle::draw(bool drawWithOffset)
+void Particle::draw(const bool& drawWithOffset)
 {
 	float posX = drawWithOffset ? m_currentPosX + m_state->m_global_offset_x : m_currentPosX;
 	float posY = drawWithOffset ? m_currentPosY + m_state->m_global_offset_y : m_currentPosY;
@@ -38,7 +38,7 @@ void Particle::draw(bool drawWithOffset)
 	}
 }
 
-void Particle::update(float dt)
+void Particle::update(const float& dt)
 {
 	if (isAlive())
 	{

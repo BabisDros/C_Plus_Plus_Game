@@ -21,7 +21,7 @@ public:
 	int m_draw_direction;
 	void init() override;
 	void draw() override;
-	void update(float dt) override;
+	void update(const float& dt) override;
 	void setParentIsPlayer(bool isPlayer);
 	void setBrush(const graphics::Brush& brush);
 	void checkForCollisions(const std::list<CollisionObject*> containerToScan);

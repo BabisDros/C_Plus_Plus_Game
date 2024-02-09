@@ -16,7 +16,7 @@ public:
 
 	float getElapsedTime();
 	void resetIfCooldownExpired();
-	void setStartTime(float time);
+	void setStartTime(const float& time);
 	float getStartTime()const;
 	float getDuration()const;
 	float getCooldown()const;

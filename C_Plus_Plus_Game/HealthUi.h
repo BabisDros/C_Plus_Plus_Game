@@ -25,8 +25,8 @@ public:
 
 	void init() override;
 	void draw() override {}
-	void setPosition(float x, float y);
-	void setSize(float width, float height);
+	void setPosition(const float& x, const float& y);
+	void setSize(const float& width, const float& height);
 	void updateUIOnDamage(const int& initialHealth, const  int& currentHealth);
 	float getHeight() const;
 };

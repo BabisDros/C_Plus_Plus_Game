@@ -17,7 +17,7 @@ void ParticleSystem::init()
     }     
 }
 //param: bool drawWithOffset. Set it to false for screen UI effects
-void ParticleSystem::draw(bool drawWithOffset)
+void ParticleSystem::draw(const bool& drawWithOffset)
 {
     if (isRunning())
     {
@@ -30,9 +30,9 @@ void ParticleSystem::draw(bool drawWithOffset)
     }
 }
 
-void ParticleSystem::update(float dt, bool playOnPaused)
+void ParticleSystem::update(const float& dt)
 {
-    if (!playOnPaused && m_state->getCurrentState() == Paused) return;
+    if (m_state->getCurrentState() == Paused) return;
     if (m_currentLife > 0)
     {      
         float deltaTimeSec = dt / 1000;
@@ -60,7 +60,7 @@ void ParticleSystem::update(float dt, bool playOnPaused)
     }  
 }
 
-void ParticleSystem::updateThreadFunction(float dt)
+void ParticleSystem::updateThreadFunction(const float& dt)
 {
     for (auto& particle : m_particles)
     {
@@ -93,7 +93,7 @@ bool ParticleSystem::isRunning() const
     return (m_currentLife > 0 && m_currentLife < m_lifetime);
 }
 
-void ParticleSystem::followGameobject(float x, float y)
+void ParticleSystem::followGameobject(const float& x, const float& y)
 {
     m_posX = x;
     m_posY = y;
