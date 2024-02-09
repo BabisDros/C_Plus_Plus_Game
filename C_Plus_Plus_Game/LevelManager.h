@@ -17,7 +17,7 @@ public:
 	void restartLevel();
 	void onPlayerDied();
 	void saveData();
-	void loadSaveFile();
+	void loadSavedFile();
 	void levelEndCutscene();
 	void levelStartCutscene();
 	bool m_loadingFile = false;

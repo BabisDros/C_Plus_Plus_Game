@@ -411,12 +411,16 @@ void Player::slash(const float& delta_time)
 
 void Player::takeDamage(const int& damage)
 {
+	
 	//call base class to update health
 	IDestructible::takeDamage(damage);
 
 	//triggers the methods with two arguments and with empty
 	CallbackManager::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	if (damage>0) CallbackManager::getInstance()->m_playHurtFx.trigger();
+	if (m_currentHealth > 0)
+	{
+		if (damage > 0) CallbackManager::getInstance()->m_playHurtFx.trigger();
+	}
 }
 
 

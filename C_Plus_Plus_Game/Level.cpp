@@ -15,7 +15,6 @@ void Level::init()
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();
-
 	for (auto p_gob : m_destructible_objects)
 		if (p_gob) p_gob->init();
 }
@@ -295,6 +294,7 @@ LevelBox* Level::getLevelEnd() const
 {
 	return m_level_end;
 }
+
 
 template <typename Container>
 void Level::destroyGameObjects(Container& myContainer)

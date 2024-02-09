@@ -4,7 +4,7 @@
 
 static void setCustomBrushProperties(graphics::Brush* brush, float fillOpacity, float outlineOpacity, std::string texture = "");
 static void debugDraw(float centerX, float centerY, float width, float height, int id = -1);
-static float calcCenteringXForTextSize(const std::string str, const float& targetFontSize);
+static float calcCenteringXForTextSize(const std::string& str, const float& targetFontSize);
 static float calcCenteringYForTextSize(const float& targetFontSize);
 
 static void setCustomBrushProperties(graphics::Brush* brush, float fillOpacity, float outlineOpacity, std::string texture)
@@ -40,7 +40,7 @@ static void debugDraw(float centerX, float centerY, float width, float height,in
 
 /*in order to work correctly, use monospace font MONACO because the space size 0.18 is calculated specificly
 param stringSize : e.g m_healthTxt. To understand how centering works see debugDraw method*/
-static float calcCenteringXForTextSize(const std::string str, const float& targetFontSize)
+static float calcCenteringXForTextSize(const std::string& str, const float& targetFontSize)
 {
 	int spaceCount = 0;
 	for (char c : str) 

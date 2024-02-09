@@ -103,7 +103,7 @@ void GameState::handleStates()
         else if (graphics::getKeyState(graphics::SCANCODE_L))
         {
             LevelManager::getInstance()->m_loadingFile = true;
-            LevelManager::getInstance()->loadSaveFile();
+            LevelManager::getInstance()->loadSavedFile();
             LevelManager::getInstance()->m_loadingFile = false;
             m_currentState = States::InGame;
 			m_time = graphics::getGlobalTime() / 1000 - 0.5f;	//reduce delay till showing fps
@@ -119,8 +119,7 @@ void GameState::handleStates()
 		{
 			m_currentState = States::Paused;
 			m_suspendExecution = true;
-		}
-		
+		}	
 	}
 	else if (m_currentState == Paused)
     {      
@@ -258,10 +257,31 @@ int GameState::getInitialHealth() const
 	return m_initialHealth;
 }
 
+void GameState::setPlayer(Player* player)
+{
+	m_player = player;
+}
+
+void GameState::setLevel(Level* level)
+{
+	m_current_level = level;
+}
+
 void GameState::readSprites(std::string folder, std::vector<std::string>& myVec)
 {
 	for (const auto& entry : std::filesystem::directory_iterator(getFullAssetPath(folder)))
 	{
 		myVec.push_back(entry.path().u8string().replace(0, getFullAssetPath("").size(), ""));
 	}
+}
+
+
+int GameState::getPlayersLevelHealth() const
+{
+	return playersLevelStartingHealth;
+}
+
+void GameState::setPlayersLevelHealth(int health)
+{
+	playersLevelStartingHealth = health;
 }

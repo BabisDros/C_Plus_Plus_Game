@@ -26,7 +26,7 @@ void LevelManager::update(const float& dt)
 
 void LevelManager::nextLevel(bool restartingLevel)
 {
-	if (m_state->m_current_level) m_state->m_current_level->~Level();
+	if (m_state->getLevel()) m_state->getLevel()->~Level();
 	if (!restartingLevel && m_level_counter + 1 >= levels_list.size())
 	{
 		m_state->setState(Win);
@@ -34,11 +34,11 @@ void LevelManager::nextLevel(bool restartingLevel)
 	else
 	{
 		if (!restartingLevel) { ++m_level_counter; }
-		m_state->m_current_level = new Level(levels_list[(m_level_counter)]);
-		m_state->m_current_level->init();
+		m_state->setLevel(new Level(levels_list[(m_level_counter)]));
+		m_state->getLevel()->init();
 
-		if (!m_state->m_player) m_state->m_player = new Player("Player", m_state->getInitialHealth());
-		m_state->m_player->init();
+		if (!m_state->getPlayer()) m_state->setPlayer(new Player("Player", m_state->getInitialHealth()));
+		m_state->getPlayer()->init();
 		m_state->m_goNextLevel = false;
 		//not needed to save in a restart
 		if (restartingLevel) return;
@@ -48,7 +48,8 @@ void LevelManager::nextLevel(bool restartingLevel)
 void LevelManager::restartLevel()
 {
 	m_state->m_suspendExecution = true;
-	m_state->m_player->setInitialHealthValues(m_state->getInitialHealth());
+	if (m_state->getCurrentState() != Lose)
+		m_state->getPlayer()->setHealth(m_state->getPlayersLevelHealth());
 	nextLevel(true);
 	m_state->m_pauseButtonPressed = false;
 	m_state->m_suspendExecution = false;
@@ -66,14 +67,14 @@ void LevelManager::saveData()
 {
 	std::ofstream writer;
 	writer.open("data\\save file.txt", std::ofstream::out | std::ofstream::trunc);
-	writer << m_state->m_current_level->m_name << std::endl;
+	writer << m_state->getLevel()->m_name << std::endl;
 	writer << "HP: " << m_state->getPlayer()->getHealth() << std::endl;
 	writer << "Lives: " << m_state->m_lives << std::endl;
 	writer << "Score: " << m_state->m_points << std::endl;
 	writer.close();
 }
 
-void LevelManager::loadSaveFile()
+void LevelManager::loadSavedFile()
 {
 	std::ifstream saveFile("data\\save file.txt");
 	std::string line;
@@ -87,6 +88,7 @@ void LevelManager::loadSaveFile()
 		std::getline(saveFile, line);	// hp
 		m_state->getLevel()->getDataValue(line);
 		m_state->getPlayer()->setHealth((stoi(line)));
+		m_state->setPlayersLevelHealth(m_state->getPlayer()->getHealth());
 		CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
 		std::getline(saveFile, line);
