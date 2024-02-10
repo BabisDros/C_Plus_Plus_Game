@@ -67,7 +67,7 @@ void ParticleSystem::updateThreadFunction(const float& dt)
         particle->update(dt);
     }
 }
-//TODO:HANDLE small width values under 1
+
 float ParticleSystem::calcRandomPosX() const
 {
     float firstNumber = 0;
