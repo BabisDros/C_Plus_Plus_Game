@@ -57,10 +57,10 @@ void GameState::update(const float& dt)
 	LevelManager::getInstance()->update(dt);
 	handleStates();
 	if (!m_current_level) return;
+	ParticleManager::getInstance()->threadUpdate(dt);
 
 	if (!m_suspendExecution)
 	{
-		ParticleManager::getInstance()->threadUpdate(dt);
 		m_current_level->update(dt);
 		m_pausableClock += graphics::getDeltaTime()/1000;
 	}

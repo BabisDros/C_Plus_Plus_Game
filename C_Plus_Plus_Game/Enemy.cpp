@@ -30,7 +30,7 @@ void Enemy::draw()
 
 	m_mirrored = m_lookingDirection == -1;
 	if (m_mirrored) graphics::setScale(-1.f, 1.f); //mirrors image
-	//! -0.5f MUST be gone
+	
 	graphics::drawRect(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_brush);
 
 	graphics::resetPose(); //reset mirror for next call

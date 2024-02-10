@@ -113,7 +113,7 @@ void UIManager::drawScore()
 	graphics::drawText(m_state->getCanvasWidth() - 3.2f, 1.f, .6f, m_scoreTxt, textBrush);	
 }
 
-void UIManager::drawPause()	//! make it better than a greyed out screen
+void UIManager::drawPause()
 {	
 	graphics::drawRect(m_state->getCanvasWidth() / 2, m_state->getCanvasHeight() / 2, m_state->getCanvasWidth(),
 		m_state->getCanvasHeight(), paused_brush);

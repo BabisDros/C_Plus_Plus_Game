@@ -9,8 +9,7 @@ class Level : public GameObject
 	float m_center_x = 3.0f;
 	float m_center_y = 3.0f;
 	int pointsGainedInLevel = 0;
-	/*/Seperate list for destructibles to improve performance. 
-	TODO: use a binary search to find elements and then remove destructed*/
+	
 	std::list<CollisionObject*> m_destructible_objects;
 	std::vector<LevelBox*> m_blocks;
 	std::vector<LevelBox*> m_background_objects;

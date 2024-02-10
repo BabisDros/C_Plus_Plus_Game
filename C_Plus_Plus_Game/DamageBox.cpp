@@ -62,8 +62,8 @@ void DamageBox::checkForCollisions(const std::list<CollisionObject*> containerTo
 {
 	for (auto* gameobj: containerToScan)
 	{		
-		/*all objects will be setActive(false) when health is 0. 
-		TODO: if performance improvement needed : could delete them, and shorten the list*/
+		//all objects will be setActive(false) when health is 0. 
+		
 		if (intersect(*gameobj) && gameobj->isActive()) // contact was found
 		{		
 			if (m_parentIsPlayer)
@@ -95,8 +95,8 @@ void DamageBox::checkForCollisions(CollisionObject* player)
 	//check if the objects of the container are destructible
 	IDestructible* destructiblePtr = dynamic_cast<IDestructible*>(player);
 
-	/*all objects will be setActive(false) when health is 0.
-	TODO: if performance improvement needed : could delete them, and shorten the list*/
+	//all objects will be setActive(false) when health is 0.
+	
 	if (intersect(*player) && destructiblePtr)
 	{
 		pushPlayer();

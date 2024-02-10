@@ -27,7 +27,7 @@ void Level::draw()
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 
-	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush); //! make w * 2.0f and h * into var for direct access from/to init()
+	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush);
 
 	for (auto p_gob : m_blocks)
 		p_gob->draw();
@@ -73,7 +73,7 @@ void Level::read()
 
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
-	int x, y=0;
+	int x, y;
 	y = -m_state->getCanvasHeight() * 0.5f;
 	if (myfile.is_open())
 	{
@@ -94,7 +94,7 @@ void Level::read()
 				std::getline(myfile, line);
 				while (line[0] !='$')
 				{
-					x = -m_state->getCanvasWidth() * 0.5f; //! this (0.5f) need to be var, check draw
+					x = -m_state->getCanvasWidth() * 0.5f;
 					bool tag_found, destructible;
 					for (char ch : line)
 					{
@@ -314,7 +314,7 @@ Level::~Level()
 	destroyGameObjects(m_destructible_objects);
 	destroyGameObjects(m_blocks);
 	destroyGameObjects(m_background_objects);
-	//TODO:FIx restart after death this is to reset points gained in a case of level restart
+
 	if (LevelManager::getInstance()->m_restart && m_state->getCurrentState() !=Lose)
 	{ 
 		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel, false);
