@@ -3,14 +3,14 @@
 #include "Level.h"
 #include "Player.h"
 #include <fstream>
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include "MusicManager.h"
 
 void LevelManager::init()
 {
 	m_state = GameState::getInstance();
 	std::string path = m_state->getFullDataPath("");
-	CallbackManager::getInstance()->m_playerDied.addArgActionCallback(std::bind(&LevelManager::onPlayerDied, this));
+	GameEvents::getInstance()->m_playerDied.addArgActionCallback(std::bind(&LevelManager::onPlayerDied, this));
 
 	for (const auto& entry : std::filesystem::directory_iterator(path))	// list of level names on data folder
 		levels_list.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention
@@ -96,15 +96,15 @@ void LevelManager::loadSavedFile()
 		m_state->getLevel()->getDataValue(line);
 		m_state->getPlayer()->setHealth((stoi(line)));
 		m_state->setLastHealth(m_state->getPlayer()->getHealth());
-		CallbackManager::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
+		GameEvents::getInstance()->m_playerHealthChanged.trigger(m_state->getInitialHealth(), stoi(line));
 
 		std::getline(saveFile, line);
 		m_state->getLevel()->getDataValue(line);	// lives
-		CallbackManager::getInstance()->m_playerLivesChanged.trigger(stoi(line), true);
+		GameEvents::getInstance()->m_playerLivesChanged.trigger(stoi(line), true);
 
 		std::getline(saveFile, line);
 		m_state->getLevel()->getDataValue(line);	// score
-		CallbackManager::getInstance()->m_pointsChanged.trigger(std::stoi(line), true);
+		GameEvents::getInstance()->m_pointsChanged.trigger(std::stoi(line), true);
 	}
 	else
 	{

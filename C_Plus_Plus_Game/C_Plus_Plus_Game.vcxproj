@@ -174,7 +174,7 @@
     <ClInclude Include="DamageBox.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="CstmCallback.h" />
-    <ClInclude Include="CallbackManager.h" />
+    <ClInclude Include="GameEvents.h" />
     <ClInclude Include="HealthPack.h" />
     <ClInclude Include="HealthUI.h" />
     <ClInclude Include="Entity.h" />

@@ -3,7 +3,7 @@
 #include "LevelManager.h"
 #include "UIManager.h"
 #include "GameState.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include "ParticleManager.h"
 #include "Level.h"
 #include <filesystem> // to read sprites for animation 
@@ -17,8 +17,8 @@ GameState::GameState()
 
 void GameState::init()
 {	
-	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1, std::placeholders::_2));
-	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1, std::placeholders::_2));
+	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1, std::placeholders::_2));
+	GameEvents::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1, std::placeholders::_2));
 	UIManager::getInstance()->init();
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	
@@ -84,7 +84,7 @@ GameState::~GameState()
 		delete m_current_level;
 	}
 	LevelManager::getInstance()->delptr();
-	CallbackManager::getInstance()->delptr();
+	GameEvents::getInstance()->delptr();
 	UIManager::getInstance()->delptr();
 	ParticleManager::getInstance()->delptr();
 	MusicManager::getInstance()->delptr();
@@ -141,10 +141,10 @@ void GameState::handleStates()
 		if (graphics::getKeyState(graphics::SCANCODE_R))
 		{
 			LevelManager::getInstance()->m_level_counter = 0;	//go back to first level and reset score
-			CallbackManager::getInstance()->m_pointsChanged.trigger(0,true);
+			GameEvents::getInstance()->m_pointsChanged.trigger(0,true);
 			MusicManager::getInstance()->m_playedLoseSound = false;
 			LevelManager::getInstance()->setRestartAfterDeath(true);
-			CallbackManager::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
+			GameEvents::getInstance()->m_playerLivesChanged.trigger(m_initialLives,true);
 		}
 	}
 	else if (m_currentState == Win)

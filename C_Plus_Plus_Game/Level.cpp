@@ -1,7 +1,7 @@
 #pragma once
 #include "Level.h"
 #include "Player.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include "ParticleManager.h"
 #include "LevelManager.h"
 #include "MusicManager.h"
@@ -11,7 +11,7 @@
 
 void Level::init()
 {
-	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
+	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();	
@@ -57,7 +57,7 @@ void Level::update(const float& dt)
 	{
 		MusicManager::getInstance()->m_play_door_sound = true;
 		m_state->m_goNextLevel = true; // level finished
-		CallbackManager::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
+		GameEvents::getInstance()->m_pointsChanged.trigger(100,false);//triggers a point changed with value 100
 		m_state->setLastHealth(m_state->getPlayer()->getHealth());//sets player's last health value
 	}	
 	
@@ -317,6 +317,6 @@ Level::~Level()
 
 	if (LevelManager::getInstance()->m_restart && m_state->getCurrentState() !=Lose)
 	{ 
-		CallbackManager::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel, false);
+		GameEvents::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel, false);
 	}	
 }

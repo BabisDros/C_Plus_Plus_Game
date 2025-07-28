@@ -1,7 +1,7 @@
 #include "UIManager.h"
 #include "util.h"
 #include "Player.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include "MusicManager.h"
 
 void UIManager::init()
@@ -9,9 +9,9 @@ void UIManager::init()
 	m_state = GameState::getInstance();
 	setCustomBrushProperties(&m_menu, 1, 0, m_state->getFullAssetPath("UI\\main_menu_alt.png"));
 
-	CallbackManager::getInstance()->m_playerHealthChanged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
-	CallbackManager::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this));
-	CallbackManager::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&UIManager::onPlayerLivesChanged, this));
+	GameEvents::getInstance()->m_playerHealthChanged.addArgActionCallback(std::bind(&UIManager::onPlayerHealthChanged, this, std::placeholders::_1, std::placeholders::_2));
+	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&UIManager::onPointsChanged, this));
+	GameEvents::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&UIManager::onPlayerLivesChanged, this));
 	m_playerHealthUI = HealthUIFixed(0, 0, 5, 1);
 	 
 	m_lostEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,

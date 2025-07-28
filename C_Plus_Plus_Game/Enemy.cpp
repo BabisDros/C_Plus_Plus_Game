@@ -3,7 +3,7 @@
 #include "util.h"
 #include "Level.h"
 #include "Player.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 
 void Enemy::init()
 {
@@ -67,8 +67,8 @@ void Enemy::update(const float& dt)
 
 void Enemy::destroy()
 {
-	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points,false);
-	CallbackManager::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
+	GameEvents::getInstance()->m_pointsChanged.trigger(m_points,false);
+	GameEvents::getInstance()->m_enemyDied.trigger(m_pos_x,m_pos_y);
 	setActive(false);
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "CrateDestructible.h"
 #include "util.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include "Level.h"
 #include "HealthPack.h"
 
@@ -42,5 +42,5 @@ void CrateDestructible::destroy()
 		m_state->getLevel()->getDestructibleObjects().back()->init();
 	}
 	if (m_loot == Extra_loot) graphics::playSound("music\\extra_loot.wav", 0.03f);
-	CallbackManager::getInstance()->m_pointsChanged.trigger(m_points,false);
+	GameEvents::getInstance()->m_pointsChanged.trigger(m_points,false);
 }

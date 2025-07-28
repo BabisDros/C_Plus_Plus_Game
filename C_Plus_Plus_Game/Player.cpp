@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "util.h"
 #include "Level.h"
-#include "CallbackManager.h"
+#include "GameEvents.h"
 #include <filesystem>
 
 AnimationSequence Player::m_animation = Idle;
@@ -26,8 +26,8 @@ void Player::init()
 	m_slashWeapon.setParentDirection(m_lookingDirection);
 
 	//trigger callbackmanager to display health value
-	CallbackManager::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(0, false);//used 0 to initialize the ui
+	GameEvents::getInstance()->m_playerHealthChanged.trigger(IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	GameEvents::getInstance()->m_playerLivesChanged.trigger(0, false);//used 0 to initialize the ui
 }
 
 void Player::draw()
@@ -99,7 +99,7 @@ void Player::update(const float& dt)
 
 void Player::destroy()
 {
-	CallbackManager::getInstance()->m_playerLivesChanged.trigger(-1, false);
+	GameEvents::getInstance()->m_playerLivesChanged.trigger(-1, false);
 	if (m_state->m_lives == 0)
 	{
 		setActive(false);
@@ -108,7 +108,7 @@ void Player::destroy()
 	}
 	else
 	{		
-		CallbackManager::getInstance()->m_playerDied.trigger();
+		GameEvents::getInstance()->m_playerDied.trigger();
 	}
 }
 
@@ -284,7 +284,7 @@ void Player::movement(const float& delta_time)
 	}
 
 	m_pos_x += delta_time * m_vx;
-	CallbackManager::getInstance()->m_playerMoved.trigger(m_pos_x, m_pos_y);
+	GameEvents::getInstance()->m_playerMoved.trigger(m_pos_x, m_pos_y);
 	m_vy -= jump();
 
 	m_vy = std::min(m_max_velocity, m_vy);
@@ -416,10 +416,10 @@ void Player::takeDamage(const int& damage)
 	IDestructible::takeDamage(damage);
 
 	//triggers the methods with two arguments and with empty
-	CallbackManager::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
+	GameEvents::getInstance()->m_playerHealthChanged.trigger( IDestructible::m_initialHealth, IDestructible::m_currentHealth);
 	if (m_currentHealth > 0)
 	{
-		if (damage > 0) CallbackManager::getInstance()->m_playHurtFx.trigger();
+		if (damage > 0) GameEvents::getInstance()->m_playHurtFx.trigger();
 	}
 }
 
