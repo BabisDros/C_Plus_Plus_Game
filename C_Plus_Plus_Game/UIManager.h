@@ -1,11 +1,11 @@
 #pragma once
-#include "Manager.h"
+#include "Singleton.h"
 #include <string>
 #include "HealthUIFixed.h"
 #include "Star.h"
 #include "ParticleSystem.h"
 
-class UIManager: public Manager<UIManager>
+class UIManager: public Singleton<UIManager>
 {
 	class GameState* m_state=nullptr;
 	ParticleSystem* m_lostEffect = nullptr;

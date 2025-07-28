@@ -1,9 +1,9 @@
 #pragma once
-#include "Manager.h"
+#include "Singleton.h"
 #include "ParticleSystem.h"
 #include "GameState.h"
 
-class ParticleManager: public Manager<ParticleManager>
+class ParticleManager: public Singleton<ParticleManager>
 {
 	GameState* m_state= nullptr;
 	ParticleSystem* m_enemyKilledFx = nullptr;

@@ -1,6 +1,6 @@
 #pragma once
-#include "Manager.h"
-class MusicManager: public Manager<MusicManager>
+#include "Singleton.h"
+class MusicManager: public Singleton<MusicManager>
 {
 	class GameState* m_state;
 	bool m_playedWinSound = false;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Manager.h"
+#include "Singleton.h"
 #include "sgg/graphics.h"
 #include <string>
 #include <list>
@@ -14,7 +14,7 @@ enum States
 	Help
 };
 
-class GameState: public Manager<GameState>
+class GameState: public Singleton<GameState>
 {
 	std::string m_asset_path = "assets\\";
 	std::string m_data_path = "data\\";

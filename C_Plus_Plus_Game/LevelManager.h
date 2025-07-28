@@ -1,9 +1,9 @@
 #pragma once
-#include "Manager.h"
+#include "Singleton.h"
 #include <vector>
 #include <string>
 
-class LevelManager: public Manager<LevelManager>
+class LevelManager: public Singleton<LevelManager>
 {
 	class GameState* m_state;
 	float m_animation_timer = 0;

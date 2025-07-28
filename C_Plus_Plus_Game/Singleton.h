@@ -2,7 +2,7 @@
 //This class is used between all managers (including GameState) to limit repeating code
 
 template <typename className>
-class Manager
+class Singleton
 {
 protected:
 	static className* s_unique_instance;
@@ -13,17 +13,17 @@ public:
 
 
 template <typename className>
-className* Manager<className>::s_unique_instance = nullptr;
+className* Singleton<className>::s_unique_instance = nullptr;
 
 template <typename className>
-void Manager<className>::delptr()
+void Singleton<className>::delptr()
 {
 	if (s_unique_instance != nullptr)
 		delete s_unique_instance;
 }
 
 template <typename className>
-className* Manager<className>::getInstance()
+className* Singleton<className>::getInstance()
 {
 	if (s_unique_instance == nullptr)
 	{

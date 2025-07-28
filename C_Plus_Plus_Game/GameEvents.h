@@ -1,7 +1,7 @@
 #pragma once
-#include "Manager.h"
+#include "Singleton.h"
 #include "CstmCallback.h"
-class GameEvents: public Manager<GameEvents>
+class GameEvents: public Singleton<GameEvents>
 {
 public:
 	CstmCallback<int,int> m_playerHealthChanged;

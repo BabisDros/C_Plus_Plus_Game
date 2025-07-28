@@ -1,6 +1,6 @@
 #pragma once
 #include "GameState.h"
-#include "Manager.h"
+#include "Singleton.h"
 void init()
 {
 	GameState::getInstance()->init();	

@@ -176,7 +176,7 @@
     <ClInclude Include="ParticleManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Manager.h">
+    <ClInclude Include="Singleton.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="GameEvents.h">
