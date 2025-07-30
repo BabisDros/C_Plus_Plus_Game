@@ -21,8 +21,10 @@ void CrateDestructible ::init()
 	else if (m_loot == Extra_loot)
 	{
 		// Triple loot
+		SETCOLOR(m_brush.fill_color, 1.0f, 0.0f, 0.0f); // Red
 		m_extra_points = true;
 		m_points *= 3;
+		
 	}
 }
 
@@ -41,6 +43,6 @@ void CrateDestructible::destroy()
 		m_state->getLevel()->getDestructibleObjectsPtr()->push_back(new HealthPack(m_pos_x, m_pos_y + m_width/4, m_width/2, m_height/2, &m_health_texture, false)); // should happen once
 		m_state->getLevel()->getDestructibleObjects().back()->init();
 	}
-	if (m_loot == Extra_loot) graphics::playSound("music\\extra_loot.wav", 0.03f);
+	if (m_loot == Extra_loot) graphics::playSound("music\\698768_ienba_game-pickup.wav", 0.1f);
 	GameEvents::getInstance()->m_pointsChanged.trigger(m_points,false);
 }

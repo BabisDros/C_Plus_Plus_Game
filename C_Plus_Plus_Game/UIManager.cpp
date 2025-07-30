@@ -15,9 +15,9 @@ void UIManager::init()
 	m_playerHealthUI = HealthUIFixed(0, 0, 5, 1);
 	 
 	m_lostEffect = new ParticleSystem(10, 1000, m_state->getCanvasWidth() / 2, 0, m_state->getCanvasWidth(), 0.3f, 50.f,
-		m_state->getFullAssetPath("blood.png"), 10.f, 5.f, 5.f, 0.f, 0.0f);
+		m_state->getFullAssetPath("Effects\\blood.png"), 10.f, 5.f, 5.f, 0.f, 0.0f);
 	m_winEffect = new ParticleSystem(20, 1000, m_state->getCanvasWidth() / 2, m_state->getCanvasHeight()/4, 2.3f, 0.3f, 50.f,
-		m_state->getFullAssetPath("smoke3.png"), 10.f, 5.f, 5.f, 0.f, 0.0f, 1.f, 1.f, 0);
+		m_state->getFullAssetPath("Effects\\smoke3.png"), 10.f, 5.f, 5.f, 0.f, 0.0f, 1.f, 1.f, 0);
 
 	SETCOLOR(backPLate.fill_color, 0, 0, 0);
 	backPLate.fill_opacity = 0.5f;

@@ -14,7 +14,7 @@ void Enemy::init()
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath(*m_texture)); //"enemy.png"
 
 	graphics::Brush fireball;
-	setCustomBrushProperties(&fireball, 1.0f, 0.0f, m_state->getFullAssetPath("efecto_fuego_00030.png"));
+	setCustomBrushProperties(&fireball, 1.0f, 0.0f, m_state->getFullAssetPath("Effects\\fireball\\efecto_fuego_00030.png"));
 	m_projectile.setBrush(fireball);
 	m_projectile.setParentDirection(m_lookingDirection);
 	if (m_body_damage) m_bodyDamage.setPosition(m_pos_x, m_pos_y, m_width, m_height);
@@ -199,7 +199,7 @@ void Enemy::rangedAttack(const float& dt)
 		m_projectile.m_draw_direction = m_projectile_direction;
 		if (fabs(m_state->getPlayer()->m_pos_x - m_pos_x) < 25 && fabs(m_state->getPlayer()->m_pos_y - m_pos_y) < 15) // not too far
 		{
-			graphics::playSound("music\\enemy_projectile.wav", 0.05f);
+			graphics::playSound("music\\swoosh_8-FilmCow.wav", 0.05f);
 		}
 	}
 

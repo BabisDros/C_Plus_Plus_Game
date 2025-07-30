@@ -16,10 +16,10 @@ void Player::init()
 	m_pos_x = m_state->getLevel()->m_player_start_x;
 	m_pos_y = m_state->getLevel()->m_player_start_y;
 
-	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Character Sprites V2\\Idle\\Idle1.png"));
+	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Characters\\Main Character\\Idle\\Idle1.png"));
 
 	graphics::Brush slash;
-	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("slashFx.png"));
+	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("Effects\\slashFx.png"));
 	
 	m_slashWeapon.setBrush(slash);
 	m_slashWeapon.setParentIsPlayer(true);
@@ -93,7 +93,7 @@ void Player::update(const float& dt)
 	// sound
 	if (m_collidingDown && m_animation == Walking) 
 	{ 
-		graphics::playSound("music\\Footstep_Dirt_03.mp3", 0.01f);
+		graphics::playSound("music\\footstep_dirt_15-FilmCow.wav", 0.01f);
 	}
 }
 
@@ -155,7 +155,7 @@ void Player::setPushed(float x, float y)
 	m_being_pushed_timer = *GameState::getInstance()->getPausableClock();
 	m_being_pushed = true;
 	// damage sound
-	graphics::playSound("music\\Body_Flesh_8.wav", 0.04f);
+	graphics::playSound("music\\splash_small_4-FilmCow.wav", 0.05f);
 }
 
 void Player::getPushed(const float& delta_time)
@@ -363,7 +363,7 @@ void Player::dash(const float& delta_time)
 		m_animation = Dashing;
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
 		m_allow_animation_change = false;
-		graphics::playSound("music\\dash.wav", 0.06f);
+		graphics::playSound("music\\swoosh_8-FilmCow.wav", 0.06f);
 	}	
 	
 	if (m_dashAbility.isRunning())
@@ -389,7 +389,7 @@ void Player::slash(const float& delta_time)
 		m_animation_timer = *GameState::getInstance()->getPausableClock();
 		m_allow_animation_change = false;
 		//sound
-		graphics::playSound("music\\Light_Sword_Swing_3.wav", 0.05f);
+		graphics::playSound("music\\woosh_10-FilmCow.wav", 0.05f);
 	}
 	if (m_slashAbility.isRunning())
 	{

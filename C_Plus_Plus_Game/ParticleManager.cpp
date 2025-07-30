@@ -14,11 +14,11 @@ void ParticleManager::init()
 {
 	m_state = GameState::getInstance();
 
-	m_enemyKilledFx = new ParticleSystem(5, 2, 1, 1, 0.5f, 1.5f, 0.5f, m_state->getFullAssetPath("smoke3.png"), 10.0f, 2.0f, 0.0f, 5.0f, 0.4f, 0.f, 0.f, 0.f);
+	m_enemyKilledFx = new ParticleSystem(5, 2, 1, 1, 0.5f, 1.5f, 0.5f, m_state->getFullAssetPath("Effects\\smoke3.png"), 10.0f, 2.0f, 0.0f, 5.0f, 0.4f, 0.f, 0.f, 0.f);
 	GameEvents::getInstance()->m_enemyDied.addArgActionCallback(std::bind(&ParticleManager::onEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
 	
 	//pos x and y are temporar
-	m_playerBlood= new ParticleSystem(8, 20, 0, 0, 0.3f, 0.2f, 0.8f, m_state->getFullAssetPath("blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
+	m_playerBlood= new ParticleSystem(8, 20, 0, 0, 0.3f, 0.2f, 0.8f, m_state->getFullAssetPath("Effects\\blood.png"), 10.f, 2.f, 5.f, 5.f, 0.4f);
 	GameEvents::getInstance()->m_playHurtFx.addArgActionCallback(std::bind(&ParticleManager::onPlayerHurt, this));
 	GameEvents::getInstance()->m_playerMoved.addArgActionCallback(std::bind(&ParticleManager::onPlayerMoved, this , std::placeholders::_1, std::placeholders::_2));
 }

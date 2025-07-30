@@ -20,7 +20,7 @@ void HealthPack::update(const float& dt)
 		if (intersect(*player))
 		{
 			destructiblePtr->takeDamage(m_heal_amount);
-			graphics::playSound("music\\heal.wav", 0.30f);
+			graphics::playSound("music\\580814_silverillusionist_healing-3-soothing-rinse.wav", 0.1f);
 			destroy();
 		}
 	}

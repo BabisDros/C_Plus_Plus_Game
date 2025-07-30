@@ -4,7 +4,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: block.png
+		texture: Platforms\\block.png
 		destructible:
 		health:
 		level_end: 0
@@ -18,7 +18,7 @@ Terrain
 	{
 		width: 1
 		height: 0.5
-		texture: block.png
+		texture: Platforms\\block.png
 		destructible:
 		health:
 		level_end: 0
@@ -32,7 +32,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: left_block.png
+		texture: Platforms\\left_block.png
 		destructible:
 		health:
 		level_end: 
@@ -45,7 +45,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: middle_block.png
+		texture: Platforms\\middle_block.png
 		destructible:
 		health:
 		level_end: 
@@ -58,7 +58,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: right_block.png
+		texture: Platforms\\right_block.png
 		destructible:
 		health:
 		level_end: 
@@ -72,7 +72,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: middle_block_Y.png
+		texture: Platforms\\middle_block_Y.png
 		destructible:
 		health:
 		level_end: 
@@ -86,7 +86,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: door.png
+		texture: Foreground\\Door\Door-Sheet_01.png
 		destructible:
 		health:
 		level_end: 1
@@ -99,7 +99,7 @@ Terrain
 	{
 		width: 1
 		height: 1
-		texture: crate.png
+		texture: Interactables\\crate.png
 		destructible: 1
 		health: 30
 		level_end: 
@@ -113,7 +113,7 @@ Terrain
 	{
 		width: 2
 		height: 1
-		texture: backgrounds\\TaigaPack1-flowers.png
+		texture: Foreground\\TaigaPack1-flowers.png
 		destructible:
 		health:
 		level_end:
@@ -128,7 +128,7 @@ Enemy
 	{
 		width: 0.75
 		height: 1
-		texture: enemy.png
+		texture: Characters\\enemy.png
 		health: 50
 		ranged: 1
 		body_damage: 1
@@ -147,7 +147,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: enemy.png
+		texture: Characters\\enemy.png
 		health: 30
 		ranged: 1
 		body_damage: 0
@@ -167,7 +167,7 @@ Enemy
 	{
 		width: 1
 		height: 0.5
-		texture: stalagmite4Y.png
+		texture: Interactables\\Traps\\stalagmite4Y.png
 		health: -1
 		ranged: 
 		body_damage: 1
@@ -187,7 +187,7 @@ Enemy
 	{
 		width: 1
 		height: 0.5
-		texture: stalagmite4Y.png
+		texture: Interactables\\Traps\\stalagmite4Y.png
 		health: -1
 		ranged: 0
 		body_damage: 1
@@ -207,7 +207,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: enemy.png
+		texture: Characters\\enemy.png
 		health: 40
 		ranged: 0
 		body_damage: 1
@@ -227,7 +227,7 @@ Enemy
 	{
 		width: 0.5
 		height: 1
-		texture: enemy.png
+		texture: Characters\\enemy.png
 		health: 20
 		ranged: 1
 		body_damage: 0

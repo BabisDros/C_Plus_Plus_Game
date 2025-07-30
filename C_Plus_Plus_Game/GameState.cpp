@@ -24,14 +24,14 @@ void GameState::init()
 	LevelManager::getInstance()->init();	
 	MusicManager::getInstance()->init();
 	// read and save animation sprites
-	readSprites("Character Sprites V2\\Walk", m_sprites_walking);
-	readSprites("Character Sprites V2\\Idle", m_sprites_idle);
-	readSprites("Character Sprites V2\\Attack_B", m_sprites_attacking);
-	readSprites("Character Sprites V2\\Jump", m_sprites_jumping);
-	readSprites("Character Sprites V2\\Run", m_sprites_dashing);
-	readSprites("Character Sprites V2\\Hurt", m_sprites_hurt);
-	readSprites("fireball", m_fireball_sprites);
-	readSprites("level cutscene", m_door_sprites);
+	readSprites("Characters\\Main Character\\Walk", m_sprites_walking);
+	readSprites("Characters\\Main Character\\Idle", m_sprites_idle);
+	readSprites("Characters\\Main Character\\Attack_B", m_sprites_attacking);
+	readSprites("Characters\\Main Character\\Jump", m_sprites_jumping);
+	readSprites("Characters\\Main Character\\Run", m_sprites_dashing);
+	readSprites("Characters\\Main Character\\Hurt", m_sprites_hurt);
+	readSprites("Effects\\fireball", m_fireball_sprites);
+	readSprites("Foreground\\Door", m_door_sprites);
 
 	for (auto& p : std::filesystem::recursive_directory_iterator(getAssetDir())) // preload all assets
 		if (p.is_directory()) graphics::preloadBitmaps(p.path().string());
@@ -73,7 +73,10 @@ void GameState::update(const float& dt)
 		LevelManager::getInstance()->levelEndCutscene();
 		if (LevelManager::getInstance()->m_cutscene_ended) LevelManager::getInstance()->nextLevel(); // level sequence animation
 	}
-	if (m_currentState == InGame) MusicManager::getInstance()->playMusic();
+	if (m_currentState == InGame)
+	{
+		MusicManager::getInstance()->playMusic();
+	}
 }
 
 GameState::~GameState()
