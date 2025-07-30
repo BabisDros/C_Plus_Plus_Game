@@ -3,7 +3,7 @@ This is a 2D platformer game made in C++ using the [Simple Graphics Library (SGG
 The player controls a character who moves through levels, avoids enemies, collects items, and tries to reach the goal. The game was created for a university project (AUEB) and focuses on both gameplay and good programming practices.
 
 
-## Technologies Used
+## Tech Stack & Tools
 
 - **C++17** – Main programming language
 - **SGG (Simple Graphics Library)** – Handles graphics, input, and audio
@@ -34,12 +34,25 @@ The player controls a character who moves through levels, avoids enemies, collec
 - Clear and organized code, split into different files, folders and classes for better structure.
 - Use of `const` in functions and variables where values don’t change.
 - Use of references instead of copies to avoid unnecessary overhead.
-- Templates used in functions or classes where needed ([impl1](C_Plus_Plus_Game/CstmCallback.h#L10), [impl2](C_Plus_Plus_Game/Manager.h), [impl3](C_Plus_Plus_Game/Entity.h#L10)).
+- Templates used in functions or classes where needed ([impl1](C_Plus_Plus_Game/CstmCallback.h#L10), [impl2](C_Plus_Plus_Game/Singleton.h), [impl3](C_Plus_Plus_Game/Entity.h#L10)).
 - Multithreading, especially for heavy calculations (e.g. AI or effects) ([impl1](C_Plus_Plus_Game/ParticleManager.cpp#L13), [impl2](C_Plus_Plus_Game/Level.cpp#L64)).
 - [Levels loaded from files](C_Plus_Plus_Game/Level.cpp#L70), so the game can support many stages.
 - Basic event system ([GameEvents](C_Plus_Plus_Game/GameEvents.h), [Callbacks](C_Plus_Plus_Game/CstmCallback.h)), allowing for decoupled communication between game objects.
 - Temporary effects (e.g. point popups, smoke, transitions) are created and removed properly during gameplay.
 
+## How to Run
+
+1. Download the repository.  
+2. Open the solution file [`C_Plus_Plus_Game.sln`](C_Plus_Plus_Game.sln) with **Visual Studio**, ensuring that the **Desktop development with C++** workload is installed.  
+3. Build and run the project.
+  
+## Game Features
+[See current game features here](Game_features)
+
 ## Credits
 
 [See full asset credits here](Credits.md)
+
+## Contributors
+- [Babis Drosatos](https://github.com/BabisDros)
+- [Iosif Petroulakis](https://github.com/Morthlog)
