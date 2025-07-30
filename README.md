@@ -1,80 +1,45 @@
-# Project Roadmap
-# Game Title Readme
-
-## Table of Contents
-- [Character Abilities](#character-abilities)
-- [AI](#ai)
-- [UI](#ui)
-- [Levels](#levels)
-- [Managers](#managers)
-- [Event Types](#event-types)
-- [Achievements](#achievements)
-- [Save Load System](#save-load-system)
-- [Camera System](#camera-system)
+# 2D Platformer Game (C++ using SGG)
+This is a 2D platformer game made in C++ using the [Simple Graphics Library (SGG)](https://github.com/cgaueb/sgg).  
+The player controls a character who moves through levels, avoids enemies, collects items, and tries to reach the goal. The game was created for a university project (AUEB) and focuses on both gameplay and good programming practices.
 
 
-## Character Abilities
-| Ability                  | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Dashing                  | The player will get sudden un-stoppable movement         |  <ul><li>- [x] </li></ul> |
-| Climbing                 | Player can ascend or descend walls                       |  <ul><li>- [ ] </li></ul> |
-| Attacking {Maybe}        | The player can melee attack to kill enemies              |  <ul><li>- [x] </li></ul> |
-| Stamina                  | Player will have to wait for abilities, ex climbin       |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+## Technologies Used
 
-## AI
-| AI System                | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Enemy movement           | Either follow player or static or both                   |  <ul><li>- [ ] </li></ul>  |
-| Enemy attacks            | Attempting to kill player either body-kill or projectile |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+- **C++17** – Main programming language
+- **SGG (Simple Graphics Library)** – Handles graphics, input, and audio
 
-## UI
-| UI Element               | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Start menu	           | Indicator to show the availablity of abilities           |  <ul><li>- [ ] </li></ul>  |
-| Pause menu	           | {Needs to be made prettier                               |  <ul><li>- [ ] </li></ul>  |
-| Abilities cooldown       | Indicator to show the availablity of abilities           |  <ul><li>- [x] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+## Goals
+### Required features set by the assignment:
 
-## Levels
-| Level                    | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| txt generated            | loop will read data of level from file                   |  <ul><li>- [x] </li></ul>  |
-| Level 1                  | Brief description of the first level                     |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+- **SGG Integration**  
+  All graphics, input handling, and audio are implemented using only the Simple Graphics Library (SGG), as required. No other external libraries are used.
 
-## Managers
-| Manager                  | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Particles                | Manages different particle effect, best on threads       |  <ul><li>- [ ] </li></ul>  |
-| Audio Manager            | Brief description of the second manager                  |  <ul><li>- [ ] </li></ul>  |
-| Game Manager             | Handles scene transitions, hp, points, etc               | <ul><li>- [ ] </li></ul>   |
-| Event Manager            | Handles events between Gameobjects. Optimal design for decoupling.| <ul><li>- [ ] </li></ul>   |
-        
+- **Dynamic Memory Usage**  
+  Game entities such as enemies, projectiles, and temporary effects (e.g., particles) are created using `new` and properly destroyed when no longer needed.
 
-## Event Types
-| Event                    | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Collisions               | Either for walls {works}, enemies or pick-ups            |  <ul><li>- [x] </li></ul>  |
-|                          | Brief description of the second event                    |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+- **Object-Oriented Design with Polymorphism**  
+  A full hierarchy of game objects is implemented, based on a base `GameObject` class that includes `update()`, `draw()`, and `init()` methods. These methods are overridden in derived classes (e.g., `Player`, `Enemy`, etc.).
 
-## Achievements
-| Achievement              | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Speedrun                 | Clear game in certain time                               |  <ul><li>- [ ] </li></ul>  |
-| Deathless                | Beast the game without dying                             |  <ul><li>- [ ] </li></ul>  |
-| ...                      | ...                                                      | ...  |
+- **Centralized Management**  
+  Appropriate Singleton classes [UIManager](C_Plus_Plus_Game\UIManager.cpp), [ParticleManager](C_Plus_Plus_Game\ParticleManager.cpp), [MusicManager](C_Plus_Plus_Game\MusicManager.cpp), [LevelManager](C_Plus_Plus_Game\LevelManager.cpp),  manage global game data such as: levels, score, transitions, and object access.
 
-## Save Load System
-| System                   | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Save/Load System         | Handles save and load                                    |  <ul><li>- [ ] </li></ul>  |
+- **STL Collections**  
+  STL containers like `std::vector` and `std::map` are used to store and manage game entities, UI components, and levels. 
 
-## Camera System
-| System                   | Description                                              | Done |
-|--------------------------|----------------------------------------------------------|------|
-| Camera                   | Watches backgroung -> player if moved far enough         |  <ul><li>- [x] </li></ul>  |
+- **Collision Detection**  
+  Bounding box collision detection is implemented for interactions between the player, walls, enemies, and pick-up items.
 
+### Optional Features and Code Quality set by the assignment:
 
+- Clear and organized code, split into different files, folders and classes for better structure.
+- Use of `const` in functions and variables where values don’t change.
+- Use of references instead of copies to avoid unnecessary overhead.
+- Templates used in functions or classes where needed ([impl1](C_Plus_Plus_Game\CstmCallback.h#L10), [impl2](C_Plus_Plus_Game\Manager.h), [impl3](C_Plus_Plus_Game\Entity.h#L10)).
+- Multithreading, especially for heavy calculations (e.g. AI or effects) ([impl1](C_Plus_Plus_Game\ParticleManager.cpp#L13), [impl2](C_Plus_Plus_Game\Level.cpp#L64)).
+- [Levels loaded from files](C_Plus_Plus_Game\Level.cpp#L70), so the game can support many stages.
+- Basic event system ([GameEvents](C_Plus_Plus_Game\GameEvents.h), [Callbacks](C_Plus_Plus_Game/CstmCallback.h)), allowing for decoupled communication between game objects.
+- Temporary effects (e.g. point popups, smoke, transitions) are created and removed properly during gameplay.
+
+## Credits
+
+[See full asset credits here](Credits.md)
