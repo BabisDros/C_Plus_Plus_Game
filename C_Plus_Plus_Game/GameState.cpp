@@ -17,8 +17,8 @@ GameState::GameState()
 
 void GameState::init()
 {	
-	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&GameState::onPointsCollected, this, std::placeholders::_1, std::placeholders::_2));
-	GameEvents::getInstance()->m_playerLivesChanged.addArgActionCallback(std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1, std::placeholders::_2));
+	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(this, std::bind(&GameState::onPointsCollected, this, std::placeholders::_1, std::placeholders::_2));
+	GameEvents::getInstance()->m_playerLivesChanged.addArgActionCallback(this, std::bind(&GameState::onPlayerLivesChanged, this, std::placeholders::_1, std::placeholders::_2));
 	UIManager::getInstance()->init();
 	ParticleManager::getInstance()->init();
 	LevelManager::getInstance()->init();	

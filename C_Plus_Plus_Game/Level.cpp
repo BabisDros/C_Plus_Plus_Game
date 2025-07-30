@@ -11,7 +11,7 @@
 
 void Level::init()
 {
-	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
+	GameEvents::getInstance()->m_pointsChanged.addArgActionCallback(this, std::bind(&Level::onPointsCollected, this, std::placeholders::_1));
 	m_brush.outline_opacity = 0.0f;
 	m_brush.texture = m_state->getFullAssetPath("background.png"); //? Make it not TOO big and try powers of 2 for given dimensions
 	read();	
@@ -319,4 +319,5 @@ Level::~Level()
 	{ 
 		GameEvents::getInstance()->m_pointsChanged.trigger(-pointsGainedInLevel, false);
 	}	
+	GameEvents::getInstance()->m_pointsChanged.removeActionCallback(this);
 }

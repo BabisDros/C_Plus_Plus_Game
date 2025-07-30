@@ -10,7 +10,7 @@ void LevelManager::init()
 {
 	m_state = GameState::getInstance();
 	std::string path = m_state->getFullDataPath("");
-	GameEvents::getInstance()->m_playerDied.addArgActionCallback(std::bind(&LevelManager::onPlayerDied, this));
+	GameEvents::getInstance()->m_playerDied.addArgActionCallback(this, std::bind(&LevelManager::onPlayerDied, this));
 
 	for (const auto& entry : std::filesystem::directory_iterator(path))	// list of level names on data folder
 		levels_list.push_back(entry.path().u8string().erase(entry.path().u8string().find(".txt"), 4).	// remove .txt extention

@@ -14,23 +14,29 @@ protected:
 	bool m_action_occured = false;
 
 
-	std::vector<std::function<void(const T&...)>>m_actionCallbacks;
+	std::unordered_map<void*, std::function<void(const T&...)>> m_actionCallbacks;
 public:
-	void addArgActionCallback(std::function<void(const T&...)> cb);
+	void addArgActionCallback(void* key, std::function<void(const T&...)> cb);
+	void removeActionCallback(void* key);
 	void trigger(const T&... values);
 };
 
 template<typename... T>
-inline void CstmCallback<T...>::addArgActionCallback(std::function<void(const T&...)> cb)
+inline void CstmCallback<T...>::addArgActionCallback(void* key, std::function<void(const T&...)> cb)
 {
-	m_actionCallbacks.push_back(cb);
+	m_actionCallbacks[key] = std::move(cb);
 }
 
 template<typename ...T>
 inline void CstmCallback<T...>::trigger(const T & ...values)
 {
-	for (const auto& callback : m_actionCallbacks) {
+	for (const auto& [key, callback] : m_actionCallbacks) {
 		callback(values...);
 	}
 }
 
+template<typename... T>
+inline void CstmCallback<T...>::removeActionCallback(void* key)
+{
+	m_actionCallbacks.erase(key);
+}
