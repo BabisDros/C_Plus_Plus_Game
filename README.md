@@ -47,7 +47,12 @@ The player controls a character who moves through levels, avoids enemies, collec
 3. Build and run the project.
   
 ## Game Features
-[See current game features here](Game_features)
+[See current game features here](Game_features.md)
+
+## Screenshots
+![image](In-game%20screenshots/Menu.jpg)
+![image](In-game%20screenshots/Level.jpg)
+![image](In-game%20screenshots/Lose%20screen.jpg)
 
 ## Credits
 
