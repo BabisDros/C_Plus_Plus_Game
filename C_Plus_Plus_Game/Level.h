@@ -42,6 +42,7 @@ class Level : public GameObject
 	char m_level_end_tag;
 	LevelBox *m_level_end;
 public:
+	float m_zoom = 2.f;
 	float m_player_start_x;
 	float m_player_start_y;
 

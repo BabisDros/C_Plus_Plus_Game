@@ -46,8 +46,9 @@ void Enemy::draw()
 void Enemy::update(const float& dt)
 {
 	m_collisingLR = false;
-	checkCollision(m_state->getLevel()->getBlocks());
+	
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
+	checkCollision(m_state->getLevel()->getBlocks());
 	movement(dt);
 	attack(dt);
 	m_healthUi->setPosition(m_pos_x, m_pos_y);

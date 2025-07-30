@@ -35,7 +35,7 @@ inline void Entity::checkCollision(Container myContainer)
 		if (typeid(*block).name() == typeid(*this).name()) continue;	//No collision between enemies, but allowed between destructibles
 		if (block->isActive())
 		{
-			if (!intersectTypeY(*block))
+			if (!intersectTypeY(*block) && intersect(*block))
 			{
 				float offset;
 				if (offset = intersectSideways(*block))	//? Does not go in if 0

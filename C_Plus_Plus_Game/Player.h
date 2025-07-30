@@ -20,6 +20,7 @@ enum AnimationSequence
 
 class Player :public IDestructible, public Entity
 {
+	graphics::Brush debugTxt;
 	DamageBox m_slashWeapon = DamageBox(10);
 	Ability m_dashAbility = Ability(2.0f, 0.2f, 0.0f, 12.f);
 	Ability m_slashAbility = Ability(0.8f, 0.25f, 0.0f);
@@ -83,6 +84,8 @@ public:
 	void automaticPlayerMovement(const float& dt);
 	void allowPlayerMovement();
 	void setAnimation(AnimationSequence anim);
+	// Provides, based on provided zoom level, the allignment value
+	float camerafunc(float var);
 protected:
 	void cameraOffsetX(float multiplier1, float multiplier2);
 	void cameraOffsetY(float multiplier1, float multiplier2);

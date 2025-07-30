@@ -27,7 +27,7 @@ void Level::draw()
 	float offset_x = m_state->m_global_offset_x + w * 0.5f;
 	float offset_y = m_state->m_global_offset_y + h * 0.5f;
 
-	graphics::drawRect(offset_x, offset_y, w / 0.5f, h / 0.5f, m_brush);
+	graphics::drawRect(offset_x, offset_y, w  *m_zoom, h * m_zoom, m_brush);
 
 	for (auto p_gob : m_blocks)
 		p_gob->draw();
@@ -74,7 +74,7 @@ void Level::read()
 	std::ifstream myfile(m_state->getFullDataPath(m_name) + ".txt");
 	std::string line;
 	int x, y;
-	y = -m_state->getCanvasHeight() * 0.5f;
+	y = - m_state->getCanvasHeight() * m_state->getPlayer()->camerafunc(m_zoom);
 	if (myfile.is_open())
 	{
 		while(true)
@@ -94,7 +94,7 @@ void Level::read()
 				std::getline(myfile, line);
 				while (line[0] !='$')
 				{
-					x = -m_state->getCanvasWidth() * 0.5f;
+					x = - m_state->getCanvasWidth() * m_state->getPlayer()->camerafunc(m_zoom);
 					bool tag_found, destructible;
 					for (char ch : line)
 					{

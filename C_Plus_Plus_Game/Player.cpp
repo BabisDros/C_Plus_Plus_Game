@@ -18,6 +18,7 @@ void Player::init()
 
 	setCustomBrushProperties(&m_brush, 1.0f, 0.0f, m_state->getFullAssetPath("Characters\\Main Character\\Idle\\Idle1.png"));
 
+	SETCOLOR(debugTxt.fill_color, 1, 0.5f, 0.5f);
 	graphics::Brush slash;
 	setCustomBrushProperties(&slash, 1.0f, 0.0f, m_state->getFullAssetPath("Effects\\slashFx.png"));
 	
@@ -41,6 +42,8 @@ void Player::draw()
 	if (m_state->m_debugging)
 	{
 		debugDraw(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y, m_width, m_height, m_id);
+		graphics::drawText(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - 1, 0.3, "X: " + std::to_string(m_pos_x), debugTxt);
+		graphics::drawText(m_pos_x + m_state->m_global_offset_x, m_pos_y + m_state->m_global_offset_y - 1.5, 0.3, "Y: " + std::to_string(m_pos_y), debugTxt);
 	}	
 	m_slashWeapon.draw();	
 }
@@ -56,9 +59,9 @@ void Player::update(const float& dt)
 	}
 	m_collidingDown = false;
 	m_collidingUp = false;
-	checkCollision(m_state->getLevel()->getBlocks());
+	
 	checkCollision(m_state->getLevel()->getDestructibleObjects());
-
+	checkCollision(m_state->getLevel()->getBlocks());
 	m_slashWeapon.setParentDirection(m_lookingDirection);
 	m_slashWeapon.update(dt);
 	float delta_time = dt / 1000.0f;
@@ -76,7 +79,7 @@ void Player::update(const float& dt)
 		automaticPlayerMovement(delta_time);
 	}
 
-	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight()*0.5f + 1) //? is in void
+	if (m_pos_y > m_state->getCanvasHeight() + m_state->getCanvasHeight() * camerafunc(m_state->getLevel()->m_zoom) + 1) //? is in void
 	{
 		takeDamage(m_initialHealth);
 		m_pos_x = m_state->getLevel()->m_player_start_x; 
@@ -423,10 +426,11 @@ void Player::takeDamage(const int& damage)
 	}
 }
 
-
+ 
 void Player::cameraOffsetX(float multiplier1, float multiplier2)
-{															//? 0.5f is based on zoom done on background, check level draw/init
-	if (m_pos_x >= m_state->getCanvasWidth()*(multiplier1 - 0.5f) && (m_pos_x <= m_state->getCanvasWidth() * (multiplier2 + 0.5f))) //? prevents going outside of background
+{															
+	float var = camerafunc(m_state->getLevel()->m_zoom);
+	if (m_pos_x >= m_state->getCanvasWidth()*(multiplier1 - var) && (m_pos_x <= m_state->getCanvasWidth() * (multiplier2 + var))) //? prevents going outside of background
 	{
 		if (m_pos_x + m_state->m_global_offset_x <= m_state->getCanvasWidth() * multiplier1)
 		{
@@ -437,19 +441,20 @@ void Player::cameraOffsetX(float multiplier1, float multiplier2)
 			m_state->m_global_offset_x = m_state->getCanvasWidth() * multiplier2 - m_pos_x;
 		}
 	}
-	else if (m_pos_x < m_state->getCanvasWidth() * (multiplier1 - 0.5f))
+	else if (m_pos_x < m_state->getCanvasWidth() * (multiplier1 - var))
 	{
-		m_state->m_global_offset_x = m_state->getCanvasWidth() * 0.5f;
+		m_state->m_global_offset_x = m_state->getCanvasWidth() * var;
 	}
-	else if (m_pos_x > m_state->getCanvasWidth() * (multiplier2 + 0.5f))
+	else if (m_pos_x > m_state->getCanvasWidth() * (multiplier2 + var))
 	{
-		m_state->m_global_offset_x = -m_state->getCanvasWidth() * 0.5f;
+		m_state->m_global_offset_x = -m_state->getCanvasWidth() * var;
 	}
 }
 
 void Player::cameraOffsetY(float multiplier1, float multiplier2)
 {
-	if (m_pos_y >= m_state->getCanvasHeight() * (multiplier1 - 0.5f) && (m_pos_y <= m_state->getCanvasHeight() * (multiplier2 + 0.5f))) //? prevents going outside of background
+	float var = camerafunc(m_state->getLevel()->m_zoom);
+	if (m_pos_y >= m_state->getCanvasHeight() * (multiplier1 - var) && (m_pos_y <= m_state->getCanvasHeight() * (multiplier2 + var))) //? prevents going outside of background
 	{ 
 		if (m_pos_y + m_state->m_global_offset_y <= m_state->getCanvasHeight() * multiplier1)
 		{
@@ -460,12 +465,17 @@ void Player::cameraOffsetY(float multiplier1, float multiplier2)
 			m_state->m_global_offset_y = m_state->getCanvasHeight() * multiplier2 - m_pos_y; 
 		}
 	}
-	else if (m_pos_y < m_state->getCanvasHeight() * (multiplier1 - 0.5f))	
+	else if (m_pos_y < m_state->getCanvasHeight() * (multiplier1 - var))	
 	{
-		m_state->m_global_offset_y = m_state->getCanvasHeight() * 0.5f;
+		m_state->m_global_offset_y = m_state->getCanvasHeight() * var;
 	}
-	else if (m_pos_y > m_state->getCanvasHeight() * (multiplier2 + 0.5f))
+	else if (m_pos_y > m_state->getCanvasHeight() * (multiplier2 + var))
 	{
-		m_state->m_global_offset_y = -m_state->getCanvasHeight() * 0.5f;
+		m_state->m_global_offset_y = -m_state->getCanvasHeight() * var;
 	}
+}
+ 
+float Player::camerafunc(float var) // used for camera position calculation
+{
+	return 0.5f * var - 0.5f;
 }
